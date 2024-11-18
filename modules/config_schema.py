@@ -129,10 +129,30 @@ schema_module = {
         "PositionNumber": int,
     }
 
+schema_network_interface = {
+    Optional("Name"): str,
+    Optional("Address"): str,
+    # Optional("NodeId"): str, # unsupported
+    Optional("NodeType"): str,
+    Optional("UseIsoProtocol"): bool,
+    Optional("MacAddress"): str,
+    Optional("UseIpProtocol"): bool,
+    # Optional("IpProtocolSelection"): str, # unsupported
+    Optional("Address"): str,
+    Optional("SubnetMask"): str,
+    Optional("UseRouter"): bool,
+    Optional("RouterAddress"): str,
+    Optional("DhcpClientId"): str,
+    Optional("PnDeviceNameSetDirectly"): bool,
+    Optional("PnDeviceNameAutoGeneration"): bool,
+    Optional("PnDeviceName"): str,
+    Optional("PnDeviceNameConverted"): str,
+}
+
 schema_device = {
     "p_name": str, # PLC1
     "p_typeIdentifier": str, # OrderNumber:6ES7 510-1DJ01-0AB0/V2.0
-    Optional("network_address", default="192.168.0.112"): str,
+    Optional("network_interface", default={}): dict,
 }
 
 schema_device_plc = {
@@ -172,17 +192,10 @@ schema_library = {
 
 schema = Schema(
     {
-        # Optional("dll", default=Path(r"C:/Program Files/Siemens/Automation/Portal V18/PublicAPI/V18/Siemens.Engineering.dll")): And(str, Use(Path), lambda p: Path(p)),
-        # Optional("enable_ui", default=True): bool,
-        # "project": {
-        # "name": str,
-        # Optional("directory", default=Path.home()): And(str, Use(Path), lambda p: Path(p)),
         Optional("overwrite", default=False): bool,
         Optional("devices", default=[]): And(list, [Or(schema_device_plc, schema_device_hmi, schema_device_ionode)]),
         Optional("networks", default=[]): And(list, [schema_network]),
         Optional("libraries", default=[]): And(list, [schema_library]),
-
-        # },
     },
     ignore_extra_keys=True  
 )
