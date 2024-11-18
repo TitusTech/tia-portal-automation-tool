@@ -5,7 +5,7 @@ import base64
 import json
 import wx
 
-from modules import config_schema, portal, logger
+from modules import config_schema, portal, logger, api
 from res import dlls
 
 
@@ -276,13 +276,8 @@ def import_and_execute(config, dll: Path):
     print("TIA Portal Automation Tool")
     print()
 
-    portal.execute(SE, config,
-        {
-            "DirectoryInfo": DirectoryInfo,
-            "FileInfo": FileInfo,
-            "enable_ui": True,
-        }
-    )
+    imports = api.Imports(SE, DirectoryInfo, FileInfo)
+    portal.execute(imports, config, { "enable_ui": True, })
 
 if __name__ == '__main__':
     dll_paths: dict[str, Path] = {}
