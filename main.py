@@ -335,7 +335,6 @@ if __name__ == '__main__':
             config = json.load(file)
             validated_config = config_schema.validate_config(config)
 
-            print(json_config.absolute().parent)
             validated_config['directory'] = json_config.absolute().parent
             validated_config['name'] = json_config.stem
             import_and_execute(validated_config, dll)
