@@ -129,30 +129,30 @@ schema_module = {
         "PositionNumber": int,
     }
 
-schema_network_interface = {
-    Optional("Name"): str,
+schema_network_interface = Schema({
+    # Optional("Name"): str, # read only
     Optional("Address"): str,
-    # Optional("NodeId"): str, # unsupported
-    Optional("NodeType"): str,
+    # Optional("NodeId"): str, # read only
+    # Optional("NodeType"): str, # unsupported
     Optional("UseIsoProtocol"): bool,
     Optional("MacAddress"): str,
     Optional("UseIpProtocol"): bool,
     # Optional("IpProtocolSelection"): str, # unsupported
     Optional("Address"): str,
     Optional("SubnetMask"): str,
-    Optional("UseRouter"): bool,
+    # Optional("UseRouter"): bool, # no need, just set RouterAddress to make this true
     Optional("RouterAddress"): str,
     Optional("DhcpClientId"): str,
     Optional("PnDeviceNameSetDirectly"): bool,
     Optional("PnDeviceNameAutoGeneration"): bool,
     Optional("PnDeviceName"): str,
-    Optional("PnDeviceNameConverted"): str,
-}
+    # Optional("PnDeviceNameConverted"): str, # read only
+})
 
 schema_device = {
     "p_name": str, # PLC1
     "p_typeIdentifier": str, # OrderNumber:6ES7 510-1DJ01-0AB0/V2.0
-    Optional("network_interface", default={}): dict,
+    Optional("network_interface", default={}): schema_network_interface,
 }
 
 schema_device_plc = {

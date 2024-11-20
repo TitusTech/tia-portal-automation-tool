@@ -201,7 +201,14 @@ def create_device_network_service(imports: Imports, device_data: dict[str, Any],
 
         if type(network_service) is SE.HW.Features.NetworkInterface:
             node: Siemens.Engineeering.HW.Node = network_service.Nodes[0]
-            node.SetAttribute("Address", device_data['network_address'])
+            data: dict = device_data['network_interface']
+            for key, value in data.items():
+                if key == "RouterAddress" and value:
+                    node.SetAttribute("UseRouter", True)
+                    
+                node.SetAttribute(key, value)
+
+                logging.info(f"Device {device.Name}'s {key} Attribute set to '{value}'")
 
             logging.info(f"Network address of {device.Name} has been set to '{node.GetAttribute("Address")}' through {device_item.Name}")
 
