@@ -13,7 +13,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
     interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
     for i, device_data in enumerate(config['devices']):
         device = devices[i]
-        api.create_modules(device_data, device)
+        api.generate_modules(device_data, device)
         itf: Siemens.Engineering.HW.Features.NetworkInterface = api.create_device_network_service(imports, device_data, device)
         interfaces.append(itf)
 
@@ -229,6 +229,7 @@ def execute_old(SE: Siemens.Engineering, config: dict[Any, Any], settings: dict[
                     logging.info(f"New GlobalDB: {plc_block.get('name')} added to {software_base.Name}")
 
 
+    # interfaces is used here
     subnet: Siemens.Engineering.HW.Subnet = None
     io_system: Siemens.Engineering.HW.IoSystem = None
     for i, network in enumerate(config.get('networks', [])):

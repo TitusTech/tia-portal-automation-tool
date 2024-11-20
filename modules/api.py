@@ -155,7 +155,7 @@ def plug_new_module(module: dict, device_data: dict[str, Any], hw_object: Siemen
 
     logging.info(f"{module['TypeIdentifier']} Not PLUGGED on {module['PositionNumber'] + device_data['slots_required']}")
 
-def create_modules(device_data: dict[str, Any], device: Siemens.Engineering.HW.Device):
+def generate_modules(device_data: dict[str, Any], device: Siemens.Engineering.HW.Device):
     hw_object: Siemens.Engineering.HW.HardwareObject = device.DeviceItems[0]
     for module in device_data.get('Local modules', []):
         plug_new_module(module, device_data, hw_object)
@@ -218,5 +218,67 @@ def create_device_network_service(imports: Imports, device_data: dict[str, Any],
 
 
 
+def access_plc_of_device(imports:Imports, device: Siemens.Engineering.HW.Device) -> Siemens.Engineering.HW.Software:
+    SE: Siemens.Engineering = imports.DLL
 
+    hw_obj: Siemens.Engineering.HW.HardwareObject = device.DeviceItems
+
+    for device_item in hw_obj:
+        logging.debug(f"Accessing a PlcSoftware from DeviceItem {device_item.Name}")
+
+        software_container: Siemens.Engineering.HW.Features.SoftwareContainer = SE.IEngineeringServiceProvider(device_item).GetService[SE.HW.Features.SoftwareContainer]()
+        if not software_container:
+            logging.debug(f"No PlcSoftware found for DeviceItem {device_item.Name}")
+        logging.debug(f"Found PlcSoftware for DeviceItem {device_item.Name}")
+
+        if not software_container:
+            continue
+        software_base: Siemens.Engineering.HW.Software = software_container.Software
+        if not isinstance(software_base, SE.SW.PlcSoftware):
+            continue
+
+        return software_base
+
+
+def generate_tag_tables(device_data: dict[str, Any], software_base: Siemens.Engineering.HW.Software, tag_source: str = "PLC tags") -> list[Siemens.Engineering.SW.Tags.PlcTagTable]:
+    tables: list[Siemens.Engineering.SW.Tags.PlcTagTable] = []
+    for data in device_data.get(tag_source, []):
+        tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = create_tag_table(data['Name'], software_base)
+        tables.append(tag_table)
+
+    return tables
+
+
+def create_tag_table(name: str, software_base: Siemens.Engineering.HW.Software) -> Siemens.Engineering.SW.Tags.PlcTagTable:
+    tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = software_base.TagTableGroup.TagTables.Create(name)
+
+    logging.info(f"Created Tag Table: {name} ({software_base.Name} Software)")
+    logging.debug(f"PLC Tag Table: {tag_table.Name}")
+
+    return tag_table
+
+def find_tag_table(imports: Imports, name: str, software_base: Siemens.Engineering.HW.Software) -> Siemens.Engineering.SW.Tags.PlcTagTable | None:
+    SE: Siemens.Engineering = imports.DLL
+
+    logging.info(f"Searching Tag Table: {name} in Software {software_base.Name}...")
+
+    tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = software_base.TagTableGroup.TagTables.Find(name)
+
+    if not isinstance(tag_table, SE.SW.Tags.PlcTagTable):
+        return
+
+    logging.info(f"Found Tag Table: {name} in {software_base.Name} Software")
+    logging.debug(f"PLC Tag Table: {tag_table.Name}")
+
+    return tag_table
+
+
+def create_tag(tag_table: Siemens.Engineering.SW.Tags.PlcTagTable, name: str, data_type_name: str, logical_address: str) -> Siemens.Engineering.SW.Tags.PlcTag:
+    logging.info(f"Creating Tag: {name} ({tag_table.Name} Table@0x{logical_address} Address)")
+
+    tag: Siemens.Engineering.SW.Tags.PlcTag = tag_table.Tags.Create(name, data_type_name, logical_address)
+
+    logging.info(f"Created Tag: {tag.Name} ({tag_table.Name} Table@0x{tag.LogicalAddress} Address)")
+
+    return tag
 
