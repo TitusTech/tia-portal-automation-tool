@@ -112,22 +112,26 @@ schema_program_block_fb = Schema(schema_program_block_fb)
 schema_program_block_fc = Schema(schema_program_block_fc)
 
 
-schema_plc_tag = {
+schema_plc_tag = Schema({
         "Name": str,
         "DataTypeName": str,
         "LogicalAddress": str,
-    }
+    })
 
-schema_plc_tag_table = {
+schema_plc_tag_table = Schema({
         "Name": str,
-        Optional("Tags", default=[]): And(list, [schema_plc_tag]),
-    }
+        Optional("Tags", default=[]): [schema_plc_tag],
+    })
 
-schema_module = {
+schema_plc_data_types = Schema({
+    "Name": str,
+})
+
+schema_module = Schema({
         "TypeIdentifier": str,
         "Name": str,
         "PositionNumber": int,
-    }
+    })
 
 schema_network_interface = Schema({
     # Optional("Name"): str, # read only
@@ -160,8 +164,9 @@ schema_device_plc = {
         "p_deviceName": str, # NewPlcDevice
         Optional("slots_required", default=2): int,
         Optional("Program blocks", default=[]): And(list, [Or(schema_program_block_ob,schema_program_block_fb,schema_program_block_fc, schema_globaldb)]),
-        Optional("PLC tags", default=[]): And(list, [schema_plc_tag_table]),
-        Optional("Local modules", default=[]): And(list, [schema_module]),
+        Optional("PLC tags", default=[]): [schema_plc_tag_table],
+        Optional("PLC data types", default=[]): [schema_plc_data_types],
+        Optional("Local modules", default=[]): [schema_module],
     }
 
 
@@ -169,33 +174,33 @@ schema_device_ionode = {
         **schema_device,
         "p_deviceName": str, # NewPlcDevice
         Optional("slots_required", default=2): int,
-        Optional("Modules", default=[]): And(list, [schema_module]),
+        Optional("Modules", default=[]): [schema_module],
     }
 
 
 schema_device_hmi = {
         **schema_device,
-        Optional("HMI tags", default=[]): And(list, [schema_plc_tag_table]),
+        Optional("HMI tags", default=[]): [schema_plc_tag_table],
     }
 
-schema_network = {
+schema_network = Schema({
         "address": str, # 192.168.0.112
         "subnet_name": str, # Profinet
         "io_controller": str, # PNIO
-    }
+    })
 
 
-schema_library = {
+schema_library = Schema({
     "path": And(str, Use(Path), lambda p: Path(p)),
     Optional("read_only", default=True): bool,
-    }
+    })
 
 schema = Schema(
     {
         Optional("overwrite", default=False): bool,
         Optional("devices", default=[]): And(list, [Or(schema_device_plc, schema_device_hmi, schema_device_ionode)]),
-        Optional("networks", default=[]): And(list, [schema_network]),
-        Optional("libraries", default=[]): And(list, [schema_library]),
+        Optional("networks", default=[]): [schema_network],
+        Optional("libraries", default=[]): [schema_library],
     },
     ignore_extra_keys=True  
 )
