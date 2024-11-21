@@ -17,46 +17,21 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         itf: Siemens.Engineering.HW.Features.NetworkInterface = api.create_device_network_service(imports, device_data, device)
         interfaces.append(itf)
 
+        software_base: Siemens.Engineering.HW.Software = api.access_plc_of_device(imports, device)
+        api.generate_tag_tables(device_data, software_base)
+        api.generate_tag_tables(device_data, software_base, "HMI tags")
+        for tag_table in device_data.get('PLC tags', []):
+            table: Siemens.Engineering.SW.Tags.PlcTagTable = api.find_tag_table(imports, tag_table['Name'], software_base)
+            if not isinstance(table, SE.SW.Tags.PlcTagTable):
+                continue
+            for tag_data in tag_table['Tags']:
+                api.create_tag(table, tag_data['Name'], tag_data['DataTypeName'], tag_data['LogicalAddress'])
+
+
 
 def execute_old(SE: Siemens.Engineering, config: dict[Any, Any], settings: dict[str, Any]):
     # do tags next, but before that finish network setup of device
         for device_item in device.DeviceItems:
-
-
-            logging.debug(f"Accessing a PlcSoftware from DeviceItem {device_item.Name}")
-
-            software_container: Siemens.Engineering.HW.Features.SoftwareContainer = SE.IEngineeringServiceProvider(device_item).GetService[SE.HW.Features.SoftwareContainer]()
-            if not software_container:
-
-                logging.debug(f"No PlcSoftware found for DeviceItem {device_item.Name}")
-
-            logging.debug(f"Found PlcSoftware for DeviceItem {device_item.Name}")
-
-            if not software_container: continue
-            software_base: Siemens.Engineering.HW.Software = software_container.Software
-            if not isinstance(software_base, SE.SW.PlcSoftware): continue
-
-            for tag_table_data in device_data.get('PLC tags', []):
-                logging.info(f"Creating Tag Table: {tag_table_data['Name']} ({software_base.Name} Software)")
-
-                tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = software_base.TagTableGroup.TagTables.Create(tag_table_data['Name'])
-
-                logging.info(f"Created Tag Table: {tag_table_data['Name']} ({software_base.Name} Software)")
-                logging.debug(f"PLC Tag Table: {tag_table.Name}")
-
-                if not isinstance(tag_table, SE.SW.Tags.PlcTagTable):
-                    continue
-
-                for tag_data in tag_table_data['Tags']:
-                    logging.info(f"Creating Tag: {tag_data['Name']} ({tag_table.Name} Table@0x{tag_data['LogicalAddress']} Address)")
-
-                    tag_table.Tags.Create(tag_data['Name'], tag_data['DataTypeName'], tag_data['LogicalAddress'])
-
-                    logging.info(f"Created Tag: {tag_data['Name']} ({tag_table.Name} Table@0x{tag_data['LogicalAddress']} Address)")
-
-            for tag_table_data in device_data.get('HMI tags', []):
-                pass # to be implemented
-
             logging.info(f"Adding Program blocks for {software_base.Name}")
             logging.debug(f"Program blocks data: {device_data.get('Program blocks', {})}")
 

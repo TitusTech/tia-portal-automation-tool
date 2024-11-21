@@ -243,6 +243,7 @@ def access_plc_of_device(imports:Imports, device: Siemens.Engineering.HW.Device)
 def generate_tag_tables(device_data: dict[str, Any], software_base: Siemens.Engineering.HW.Software, tag_source: str = "PLC tags") -> list[Siemens.Engineering.SW.Tags.PlcTagTable]:
     tables: list[Siemens.Engineering.SW.Tags.PlcTagTable] = []
     for data in device_data.get(tag_source, []):
+        if data['Name'] == "Default tag table": continue
         tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = create_tag_table(data['Name'], software_base)
         tables.append(tag_table)
 
@@ -256,6 +257,14 @@ def create_tag_table(name: str, software_base: Siemens.Engineering.HW.Software) 
     logging.debug(f"PLC Tag Table: {tag_table.Name}")
 
     return tag_table
+
+def enumerate_tags_in_tag_table(table: Siemens.Engineering.SW.Tags.PlcTagTable) -> list[tuple[str, str, str]]:
+    tags: list[tuple[str, str, str]] = []
+    for tag in table.Tags:
+        tags.append((tag.Name, tag.DataTypeName, tag.LogicalAddress))
+
+    return tags
+    
 
 def find_tag_table(imports: Imports, name: str, software_base: Siemens.Engineering.HW.Software) -> Siemens.Engineering.SW.Tags.PlcTagTable | None:
     SE: Siemens.Engineering = imports.DLL
@@ -278,7 +287,7 @@ def create_tag(tag_table: Siemens.Engineering.SW.Tags.PlcTagTable, name: str, da
 
     tag: Siemens.Engineering.SW.Tags.PlcTag = tag_table.Tags.Create(name, data_type_name, logical_address)
 
-    logging.info(f"Created Tag: {tag.Name} ({tag_table.Name} Table@0x{tag.LogicalAddress} Address)")
+    logging.info(f"Created Tag: {tag.Name} ({tag_table.Name} Table@0x{tag.LogicalAddress})")
 
     return tag
 
