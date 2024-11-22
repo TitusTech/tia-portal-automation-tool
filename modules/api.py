@@ -293,11 +293,51 @@ def create_tag(tag_table: Siemens.Engineering.SW.Tags.PlcTagTable, name: str, da
 
 
 
-def generate_user_data_types(data: dict):
+def import_xml(imports: Imports, xml: Path, plc_software: Siemens.Engineering.HW.Software):
+    SE: Siemens.Engineering = imports.DLL
+    FileInfo: FileInfo = imports.FileInfo
+
+    logging.info(f"Importing XML {xml.absolute()}...")
+
+    xml_path: FileInfo = FileInfo(xml.absolute().as_posix())
+
+    types: Siemens.Engineering.SW.Types.PlcTypeComposition = plc_software.TypeGroup.Types
+    types.Import(xml_path, SE.ImportOptions.Override)
+
+    logging.info(f"Imported XML {xml_path}")
+
+    return
+
+
+def write_xml(xml: str) -> Path:
+    with tempfile.NamedTemporaryFile(suffix='.xml', delete=False) as temp:
+        filename = Path(temp.name)
+        temp.write(xml.encode('utf-8'))
+
+    return filename
+
+
+def generate_user_data_types(imports: Imports, data: dict, plc_software: Siemens.Engineering.HW.Software):
+    logging.info(f"Generating {len(data)} User Data Types")
+
     for plcstruct in data:
+        logging.debug(f"PlcStruct: {plcstruct}")
+
+        name = plcstruct.get('Name', '?')
+        types = plcstruct.get('types', [])
+
+        logging.info(f"Generating UDT {name}")
+        logging.debug(f"Tags: {types}")
+
         xml = PlcStruct(DocumentSWType.TypesPlcStruct, plcstruct)
+        filename: Path = write_xml(xml.xml())
+        
+        logging.info(f"Written UDT {name} XML to: {filename}")
 
+        import_xml(imports, filename, plc_software)
 
+        if filename.exists():
+            filename.unlink()
 
 
 def xml_extract_plcstruct(xml: Path) -> list[dict]:
