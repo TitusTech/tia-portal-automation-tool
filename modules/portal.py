@@ -27,7 +27,10 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
             for tag_data in tag_table['Tags']:
                 api.create_tag(table, tag_data['Name'], tag_data['DataTypeName'], tag_data['LogicalAddress'])
 
-        api.generate_user_data_types(imports, device_data['PLC data type'], plc_software)
+        api.generate_user_data_types(imports, device_data['PLC data types'], plc_software)
+
+
+
 
 
 
