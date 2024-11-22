@@ -4,6 +4,74 @@ import xml.etree.ElementTree as ET
 
 from modules.config_schema import PlcType, DatabaseType
 
+class DocumentSWType(Enum):
+    TypesPlcStruct = "SW.Types.PlcStruct"
+    BlocksOB = "SW.Blocks.OB"
+    BlocksFB = "SW.Blocks.FB"
+    BlocksFC = "SW.Blocks.FC"
+
+# TODO: this xml builder requires refactoring of the code since it's quite hard to maintain
+#       for now, i'll be adding temporary solution to some implementations
+
+
+
+class XMLNS(Enum):
+    SECTIONS = "http://www.siemens.com/automation/Openness/SW/Interface/v5"
+    FLGNET = "http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v4"
+
+class Document:
+    def __init__(self, document_type: DocumentSWType, name: str) -> None:
+        self.root = ET.fromstring("<Document />") 
+        self.SWDoc = ET.SubElement(self.root, document_type.value, attrib={'ID': str(0)})
+        self.AttributeList = ET.SubElement(self.SWDoc, "AttributeList")
+        self.Interface = ET.SubElement(self.AttributeList, "Interface")
+        ET.SubElement(self.AttributeList, "Name").text = name
+        ET.SubElement(self.AttributeList, "Namespace")
+
+    def export(self, root: ET.Element) -> str:
+        return ET.tostring(root, encoding='utf-8').decode('utf-8')
+
+    def xml(self) -> str:
+        return self.export(self.root)
+
+class SWType(Document):
+    def __init__(self, document_type: DocumentSWType, name: str) -> None:
+        super().__init__(document_type, name)
+
+        self.Sections = ET.SubElement(self.Interface, "Sections")
+        self.Sections.set('xmlns', XMLNS.SECTIONS.value)
+        self.Section = ET.SubElement(self.Sections, "Section", attrib={'Name': "None"})
+
+
+
+class PlcStruct(SWType):
+    def __init__(self, document_type: DocumentSWType, plcstruct: dict) -> None:
+        name = plcstruct.get('Name', "User_data_type_1")
+        types = plcstruct.get('types', [])
+        super().__init__(document_type, name)
+
+        for udt in types:
+            self.add_member(udt.get('Name', "Element_1"), udt.get('Datatype', "Bool"), udt.get('attributes', {}))
+
+    def add_member(self, name: str, datatype: str, attributes: dict):
+        Member: ET.Element = ET.SubElement(self.Section, "Member", attrib={
+            "Name": name,
+            "Datatype": datatype
+        })
+        if not attributes:
+            return
+        AttributeList = ET.SubElement(Member, "AttributeList")
+        for attrib in attributes:
+            ET.SubElement(AttributeList, "BooleanAttribute", attrib={
+                'Name': attrib,
+                'SystemDefined': "true"
+            }).text = str(attributes[attrib]).lower()
+
+
+
+
+
+
 class XML:
     def __init__(self, block_type: str, name: str, number: int) -> None:
         if block_type in ["OB", "FB", "FC"]:

@@ -1,7 +1,6 @@
 from enum import Enum
 from pathlib import Path
 from schema import Schema, And, Or, Use, Optional, SchemaError
-from dataclasses import dataclass
 
 class SourceType(Enum):
     LIBRARY = "LIBRARY"
@@ -65,12 +64,12 @@ schema_sections_members_attributelist = Schema({
 schema_sections_members = Schema({
     "Name": str,
     "Datatype": str,
-    Optional("AttributeList", {}): dict,
+    Optional("attributes", default={}): dict, # rename back to "AttributeList" if something crashes in xml_builder.py lol
 })
 
 schema_sections = Schema({
     "name": str,
-    "members": And(list, [schema_sections_members]),
+    "members": [schema_sections_members],
 })
 
 schema_multi_instance_db = Schema({
@@ -125,6 +124,7 @@ schema_plc_tag_table = Schema({
 
 schema_plc_data_types = Schema({
     "Name": str,
+    Optional("types", default=[]): [schema_sections_members],
 })
 
 schema_module = Schema({

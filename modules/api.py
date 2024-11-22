@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from . import logger
-from .xml_builder import OB, FB, GlobalDB
+from .xml_builder import PlcStruct, OB, FB, GlobalDB, XMLNS, PlcStruct, DocumentSWType
 from .config_schema import PlcType, DatabaseType
 from dataclasses import dataclass
 from pathlib import Path
@@ -218,7 +218,7 @@ def create_device_network_service(imports: Imports, device_data: dict[str, Any],
 
 
 
-def access_plc_of_device(imports:Imports, device: Siemens.Engineering.HW.Device) -> Siemens.Engineering.HW.Software:
+def get_plc_software(imports:Imports, device: Siemens.Engineering.HW.Device) -> Siemens.Engineering.HW.Software:
     SE: Siemens.Engineering = imports.DLL
 
     hw_obj: Siemens.Engineering.HW.HardwareObject = device.DeviceItems
@@ -233,27 +233,27 @@ def access_plc_of_device(imports:Imports, device: Siemens.Engineering.HW.Device)
 
         if not software_container:
             continue
-        software_base: Siemens.Engineering.HW.Software = software_container.Software
-        if not isinstance(software_base, SE.SW.PlcSoftware):
+        plc_software: Siemens.Engineering.HW.Software = software_container.Software
+        if not isinstance(plc_software, SE.SW.PlcSoftware):
             continue
 
-        return software_base
+        return plc_software
 
 
-def generate_tag_tables(device_data: dict[str, Any], software_base: Siemens.Engineering.HW.Software, tag_source: str = "PLC tags") -> list[Siemens.Engineering.SW.Tags.PlcTagTable]:
+def generate_tag_tables(device_data: dict[str, Any], plc_software: Siemens.Engineering.HW.Software, tag_source: str = "PLC tags") -> list[Siemens.Engineering.SW.Tags.PlcTagTable]:
     tables: list[Siemens.Engineering.SW.Tags.PlcTagTable] = []
     for data in device_data.get(tag_source, []):
         if data['Name'] == "Default tag table": continue
-        tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = create_tag_table(data['Name'], software_base)
+        tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = create_tag_table(data['Name'], plc_software)
         tables.append(tag_table)
 
     return tables
 
 
-def create_tag_table(name: str, software_base: Siemens.Engineering.HW.Software) -> Siemens.Engineering.SW.Tags.PlcTagTable:
-    tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = software_base.TagTableGroup.TagTables.Create(name)
+def create_tag_table(name: str, plc_software: Siemens.Engineering.HW.Software) -> Siemens.Engineering.SW.Tags.PlcTagTable:
+    tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = plc_software.TagTableGroup.TagTables.Create(name)
 
-    logging.info(f"Created Tag Table: {name} ({software_base.Name} Software)")
+    logging.info(f"Created Tag Table: {name} ({plc_software.Name} Software)")
     logging.debug(f"PLC Tag Table: {tag_table.Name}")
 
     return tag_table
@@ -266,17 +266,17 @@ def enumerate_tags_in_tag_table(table: Siemens.Engineering.SW.Tags.PlcTagTable) 
     return tags
     
 
-def find_tag_table(imports: Imports, name: str, software_base: Siemens.Engineering.HW.Software) -> Siemens.Engineering.SW.Tags.PlcTagTable | None:
+def find_tag_table(imports: Imports, name: str, plc_software: Siemens.Engineering.HW.Software) -> Siemens.Engineering.SW.Tags.PlcTagTable | None:
     SE: Siemens.Engineering = imports.DLL
 
-    logging.info(f"Searching Tag Table: {name} in Software {software_base.Name}...")
+    logging.info(f"Searching Tag Table: {name} in Software {plc_software.Name}...")
 
-    tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = software_base.TagTableGroup.TagTables.Find(name)
+    tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = plc_software.TagTableGroup.TagTables.Find(name)
 
     if not isinstance(tag_table, SE.SW.Tags.PlcTagTable):
         return
 
-    logging.info(f"Found Tag Table: {name} in {software_base.Name} Software")
+    logging.info(f"Found Tag Table: {name} in {plc_software.Name} Software")
     logging.debug(f"PLC Tag Table: {tag_table.Name}")
 
     return tag_table
@@ -291,3 +291,35 @@ def create_tag(tag_table: Siemens.Engineering.SW.Tags.PlcTagTable, name: str, da
 
     return tag
 
+
+
+def generate_user_data_types(data: dict):
+    for plcstruct in data:
+        xml = PlcStruct(DocumentSWType.TypesPlcStruct, plcstruct)
+
+
+
+
+def xml_extract_plcstruct(xml: Path) -> list[dict]:
+    with open(xml) as file:
+        data = file.read()
+        weird_char = data[0:3]
+        data = data.replace(weird_char, '')
+
+        root = ET.fromstring(data)
+        section = root.find(".//ns:Section", {"ns": XMLNS.SECTIONS.value})
+        if section is None: return []
+        name = root.find(".//Name")
+        if name is None: return []
+        name = name.text or "User_data_type_1"
+
+        tags: list[dict] = []
+        for member in section:
+            attribs = member.attrib
+            attribs['Datatype'] = attribs['Datatype'].replace('"', r'\"')
+            for al in member:
+                for el in al:
+                    attribs["attributes"] = {el.attrib['Name']: el.text}
+            tags.append(attribs)
+        
+        return tags
