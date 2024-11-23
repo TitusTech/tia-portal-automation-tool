@@ -9,6 +9,7 @@ from modules.api import LibraryData
 from modules.api import DeviceCreationData
 from modules.api import ModuleData, ModulesContainerData
 from modules.api import TagTableData, TagData
+from modules.api import MasterCopiesDeviceData
 from modules.xml_builder import PlcStructData
 
 
@@ -35,13 +36,14 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         modules_container = ModulesContainerData(localmodule_data, hmimodule_data, device_data.get('slots_required', 2))
         tagtabledata = [TagTableData(table.get('Name', 'Tag table_1')) for table in device_data.get('PLC tags', [])]
         plcstructdata = [PlcStructData(p.get('Name'), p.get('types')) for p in device_data.get('PLC data types', [])]
+        requiredlibsdata = MasterCopiesDeviceData(device_data.get('required_libraries', []))
 
+        api.generate_mastercopies_to_device(TIA, plc_software, requiredlibsdata)
         api.generate_modules(modules_container, device)
         itf: Siemens.Engineering.HW.Features.NetworkInterface = api.create_device_network_service(imports, device_data, device)
         interfaces.append(itf)
 
         api.generate_tag_tables(tagtabledata, plc_software)
-        # api.generate_tag_tables(device_data, plc_software, "HMI tags")
         for tag_table in device_data.get('PLC tags', []):
             table: Siemens.Engineering.SW.Tags.PlcTagTable = api.find_tag_table(imports, tag_table['Name'], plc_software)
             if not isinstance(table, SE.SW.Tags.PlcTagTable):

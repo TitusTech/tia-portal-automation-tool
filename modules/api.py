@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 from modules import logger
 from modules.xml_builder import PlcStruct, OB, FB, GlobalDB, XMLNS
 from modules import config_schema
-from .config_schema import PlcType, DatabaseType
+from .config_schema import DatabaseType
 
 
 
@@ -42,6 +42,10 @@ class DeviceCreationData:
     TypeIdentifier: str
     Name: str
     DeviceName: str
+
+@dataclass
+class MasterCopiesDeviceData:
+    Libraries: list[str]
 
 
 @dataclass
@@ -151,12 +155,12 @@ def create_project(imports: Imports, data: ProjectData, TIA: Siemens.Engineering
 
 
 
-def import_libraries(imports: Imports, data: list[LibraryData], TIA: Siemens.Engineering.TiaPortal):
+def import_libraries(imports: Imports, data: list[LibraryData], TIA: Siemens.Engineering.TiaPortal) -> list[Siemens.Engineering.Library.GlobalLibrary]:
     SE: Siemens.Engineering = imports.DLL
     FileInfo: FileInfo = imports.FileInfo
 
+    libraries: list[Siemens.Engineering.Library.GlobalLibrary] = []
     for library_data in data:
-
         library_path: FileInfo = FileInfo(library_data.FilePath.as_posix())
 
         logging.info(f"Opening GlobalLibrary: {library_path} (ReadOnly: {library_data.ReadOnly})")
@@ -166,11 +170,56 @@ def import_libraries(imports: Imports, data: list[LibraryData], TIA: Siemens.Eng
             library = TIA.GlobalLibraries.Open(library_path, SE.OpenMode.ReadOnly) # Read access to the library. Data can be read from the library.
         else:
             library = TIA.GlobalLibraries.Open(library_path, SE.OpenMode.ReadWrite) # Read access to the library. Data can be read from the library.
+        libraries.append(library)
 
         logging.info(f"Successfully opened GlobalLibrary: {library.Name}")
 
+    return libraries
+
+
+def get_library(TIA: Siemens.Engineering.TiaPortal, name: str) -> Siemens.Engineering.GlobalLibraries.GlobalLibrary:
+    logging.info(f"Searching for Library {name}")
+    logging.info(f"List of GlobalLibraries: {TIA.GlobalLibraries}")
+
+    for glob_lib in TIA.GlobalLibraries:
+        if glob_lib.Name == name:
+            logging.info(f"Found Library {glob_lib.Name}")
+            return glob_lib
+
+
+def clone_mastercopy_to_plc(block_group: Siemens.Engineering.SW.Blocks.PlcBlockGroup, mastercopyfolder: Siemens.Engineering.Library.MasterCopies.MasterCopyFolder):
+    if not mastercopyfolder: return
+
+    logging.info(f"Cloning Mastercopies of MasterCopyFolder {mastercopyfolder.Name} to PlcBlockGroup {block_group.Name}")
+
+    for folder in mastercopyfolder.Folders:
+        new_block_group = block_group.Groups.Create(folder.Name)
+
+        logging.info(f"Copied MasterCopyFolder {folder.Name}")
+
+        clone_mastercopy_to_plc(new_block_group, folder)
+
+    for mastercopy in mastercopyfolder.MasterCopies:
+        logging.info(f"Copied MasterCopy {mastercopy.Name}")
+
+        block_group.Blocks.CreateFrom(mastercopy)
+
     return
 
+def generate_mastercopies_to_device(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: MasterCopiesDeviceData):
+    logging.info(f"Copying {len(data.Libraries)} Libraries to {plc_software.Name}...")
+    logging.debug(f"Libraries: {data.Libraries}")
+
+    for library_name in data.Libraries:
+        library: Siemens.Engineering.GlobalLibraries.GlobalLibrary = get_library(TIA, library_name)
+        if not library:
+            continue
+        mastercopyfolder: Siemens.Engineering.Library.MasterCopies.MasterCopySystemFolder = library.MasterCopyFolder
+        root_block_group: Siemens.Engineering.SW.Blocks.PlcBlockGroup = plc_software.BlockGroup.Groups.Create(library.Name)
+
+        clone_mastercopy_to_plc(root_block_group, mastercopyfolder)
+
+    return
 
 
 

@@ -154,6 +154,7 @@ schema_device = {
     "p_name": str, # PLC1
     "p_typeIdentifier": str, # OrderNumber:6ES7 510-1DJ01-0AB0/V2.0
     Optional("network_interface", default={}): schema_network_interface,
+    Optional("required_libraries", default=[]): list[str],
 }
 
 schema_device_plc = {
