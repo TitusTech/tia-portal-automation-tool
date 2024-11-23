@@ -495,27 +495,23 @@ def xml_extract_plcstruct(xml: Path) -> list[dict]:
 
 
 def get_mastercopy_from_folder(mastercopyfolder: Siemens.Engineering.Library.MasterCopies.MasterCopyUserFolder, folder: list[str], name: str) -> Siemens.Engineering.Library.MasterCopies.MasterCopy | None:
-    logging.debug(f"Folders Path: {folder}")
+    logging.debug(f"Looking for MasterCopy {name} in MasterCopyFolder {mastercopyfolder.Name} with remaining folders to traverse: {folder}")
 
     if len(folder) == 0:
         mastercopy: Siemens.Engineering.Library.MasterCopies.MasterCopy = mastercopyfolder.MasterCopies.Find(name)
 
-        if not mastercopy: return # logging.info(f"MasterCopy {name} not found in GlobalLibrary {library.Name}")
+        if not mastercopy:
+            logging.info(f"MasterCopy {name} not found in MasterCopyFolder {mastercopyfolder.Name}")
+            return 
         return mastercopy
 
     if len(folder[0]) == 0:
         return get_mastercopy_from_folder(mastercopyfolder, folder[1:], name)
 
-    current_folder: Siemens.Engineering.Library.MasterCopies.MasterCopyUserFolder | None = mastercopyfolder.Find(folder[1])
+    current_folder: Siemens.Engineering.Library.MasterCopies.MasterCopyUserFolder | None = mastercopyfolder.Folders.Find(folder[0])
     if not current_folder: return
 
-    get_mastercopy_from_folder(current_folder, folder[1:], name)
-    # if len(folder) > 1:
-    #     current_folder = get_mastercopy_from_folder(library, folder[1:], name)
-    # else:
-    #     mastercopy: Siemens.Engineering.Library.MasterCopies.MasterCopy = current_folder.MasterCopies.Find(name)
-    #     if not mastercopy: return # logging.info(f"MasterCopy {name} not found in GlobalLibrary {library.Name}")
-    #     return mastercopy
+    return get_mastercopy_from_folder(current_folder, folder[1:], name)
 
 def create_instance_from_library(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: LibraryInstanceData):
     library: Siemens.Engineering.GlobalLibraries.GlobalLibrary  = get_library(TIA, data.Library)
