@@ -494,10 +494,51 @@ def xml_extract_plcstruct(xml: Path) -> list[dict]:
         return tags
 
 
+def get_mastercopy_from_folder(mastercopyfolder: Siemens.Engineering.Library.MasterCopies.MasterCopyUserFolder, folder: list[str], name: str) -> Siemens.Engineering.Library.MasterCopies.MasterCopy | None:
+    logging.debug(f"Folders Path: {folder}")
 
-def generate_program_blocks(plc_software: Siemens.Engineering.HW.Software, program_blocks: list[dict]):
-    for plc_block in program_blocks:
-        db = plc_block.get('db')
+    if len(folder) == 0:
+        mastercopy: Siemens.Engineering.Library.MasterCopies.MasterCopy = mastercopyfolder.MasterCopies.Find(name)
+
+        if not mastercopy: return # logging.info(f"MasterCopy {name} not found in GlobalLibrary {library.Name}")
+        return mastercopy
+
+    if len(folder[0]) == 0:
+        return get_mastercopy_from_folder(mastercopyfolder, folder[1:], name)
+
+    current_folder: Siemens.Engineering.Library.MasterCopies.MasterCopyUserFolder | None = mastercopyfolder.Find(folder[1])
+    if not current_folder: return
+
+    get_mastercopy_from_folder(current_folder, folder[1:], name)
+    # if len(folder) > 1:
+    #     current_folder = get_mastercopy_from_folder(library, folder[1:], name)
+    # else:
+    #     mastercopy: Siemens.Engineering.Library.MasterCopies.MasterCopy = current_folder.MasterCopies.Find(name)
+    #     if not mastercopy: return # logging.info(f"MasterCopy {name} not found in GlobalLibrary {library.Name}")
+    #     return mastercopy
+
+def create_instance_from_library(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: LibraryInstanceData):
+    library: Siemens.Engineering.GlobalLibraries.GlobalLibrary  = get_library(TIA, data.Library)
+    if not library:
+        logging.info(f"Instance {data.Name} not added to PLC {plc_software.Name}. GlobalLibrary {data.Library} not found.")
+        return
+
+    
+    
+
+def generate_network_sources(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: list[NetworkSourceData]):
+    for block in data:
+        for instance in block.Instances:
+            if instance.Type == Source.LIBRARY:
+                create_instance_from_library(TIA, plc_software, instance)
+            
+
+
+def generate_program_blocks(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: list[PlcBlockData]):
+    for block in data:
+        if hasattr(block, "NetworkSources"):
+            generate_network_sources(TIA, plc_software, block.NetworkSources)
+
 
 
 

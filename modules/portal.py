@@ -55,6 +55,13 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
 
         api.generate_user_data_types(imports, plc_software, plcstructdata)
 
+        plcblockdata = []
+        for block in device_data.get('Program blocks', []):
+            plcblockdata.append(clean_program_block_data(block))
+        api.generate_program_blocks(TIA, plc_software, plcblockdata)
+
+
+
 def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseBlockData:
     if data['type'] == DocumentSWType.BlocksGlobalDB:
         return DatabaseBlockData(Type=data['type'],
