@@ -29,13 +29,13 @@ class DocumentSWType(Enum):
     BlocksGlobalDB = "SW.Blocks.GlobalDB"
 
 @dataclass
-class PlcBlockData:
+class SWBlockData:
     Name: str
     Number: int
     ProgrammingLanguage: str
 
 @dataclass
-class OBData(PlcBlockData):
+class OBData(SWBlockData):
     EventClass: OBEventClass = OBEventClass.ProgramCycle
 
 
@@ -147,7 +147,7 @@ class OB(SWBlock):
         })
 
 class FB(SWBlock):
-    def __init__(self, data: PlcBlockData) -> None:
+    def __init__(self, data: SWBlockData) -> None:
         super().__init__(DocumentSWType.BlocksFB, data.Name, data.Number, data.ProgrammingLanguage)
 
         self._create_input_section()
@@ -158,7 +158,7 @@ class FB(SWBlock):
         self._create_constant_section()
 
 class FC(SWBlock):
-    def __init__(self, data: PlcBlockData) -> None:
+    def __init__(self, data: SWBlockData) -> None:
         super().__init__(DocumentSWType.BlocksFC, data.Name, data.Number, data.ProgrammingLanguage)
 
         self._create_input_section()

@@ -3,21 +3,22 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any
+from typing import Any, Union
 import logging
 import tempfile
-import uuid
 import xml.etree.ElementTree as ET
 
 from modules import logger
-from modules.xml_builder import PlcStruct, OB, FB, GlobalDB, XMLNS
-from modules import config_schema
-from .config_schema import DatabaseType
+from modules.xml_builder import DocumentSWType, PlcStruct, OB, FB, GlobalDB, XMLNS
 
 
 
 logger.setup(None, 10)
 log = logging.getLogger(__name__)
+
+class Source(Enum):
+    LIBRARY = "LIBRARY"
+    LOCAL = "LOCAL"
 
 @dataclass
 class Imports:
@@ -73,6 +74,38 @@ class TagTableData:
     # Tags: list[TagData]
 
 
+@dataclass
+class InstanceData:
+    Type: Source
+    Name: str
+    FromFolder: list[str]
+    ToFolder: list[str]
+
+@dataclass
+class LibraryInstanceData(InstanceData):
+    Library: str
+
+@dataclass
+class NetworkSourceData:
+    Instances: list[Union[InstanceData, LibraryInstanceData, PlcBlockData]]
+    Title: str
+    Comment: str
+
+@dataclass
+class ProgramBlockData:
+    Type: DocumentSWType
+    Name: str
+    Folder: list[str]
+    Number: int
+
+@dataclass
+class PlcBlockData(ProgramBlockData):
+    ProgrammingLanguage: str
+    NetworkSources: list[NetworkSourceData]
+
+@dataclass
+class DatabaseBlockData(ProgramBlockData):
+    InstanceType: str
 
 
 

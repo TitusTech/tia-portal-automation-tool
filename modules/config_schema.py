@@ -3,10 +3,8 @@ from pathlib import Path
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
 from modules.xml_builder import DocumentSWType
+from modules.api import Source
 
-class Source(Enum):
-    LIBRARY = "LIBRARY"
-    LOCAL = "LOCAL"
 
 class DatabaseType(Enum):
     GLOBAL      = "GLOBAL"
@@ -83,9 +81,10 @@ schema_multi_instance_db = Schema({
 ###
 
 schema_plcblock = {
-    "type": Use(DocumentSWType),
+    "type": And(str, Use(DocumentSWType)),
     "name": str,
     Optional("folder", default=[]): And(list, [str]),
+    Optional("number", default=1): int,
 }
 
 schema_instance_source = {
@@ -131,7 +130,7 @@ schema_db = {
 
 
 
-#####
+#####-
 
 schema_program_block = {
     "name": str,
@@ -165,6 +164,12 @@ schema_program_block_fc.update({
 schema_program_block_ob = Schema(schema_program_block_ob)
 schema_program_block_fb = Schema(schema_program_block_fb)
 schema_program_block_fc = Schema(schema_program_block_fc)
+
+
+
+
+
+
 
 
 schema_plc_tag = Schema({

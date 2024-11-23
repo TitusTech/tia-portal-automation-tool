@@ -10,7 +10,8 @@ from modules.api import DeviceCreationData
 from modules.api import ModuleData, ModulesContainerData
 from modules.api import TagTableData, TagData
 from modules.api import MasterCopiesDeviceData
-from modules.xml_builder import PlcStructData
+from modules.api import InstanceData, LibraryInstanceData, NetworkSourceData, ProgramBlockData, PlcBlockData, DatabaseBlockData, Source
+from modules.xml_builder import DocumentSWType, PlcStructData
 
 
 def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, Any]):
@@ -54,7 +55,55 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
 
         api.generate_user_data_types(imports, plc_software, plcstructdata)
 
+def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseBlockData:
+    if data['type'] == DocumentSWType.BlocksGlobalDB:
+        return DatabaseBlockData(Type=data['type'],
+                                 Name=data['name'],
+                                 Number=data.get('number', 1),
+                                 Folder=data.get('folder', []),
+                                 InstanceType=data['instance_type']
+                                 )
 
+
+    network_sources = []
+    for ns in data.get('network_sources', []):
+        instances = []
+        for instance in ns.get('instances', []):
+            inst = None
+            match instance['type']:
+                case Source.LIBRARY:
+                    inst = LibraryInstanceData(Type=instance['type'],
+                                               Library=instance['library'],
+                                               Name=instance['name'],
+                                               FromFolder=instance.get('from_folder', []),
+                                               ToFolder=instance.get('to_folder', []),
+                                              )
+                case Source.LOCAL:
+                    inst = InstanceData(Type=instance['type'],
+                                        Name=instance['name'],
+                                        FromFolder=instance.get('from_folder', []),
+                                        ToFolder=instance.get('to_folder', [])
+                                        )
+                case DocumentSWType.BlocksFB | DocumentSWType.BlocksOB | DocumentSWType.BlocksFC:
+                    inst = clean_program_block_data(instance)
+
+            if not inst: continue
+
+            instances.append(inst)
+
+        network_sources.append(NetworkSourceData(Title=ns.get('title', ""),
+                                Comment=ns.get('comment', ""),
+                                Instances=instances,
+                                )
+                            )
+    plcblock = PlcBlockData(Type=data['type'],
+                            Name=data['name'],
+                            ProgrammingLanguage=data.get('programming_language', "FBD"),
+                            Number=data.get('number', 1),
+                            Folder=data.get('folder', []),
+                            NetworkSources=network_sources,
+                           )
+    return plcblock
 
 
 
