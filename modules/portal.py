@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 from modules import api
@@ -17,7 +18,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
     TIA: Siemens.Engineering.TiaPortal = api.connect_portal(imports, config, settings)
 
     project_data = ProjectData(config['name'], config['directory'], config['overwrite'])
-    library_data = [LibraryData(lib.get('path'), lib.get('read_only')) for lib in config.get('libraries', [])]
+    library_data = [LibraryData(Path(lib.get('path')), lib.get('read_only')) for lib in config.get('libraries', [])]
     dev_create_data = [DeviceCreationData(dev.get('p_typeIdentifier', 'PLC_1'), dev.get('p_name', 'NewPLCDevice'), dev.get('p_deviceName', '')) for dev in config.get('devices', [])]
 
 
