@@ -3,11 +3,12 @@ from dataclasses import dataclass
 from typing import Any
 import xml.etree.ElementTree as ET
 
-from modules.config_schema import PlcType, DatabaseType
 
-
-# TODO: this xml builder requires refactoring of the code since it's quite hard to maintain
-#       for now, i'll be adding temporary solution to some implementations
+# TODO: 
+#       - Implement Instance (Network Sources) creation
+#       - Under Instances, implement Wire and Parts creation
+#       - Implement Single InstanceDB
+#       - Implement Multi InstanceDB
 
 @dataclass
 class PlcStructData:

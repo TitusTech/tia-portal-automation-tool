@@ -2,14 +2,11 @@ from enum import Enum
 from pathlib import Path
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
+from modules.xml_builder import DocumentSWType
+
 class SourceType(Enum):
     LIBRARY = "LIBRARY"
     PLC     = "PLC"
-
-class PlcType(Enum):
-    OB = "OB"
-    FB = "FB"
-    FC = "FC"
 
 class DatabaseType(Enum):
     GLOBAL      = "GLOBAL"
@@ -86,7 +83,7 @@ schema_program_block = {
 }
 
 schema_program_block.update({
-    "type": And(str, Or(Use(PlcType), Use(DatabaseType))),
+    "type": And(str, Or(Use(DocumentSWType), Use(DatabaseType))),
     Optional("source", default={}): Or(schema_source_library, schema_source_plc),
     Optional('network_sources', default=[]): And(list, [[Schema(schema_program_block)]]),
 })
