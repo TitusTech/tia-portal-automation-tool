@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-from . import logger
-from .xml_builder import PlcStruct, OB, FB, GlobalDB, XMLNS, PlcStructData, PlcBlockData
-from .config_schema import PlcType, DatabaseType
 from dataclasses import dataclass
+from enum import Enum
 from pathlib import Path
 from typing import Any
 import logging
@@ -11,7 +9,10 @@ import tempfile
 import uuid
 import xml.etree.ElementTree as ET
 
+from modules import logger
+from modules.xml_builder import PlcStruct, OB, FB, GlobalDB, XMLNS
 from modules import config_schema
+from .config_schema import PlcType, DatabaseType
 
 
 
@@ -23,6 +24,52 @@ class Imports:
     DLL: Siemens.Engineering
     DirectoryInfo: System.IO.DirectoryInfo
     FileInfo: System.IO.FileInfo
+
+
+@dataclass
+class ProjectData:
+    Name: str
+    Directory: Path
+    Overwrite: bool
+
+@dataclass
+class LibraryData:
+    FilePath: Path
+    ReadOnly: bool
+
+@dataclass
+class DeviceCreationData:
+    TypeIdentifier: str
+    Name: str
+    DeviceName: str
+
+
+@dataclass
+class ModuleData:
+    TypeIdentifier: str
+    Name: str
+    PositionNumber: int
+
+@dataclass
+class ModulesContainerData:
+    LocalModules: list[ModuleData]
+    HmiModules: list[ModuleData]
+    SlotsRequired: int
+
+
+@dataclass
+class TagData:
+    Name: str
+    DataTypeName: str
+    LogicalAddress: str
+
+@dataclass
+class TagTableData:
+    Name: str
+    # Tags: list[TagData]
+
+
+
 
 
 def get_tia_portal_process_ids(imports: Imports) -> list[int]:
@@ -63,26 +110,26 @@ def connect_portal(imports: Imports, config: dict[Any, Any], settings: dict[str,
 
 
 
-def create_project(imports: Imports, config: dict[Any, Any], TIA: Siemens.Engineering.TiaPortal) -> Siemens.Engineering.Project:
+def create_project(imports: Imports, data: ProjectData, TIA: Siemens.Engineering.TiaPortal) -> Siemens.Engineering.Project:
     DirectoryInfo: DirectoryInfo = imports.DirectoryInfo
 
-    logging.info(f"Creating project {config['name']} at \"{config['directory']}\"...")
+    logging.info(f"Creating project {data.Name} at \"{data.Directory}\"...")
 
-    existing_project_path: DirectoryInfo = DirectoryInfo(config['directory'].joinpath(config['name']).as_posix())
+    existing_project_path: DirectoryInfo = DirectoryInfo(data.Directory.joinpath(data.Name).as_posix())
 
     logging.info(f"Checking for existing project: {existing_project_path}")
 
     if existing_project_path.Exists:
 
-        logging.info(f"{config['name']} already exists...")
+        logging.info(f"{data.Name} already exists...")
 
-        if config['overwrite']:
+        if data.Overwrite:
 
-            logging.info(f"Deleting project {config['name']}...")
+            logging.info(f"Deleting project {data.Name}...")
 
             existing_project_path.Delete(True)
 
-            logging.info(f"Deleted project {config['name']}")
+            logging.info(f"Deleted project {data.Name}")
 
         else:
             err = f"Failed creating project. Project already exists ({existing_project_path})"
@@ -91,31 +138,31 @@ def create_project(imports: Imports, config: dict[Any, Any], TIA: Siemens.Engine
 
     logging.info("Creating project...")
 
-    project_path: DirectoryInfo = DirectoryInfo(config['directory'].as_posix())
+    project_path: DirectoryInfo = DirectoryInfo(data.Directory.as_posix())
 
     logging.debug(f"Project Path: {project_path}")
 
     project_composition: Siemens.Engineering.ProjectComposition = TIA.Projects
-    project: Siemens.Engineering.Project = project_composition.Create(project_path, config['name'])
+    project: Siemens.Engineering.Project = project_composition.Create(project_path, data.Name)
 
-    logging.info(f"Created project {config['name']} at {config['directory']}")
+    logging.info(f"Created project {data.Name} at {data.Directory}")
 
     return project
 
 
 
-def import_libraries(imports: Imports, config: dict[Any, Any], TIA: Siemens.Engineering.TiaPortal):
+def import_libraries(imports: Imports, data: list[LibraryData], TIA: Siemens.Engineering.TiaPortal):
     SE: Siemens.Engineering = imports.DLL
     FileInfo: FileInfo = imports.FileInfo
 
-    for library_data in config.get('libraries', []):
+    for library_data in data:
 
-        library_path: FileInfo = FileInfo(library_data.get('path').as_posix())
+        library_path: FileInfo = FileInfo(library_data.FilePath.as_posix())
 
-        logging.info(f"Opening GlobalLibrary: {library_path} (ReadOnly: {library_data.get('read_only')})")
+        logging.info(f"Opening GlobalLibrary: {library_path} (ReadOnly: {library_data.ReadOnly})")
 
         library: Siemens.Engineering.Library.GlobalLibrary = SE.Library.GlobalLibrary
-        if library_data.get('read_only'):
+        if library_data.ReadOnly:
             library = TIA.GlobalLibraries.Open(library_path, SE.OpenMode.ReadOnly) # Read access to the library. Data can be read from the library.
         else:
             library = TIA.GlobalLibraries.Open(library_path, SE.OpenMode.ReadWrite) # Read access to the library. Data can be read from the library.
@@ -127,41 +174,38 @@ def import_libraries(imports: Imports, config: dict[Any, Any], TIA: Siemens.Engi
 
 
 
-def create_devices(config: dict[str, Any], project: Siemens.Engineering.Project) -> list[Siemens.Engineering.HW.Device]:
+def create_devices(data: list[DeviceCreationData], project: Siemens.Engineering.Project) -> list[Siemens.Engineering.HW.Device]:
     devices: list[Siemens.Engineering.HW.Device] = []
 
-    for device_data in config['devices']:
+    for device_data in data:
         device_composition: Siemens.Engineering.HW.DeviceComposition = project.Devices
-        device: Siemens.Engineering.HW.Device = device_composition.CreateWithItem(device_data['p_typeIdentifier'],
-                                                                                  device_data['p_name'],
-                                                                                  device_data.get('p_deviceName', '')
-                                                                                  )
+        device: Siemens.Engineering.HW.Device = device_composition.CreateWithItem(device_data.TypeIdentifier, device_data.Name, device_data.DeviceName)
 
-        logging.info(f"Created device: ({device_data.get('p_deviceName', '')}, {device_data['p_typeIdentifier']}) on {device.Name}")
+        logging.info(f"Created device: ({device_data.DeviceName}, {device_data.TypeIdentifier}) on {device.Name}")
 
         devices.append(device)
 
     return devices
 
-def plug_new_module(module: dict, device_data: dict[str, Any], hw_object: Siemens.Engineering.HW.HardwareObject):
-    logging.info(f"Plugging {module['TypeIdentifier']} on [{module['PositionNumber'] + device_data['slots_required']}]...")
+def plug_new_module(module: ModuleData, slots_required: int, hw_object: Siemens.Engineering.HW.HardwareObject):
+    logging.info(f"Plugging {module.TypeIdentifier} on [{module.PositionNumber + slots_required}]...")
 
-    if hw_object.CanPlugNew(module['TypeIdentifier'], module['Name'], module['PositionNumber'] + device_data['slots_required']):
-        hw_object.PlugNew(module['TypeIdentifier'], module['Name'], module['PositionNumber'] + device_data['slots_required'])
+    if hw_object.CanPlugNew(module.TypeIdentifier, module.Name, module.PositionNumber + slots_required):
+        hw_object.PlugNew(module.TypeIdentifier, module.Name, module.PositionNumber + slots_required)
 
-        logging.info(f"{module['TypeIdentifier']} PLUGGED on [{module['PositionNumber'] + device_data['slots_required']}]")
+        logging.info(f"{module.TypeIdentifier} PLUGGED on [{module.PositionNumber + slots_required}]")
 
         return
 
-    logging.info(f"{module['TypeIdentifier']} Not PLUGGED on {module['PositionNumber'] + device_data['slots_required']}")
+    logging.info(f"{module.TypeIdentifier} Not PLUGGED on {module.PositionNumber + slots_required}")
 
-def generate_modules(device_data: dict[str, Any], device: Siemens.Engineering.HW.Device):
+def generate_modules(data: ModulesContainerData, device: Siemens.Engineering.HW.Device):
     hw_object: Siemens.Engineering.HW.HardwareObject = device.DeviceItems[0]
-    for module in device_data.get('Local modules', []):
-        plug_new_module(module, device_data, hw_object)
+    for module in data.LocalModules:
+        plug_new_module(module, data.SlotsRequired, hw_object)
 
-    for module in device_data.get('Modules', []):
-        plug_new_module(module, device_data, hw_object)
+    for module in data.HmiModules:
+        plug_new_module(module, data.SlotsRequired, hw_object)
 
     return
 
@@ -240,11 +284,11 @@ def get_plc_software(imports:Imports, device: Siemens.Engineering.HW.Device) -> 
         return plc_software
 
 
-def generate_tag_tables(device_data: dict[str, Any], plc_software: Siemens.Engineering.HW.Software, tag_source: str = "PLC tags") -> list[Siemens.Engineering.SW.Tags.PlcTagTable]:
+def generate_tag_tables(data: list[TagTableData], plc_software: Siemens.Engineering.HW.Software) -> list[Siemens.Engineering.SW.Tags.PlcTagTable]:
     tables: list[Siemens.Engineering.SW.Tags.PlcTagTable] = []
-    for data in device_data.get(tag_source, []):
-        if data['Name'] == "Default tag table": continue
-        tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = create_tag_table(data['Name'], plc_software)
+    for table_data in data:
+        if table_data.Name == "Default tag table": continue
+        tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = create_tag_table(table_data.Name, plc_software)
         tables.append(tag_table)
 
     return tables
@@ -282,10 +326,10 @@ def find_tag_table(imports: Imports, name: str, plc_software: Siemens.Engineerin
     return tag_table
 
 
-def create_tag(tag_table: Siemens.Engineering.SW.Tags.PlcTagTable, name: str, data_type_name: str, logical_address: str) -> Siemens.Engineering.SW.Tags.PlcTag:
-    logging.info(f"Creating Tag: {name} ({tag_table.Name} Table@{logical_address} Address)")
+def create_tag(tag_table: Siemens.Engineering.SW.Tags.PlcTagTable, data: TagData) -> Siemens.Engineering.SW.Tags.PlcTag:
+    logging.info(f"Creating Tag: {data.Name} ({tag_table.Name} Table@{data.LogicalAddress} Address)")
 
-    tag: Siemens.Engineering.SW.Tags.PlcTag = tag_table.Tags.Create(name, data_type_name, logical_address)
+    tag: Siemens.Engineering.SW.Tags.PlcTag = tag_table.Tags.Create(data.Name, data.DataTypeName, data.LogicalAddress)
 
     logging.info(f"Created Tag: {tag.Name} ({tag_table.Name} Table@{tag.LogicalAddress})")
 
@@ -317,28 +361,24 @@ def write_xml(xml: str) -> Path:
     return filename
 
 
-def generate_user_data_types(imports: Imports, data: dict, plc_software: Siemens.Engineering.HW.Software):
+def generate_user_data_types(imports: Imports, plc_software: Siemens.Engineering.HW.Software, data: list[PlcStructData] ):
     logging.info(f"Generating {len(data)} User Data Types")
 
     for plcstruct in data:
         logging.debug(f"PlcStruct: {plcstruct}")
 
-        name = plcstruct.get('Name')
-        types = plcstruct.get('types')
-
-        if not name or not types:
+        if not plcstruct.Name or not plcstruct.Types:
             logging.debug(f"Skipping this PlcStruct...")
             continue
 
-        logging.info(f"Generating UDT {name}")
-        logging.debug(f"Tags: {types}")
+        logging.info(f"Generating UDT {plcstruct.Name}")
+        logging.debug(f"Tags: {plcstruct.Types}")
 
 
-        plcstructdata = PlcStructData(name, types)
-        xml = PlcStruct(plcstructdata)
+        xml = PlcStruct(plcstruct)
         filename: Path = write_xml(xml.xml())
         
-        logging.info(f"Written UDT {name} XML to: {filename}")
+        logging.info(f"Written UDT {plcstruct.Name} XML to: {filename}")
 
         import_xml(imports, filename, plc_software)
 

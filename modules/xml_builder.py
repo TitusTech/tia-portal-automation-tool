@@ -9,6 +9,10 @@ from modules.config_schema import PlcType, DatabaseType
 # TODO: this xml builder requires refactoring of the code since it's quite hard to maintain
 #       for now, i'll be adding temporary solution to some implementations
 
+@dataclass
+class PlcStructData:
+    Name: str
+    Types: list
 
 class DocumentSWType(Enum):
     TypesPlcStruct = "SW.Types.PlcStruct"
@@ -23,14 +27,13 @@ class PlcBlockData:
     Number: int
     ProgrammingLanguage: str
 
-@dataclass
-class PlcStructData:
-    Name: str
-    Types: list
 
 class XMLNS(Enum):
     SECTIONS = "http://www.siemens.com/automation/Openness/SW/Interface/v5"
     FLGNET = "http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v4"
+
+
+
 
 class Document:
     def __init__(self, document_type: DocumentSWType, name: str) -> None:
