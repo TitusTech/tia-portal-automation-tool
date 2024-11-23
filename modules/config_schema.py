@@ -4,9 +4,9 @@ from schema import Schema, And, Or, Use, Optional, SchemaError
 
 from modules.xml_builder import DocumentSWType
 
-class SourceType(Enum):
+class Source(Enum):
     LIBRARY = "LIBRARY"
-    PLC     = "PLC"
+    LOCAL = "LOCAL"
 
 class DatabaseType(Enum):
     GLOBAL      = "GLOBAL"
@@ -82,10 +82,56 @@ schema_program_block = {
     Optional("number", default=0): int,
 }
 
+
+
+
+###
+
+schema_instance_source = {
+    "type": Use(Source),
+    "name": str,
+    Optional("from_folder", default=[]): And(list, [str]),
+    Optional("to_folder", default=[]): And(list, [str]),
+
+}
+
+schema_instance_library = Schema({
+    **schema_instance_source,
+    "library": str,
+})
+
+schema_network_source = Schema({
+    Optional("instances", default=[]): And(list, [Or(schema_instance_source, schema_instance_library)]),
+    Optional("title", default=""): str,
+    Optional("comment", default=""): str,
+})
+
+schema_plcblock = {
+    "type": Use(DocumentSWType),
+    "name": str,
+    Optional("folder", default=[]): And(list, [str]),
+}
+
+schema_ob_fb_fc = {
+    **schema_plcblock,
+    "programming_language": str,
+    Optional("network_sources", default=[]): [schema_network_source],
+}
+
+schema_db = {
+    **schema_plcblock,
+    "instance_type": str
+}
+
+
+
+#####
+
 schema_program_block.update({
     "type": And(str, Or(Use(DocumentSWType), Use(DatabaseType))),
     Optional("source", default={}): Or(schema_source_library, schema_source_plc),
     Optional('network_sources', default=[]): And(list, [[Schema(schema_program_block)]]),
+    # Optional('network_sources', default=[]): [],
 })
 
 schema_program_block_ob = {**schema_program_block}
@@ -93,6 +139,7 @@ schema_program_block_fb = {**schema_program_block}
 schema_program_block_fc = {**schema_program_block}
 schema_program_block_ob.update({
     Optional('db', default={}): schema_instancedb,
+    # Optional('network_sources', default=[]): [Schema(schema_program_block_ob)]),
     Optional('network_sources', default=[]): And(list, [[Schema(schema_program_block_ob)]]),
 })
 schema_program_block_fb.update({
@@ -161,7 +208,14 @@ schema_device_plc = {
         **schema_device,
         "p_deviceName": str, # NewPlcDevice
         Optional("slots_required", default=2): int,
-        Optional("Program blocks", default=[]): And(list, [Or(schema_program_block_ob,schema_program_block_fb,schema_program_block_fc, schema_globaldb)]),
+        # Optional("Program blocks", default=[]): And(list, [Or(schema_program_block_ob,
+        #                                                       schema_program_block_fb,
+        #                                                       schema_program_block_fc,
+        #                                                       schema_globaldb
+        #                                                       )
+        #                                                    ]
+        #                                             ),
+        Optional("Program blocks", default=[]): [Or(Schema(schema_ob_fb_fc), Schema(schema_db))],
         Optional("PLC tags", default=[]): [schema_plc_tag_table],
         Optional("PLC data types", default=[]): [schema_plc_data_types],
         Optional("Local modules", default=[]): [schema_module],
