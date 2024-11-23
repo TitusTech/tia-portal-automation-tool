@@ -10,6 +10,12 @@ import xml.etree.ElementTree as ET
 #       - Implement Single InstanceDB
 #       - Implement Multi InstanceDB
 
+
+class OBEventClass(Enum):
+    ProgramCycle = "ProgramCycle"
+    Startup = "Startup"
+    # extend
+
 @dataclass
 class PlcStructData:
     Name: str
@@ -27,6 +33,10 @@ class PlcBlockData:
     Name: str
     Number: int
     ProgrammingLanguage: str
+
+@dataclass
+class OBData(PlcBlockData):
+    EventClass: OBEventClass = OBEventClass.ProgramCycle
 
 
 class XMLNS(Enum):
@@ -117,11 +127,11 @@ class SWBlock(Document):
         })
 
 class OB(SWBlock):
-    def __init__(self, data: PlcBlockData) -> None:
-        data.Number = 1 if ((data.Number > 1 and data.Number < 123) or data.Number == 0) else data.Number
+    def __init__(self, data: OBData) -> None:
+        data.Number = 1 if ((data.Number > 1 and data.Number < 123) or data.Number == 0) else data.Number # EventClasses have different number rules
         super().__init__(DocumentSWType.BlocksOB, data.Name, data.Number, data.ProgrammingLanguage)
 
-        ET.SubElement(self.AttributeList, "SecondaryType").text = "ProgramCycle"
+        ET.SubElement(self.AttributeList, "SecondaryType").text = data.EventClass.value # default is ProgramCycle
         self._create_input_section()
         self._create_temp_section()
         self._create_constant_section()
