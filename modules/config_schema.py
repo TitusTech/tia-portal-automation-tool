@@ -76,16 +76,17 @@ schema_multi_instance_db = Schema({
     Optional("wires", default={}): And(list, list[schema_wire]),
 })
 
-schema_program_block = {
-    "name": str,
-    "programming_language": And(str, Use(str.upper)),
-    Optional("number", default=0): int,
-}
 
 
 
 
 ###
+
+schema_plcblock = {
+    "type": Use(DocumentSWType),
+    "name": str,
+    Optional("folder", default=[]): And(list, [str]),
+}
 
 schema_instance_source = {
     "type": Use(Source),
@@ -100,23 +101,28 @@ schema_instance_library = Schema({
     "library": str,
 })
 
-schema_network_source = Schema({
-    Optional("instances", default=[]): And(list, [Or(schema_instance_source, schema_instance_library)]),
-    Optional("title", default=""): str,
-    Optional("comment", default=""): str,
-})
-
-schema_plcblock = {
-    "type": Use(DocumentSWType),
-    "name": str,
-    Optional("folder", default=[]): And(list, [str]),
-}
-
 schema_ob_fb_fc = {
     **schema_plcblock,
     "programming_language": str,
-    Optional("network_sources", default=[]): [schema_network_source],
 }
+
+schema_network_source = {
+    Optional("instances", default=[]): [Or(Schema(schema_instance_source), schema_instance_library, Schema(schema_ob_fb_fc))],
+    Optional("title", default=""): str,
+    Optional("comment", default=""): str,
+}
+
+schema_network_source.update({
+    Optional("instances", default=[]): [Or(Schema(schema_instance_source), schema_instance_library, Schema(schema_ob_fb_fc))],
+})
+
+schema_ob_fb_fc.update({
+    Optional("network_sources", default=[]): [Schema(schema_network_source)],
+})
+
+schema_network_source.update({
+    Optional("instances", default=[]): [Or(Schema(schema_instance_source), schema_instance_library, Schema(schema_ob_fb_fc))],
+})
 
 schema_db = {
     **schema_plcblock,
@@ -126,6 +132,12 @@ schema_db = {
 
 
 #####
+
+schema_program_block = {
+    "name": str,
+    "programming_language": And(str, Use(str.upper)),
+    Optional("number", default=0): int,
+}
 
 schema_program_block.update({
     "type": And(str, Or(Use(DocumentSWType), Use(DatabaseType))),
