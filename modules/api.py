@@ -193,6 +193,7 @@ def clone_mastercopy_to_plc(block_group: Siemens.Engineering.SW.Blocks.PlcBlockG
     logging.info(f"Cloning Mastercopies of MasterCopyFolder {mastercopyfolder.Name} to PlcBlockGroup {block_group.Name}")
 
     for folder in mastercopyfolder.Folders:
+        if folder.Name == "__": continue # skip unplanned / unknown blocks, let the config handle it
         new_block_group = block_group.Groups.Create(folder.Name)
 
         logging.info(f"Copied MasterCopyFolder {folder.Name}")
