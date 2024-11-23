@@ -503,6 +503,7 @@ def get_mastercopy_from_folder(mastercopyfolder: Siemens.Engineering.Library.Mas
         if not mastercopy:
             logging.info(f"MasterCopy {name} not found in MasterCopyFolder {mastercopyfolder.Name}")
             return 
+        logging.info(f"Found: MasterCopy {name}")
         return mastercopy
 
     if len(folder[0]) == 0:
@@ -513,11 +514,43 @@ def get_mastercopy_from_folder(mastercopyfolder: Siemens.Engineering.Library.Mas
 
     return get_mastercopy_from_folder(current_folder, folder[1:], name)
 
+
+def import_mastercopy_to_plc(blockgroup: Siemens.Engineering.SW.Blocks.BlockGroup,
+                             folder: list[str],
+                             mastercopy: Siemens.Engineering.Library.MasterCopies.MasterCopy
+                             ) -> Siemens.Engineering.SW.Blocks.PlcBlock | None:
+    logging.debug(f"To add MasterCopy {mastercopy.Name} on PLC {blockgroup.Parent.Parent.GetAttribute("Name")}. {len(folder)} folders remaining ({folder})")
+
+    if len(folder) == 0:
+        plcblock: Siemens.Engineering.SW.Blocks.PlcBlock = blockgroup.Blocks.CreateFrom(mastercopy)
+        logging.info(f"Inserted PlcBlock {plcblock.Name} into PLC {blockgroup.Parent.Parent.GetAttribute("Name")}")
+        return plcblock
+
+    if len(folder[0]) == 0:
+        return import_mastercopy_to_plc(blockgroup, folder[1:], mastercopy)
+
+    current_group: Siemens.Engineering.SW.Blocks.BlockGroup | None = blockgroup.Groups.Find(folder[0])
+    if not current_group:
+        current_group = blockgroup.Groups.Create(folder[0])
+
+    return import_mastercopy_to_plc(current_group, folder[1:], mastercopy)
+
+
 def create_instance_from_library(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: LibraryInstanceData):
     library: Siemens.Engineering.GlobalLibraries.GlobalLibrary  = get_library(TIA, data.Library)
     if not library:
         logging.info(f"Instance {data.Name} not added to PLC {plc_software.Name}. GlobalLibrary {data.Library} not found.")
         return
+
+    mastercopy: Siemens.Engineering.Library.MasterCopies.MasterCopy = get_mastercopy_from_folder(library.MasterCopyFolder, data.FromFolder, data.Name)
+    if not mastercopy:
+        logging.info(f"Instance {data.Name} not added to PLC {plc_software.Name}. MasterCopy {data.Name} not found.")
+        return
+
+    import_mastercopy_to_plc(plc_software.BlockGroup, data.ToFolder, mastercopy)
+
+
+    return
 
     
     
@@ -527,6 +560,7 @@ def generate_network_sources(TIA: Siemens.Engineering.TiaPortal, plc_software: S
         for instance in block.Instances:
             if instance.Type == Source.LIBRARY:
                 create_instance_from_library(TIA, plc_software, instance)
+                # next is add as instance as xml
             
 
 
