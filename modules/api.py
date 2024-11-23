@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from . import logger
-from .xml_builder import PlcStruct, OB, FB, GlobalDB, XMLNS, PlcStruct, DocumentSWType
+from .xml_builder import PlcStruct, OB, FB, GlobalDB, XMLNS, PlcStructData, PlcBlockData
 from .config_schema import PlcType, DatabaseType
 from dataclasses import dataclass
 from pathlib import Path
@@ -283,11 +283,11 @@ def find_tag_table(imports: Imports, name: str, plc_software: Siemens.Engineerin
 
 
 def create_tag(tag_table: Siemens.Engineering.SW.Tags.PlcTagTable, name: str, data_type_name: str, logical_address: str) -> Siemens.Engineering.SW.Tags.PlcTag:
-    logging.info(f"Creating Tag: {name} ({tag_table.Name} Table@0x{logical_address} Address)")
+    logging.info(f"Creating Tag: {name} ({tag_table.Name} Table@{logical_address} Address)")
 
     tag: Siemens.Engineering.SW.Tags.PlcTag = tag_table.Tags.Create(name, data_type_name, logical_address)
 
-    logging.info(f"Created Tag: {tag.Name} ({tag_table.Name} Table@0x{tag.LogicalAddress})")
+    logging.info(f"Created Tag: {tag.Name} ({tag_table.Name} Table@{tag.LogicalAddress})")
 
     return tag
 
@@ -323,13 +323,19 @@ def generate_user_data_types(imports: Imports, data: dict, plc_software: Siemens
     for plcstruct in data:
         logging.debug(f"PlcStruct: {plcstruct}")
 
-        name = plcstruct.get('Name', '?')
-        types = plcstruct.get('types', [])
+        name = plcstruct.get('Name')
+        types = plcstruct.get('types')
+
+        if not name or not types:
+            logging.debug(f"Skipping this PlcStruct...")
+            continue
 
         logging.info(f"Generating UDT {name}")
         logging.debug(f"Tags: {types}")
 
-        xml = PlcStruct(DocumentSWType.TypesPlcStruct, plcstruct)
+
+        plcstructdata = PlcStructData(name, types)
+        xml = PlcStruct(plcstructdata)
         filename: Path = write_xml(xml.xml())
         
         logging.info(f"Written UDT {name} XML to: {filename}")
@@ -363,3 +369,12 @@ def xml_extract_plcstruct(xml: Path) -> list[dict]:
             tags.append(attribs)
         
         return tags
+
+
+
+def generate_program_blocks(plc_software: Siemens.Engineering.HW.Software, program_blocks: list[dict]):
+    for plc_block in program_blocks:
+        db = plc_block.get('db')
+
+
+

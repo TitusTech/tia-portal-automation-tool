@@ -1,19 +1,32 @@
 from enum import Enum
+from dataclasses import dataclass
 from typing import Any
 import xml.etree.ElementTree as ET
 
 from modules.config_schema import PlcType, DatabaseType
+
+
+# TODO: this xml builder requires refactoring of the code since it's quite hard to maintain
+#       for now, i'll be adding temporary solution to some implementations
+
 
 class DocumentSWType(Enum):
     TypesPlcStruct = "SW.Types.PlcStruct"
     BlocksOB = "SW.Blocks.OB"
     BlocksFB = "SW.Blocks.FB"
     BlocksFC = "SW.Blocks.FC"
+    BlocksGlobalDB = "SW.Blocks.GlobalDB"
 
-# TODO: this xml builder requires refactoring of the code since it's quite hard to maintain
-#       for now, i'll be adding temporary solution to some implementations
+@dataclass
+class PlcBlockData:
+    Name: str
+    Number: int
+    ProgrammingLanguage: str
 
-
+@dataclass
+class PlcStructData:
+    Name: str
+    Types: list
 
 class XMLNS(Enum):
     SECTIONS = "http://www.siemens.com/automation/Openness/SW/Interface/v5"
@@ -25,6 +38,8 @@ class Document:
         self.SWDoc = ET.SubElement(self.root, document_type.value, attrib={'ID': str(0)})
         self.AttributeList = ET.SubElement(self.SWDoc, "AttributeList")
         self.Interface = ET.SubElement(self.AttributeList, "Interface")
+        self.Sections = ET.SubElement(self.Interface, "Sections")
+        self.Sections.set('xmlns', XMLNS.SECTIONS.value)
         ET.SubElement(self.AttributeList, "Name").text = name
         ET.SubElement(self.AttributeList, "Namespace")
 
@@ -38,22 +53,18 @@ class SWType(Document):
     def __init__(self, document_type: DocumentSWType, name: str) -> None:
         super().__init__(document_type, name)
 
-        self.Sections = ET.SubElement(self.Interface, "Sections")
-        self.Sections.set('xmlns', XMLNS.SECTIONS.value)
         self.Section = ET.SubElement(self.Sections, "Section", attrib={'Name': "None"})
 
 
 
 class PlcStruct(SWType):
-    def __init__(self, document_type: DocumentSWType, plcstruct: dict) -> None:
-        name = plcstruct.get('Name', "User_data_type_1")
-        types = plcstruct.get('types', [])
-        super().__init__(document_type, name)
+    def __init__(self, plcstructdata: PlcStructData) -> None:
+        super().__init__(DocumentSWType.TypesPlcStruct, plcstructdata.Name)
 
-        for udt in types:
-            self.add_member(udt.get('Name', "Element_1"), udt.get('Datatype', "Bool"), udt.get('attributes', {}))
+        for udt in plcstructdata.Types:
+            self._add_member(udt.get('Name', "Element_1"), udt.get('Datatype', "Bool"), udt.get('attributes', {}))
 
-    def add_member(self, name: str, datatype: str, attributes: dict):
+    def _add_member(self, name: str, datatype: str, attributes: dict):
         Member: ET.Element = ET.SubElement(self.Section, "Member", attrib={
             "Name": name,
             "Datatype": datatype
@@ -68,7 +79,100 @@ class PlcStruct(SWType):
             }).text = str(attributes[attrib]).lower()
 
 
+class SWBlock(Document):
+    def __init__(self, document_type: DocumentSWType, name: str, number: int, programming_language: str) -> None:
+        super().__init__(document_type, name)
 
+        ET.SubElement(self.AttributeList, "Number").text = str(number)
+        ET.SubElement(self.AttributeList, "ProgrammingLanguage").text = programming_language
+        self.ObjectList = ET.SubElement(self.SWDoc, "ObjectList")
+
+    def _create_input_section(self):
+        self.InputSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Input"})
+
+    def _create_output_section(self):
+        self.OutputSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Output"})
+
+    def _create_temp_section(self):
+        self.TempSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Temp"})
+
+    def _create_constant_section(self):
+        self.ConstantSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Constant"})
+
+    def _create_inout_section(self):
+        self.InOutSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "InOut"})
+
+    def _create_static_section(self):
+        self.StaticSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Static"})
+
+    def _create_return_section(self):
+        self.ReturnSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Return"})
+        ET.SubElement(self.ReturnSection, "Member", attrib={
+            'Name': "Ret_Val", 
+            'Datatype': "Void",
+        })
+
+class OB(SWBlock):
+    def __init__(self, data: PlcBlockData) -> None:
+        data.Number = 1 if ((data.Number > 1 and data.Number < 123) or data.Number == 0) else data.Number
+        super().__init__(DocumentSWType.BlocksOB, data.Name, data.Number, data.ProgrammingLanguage)
+
+        ET.SubElement(self.AttributeList, "SecondaryType").text = "ProgramCycle"
+        self._create_input_section()
+        self._create_temp_section()
+        self._create_constant_section()
+        ET.SubElement(self.InputSection, "Member", attrib={
+            "Name": "Initial_Call",
+            "Datatype": "Bool",
+            "Informative": "true",
+        })
+        ET.SubElement(self.InputSection, "Member", attrib={
+            "Name": "Remanence",
+            "Datatype": "Bool",
+            "Informative": "true",
+        })
+
+class FB(SWBlock):
+    def __init__(self, data: PlcBlockData) -> None:
+        super().__init__(DocumentSWType.BlocksFB, data.Name, data.Number, data.ProgrammingLanguage)
+
+        self._create_input_section()
+        self._create_output_section()
+        self._create_inout_section()
+        self._create_static_section()
+        self._create_temp_section()
+        self._create_constant_section()
+
+class FC(SWBlock):
+    def __init__(self, data: PlcBlockData) -> None:
+        super().__init__(DocumentSWType.BlocksFC, data.Name, data.Number, data.ProgrammingLanguage)
+
+        self._create_input_section()
+        self._create_output_section()
+        self._create_inout_section()
+        self._create_temp_section()
+        self._create_constant_section()
+        self._create_return_section()
+
+
+class SWBlocksCompileUnit:
+    def __init__(self, id: int, programming_language: str, network_sources) -> None:
+        self.root: ET.Element = ET.Element("SW.Blocks.CompileUnit", attrib={
+            'ID': str(id),
+            'CompositionName': "CompileUnits",
+        })
+        self.AttributeList = ET.SubElement(self.root, "AttributeList")
+        NetworkSource = ET.SubElement(self.AttributeList, "NetworkSource")
+        ET.SubElement(self.AttributeList, "ProgrammingLanguage").text = programming_language
+
+        FlgNet = ET.SubElement(NetworkSource, "FlgNet")
+        FlgNet.set('xmlns', XMLNS.SECTIONS.value)
+
+        self.Parts = ET.SubElement(FlgNet, "Parts")
+        self.Wires = ET.SubElement(FlgNet, "Wires")
+
+    def et(self) -> ET.Element:
+        return self.root
 
 
 
@@ -245,67 +349,67 @@ class PlcBlock(XML):
 
 
 
-class OB(PlcBlock):
-    def __init__(self, name: str, number: int, db: dict[str, Any]) -> None:
-        super().__init__("OB", name, number, db)
+# class OB(PlcBlock):
+#     def __init__(self, name: str, number: int, db: dict[str, Any]) -> None:
+#         super().__init__("OB", name, number, db)
+#
+#         ET.SubElement(self.AttributeList, "SecondaryType").text = "ProgramCycle"
+#         self.Number.text = "1" if ((number > 1 and number < 123) or number == 0) else str(number)
+#         ET.SubElement(self.InputSection, "Member", attrib={
+#             "Name": "Initial_Call",
+#             "Datatype": "Bool",
+#             "Informative": "true",
+#         })
+#         ET.SubElement(self.InputSection, "Member", attrib={
+#             "Name": "Remanence",
+#             "Datatype": "Bool",
+#             "Informative": "true",
+#         })
 
-        ET.SubElement(self.AttributeList, "SecondaryType").text = "ProgramCycle"
-        self.Number.text = "1" if ((number > 1 and number < 123) or number == 0) else str(number)
-        ET.SubElement(self.InputSection, "Member", attrib={
-            "Name": "Initial_Call",
-            "Datatype": "Bool",
-            "Informative": "true",
-        })
-        ET.SubElement(self.InputSection, "Member", attrib={
-            "Name": "Remanence",
-            "Datatype": "Bool",
-            "Informative": "true",
-        })
 
-
-class FB(PlcBlock):
-    def __init__(self, name: str, number: int, db: dict[str, Any]) -> None:
-        super().__init__("FB", name, number, db)
-
-        self.OutputSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Output"})
-        self.InOutSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "InOut"})
-        self.StaticSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Static"})
-
-    def build(self, programming_language: str, network_sources: list[list[dict[str, Any]]]) -> str:
-        super().build(programming_language, network_sources)
-
-        if self.db.get('type') == DatabaseType.MULTI:
-            db = self.db
-            for section in db['sections']:
-                for member in section['members']:
-                    match section['name']:
-                        case "Input":
-                            ET.SubElement(self.InputSection, "Member", attrib={
-                                "Name": member['Name'],
-                                "Datatype": member['Datatype']
-                            })
-                        case "Output":
-                            ET.SubElement(self.OutputSection, "Member", attrib={
-                                "Name": member['Name'],
-                                "Datatype": member['Datatype']
-                            })
-
-        for networks in network_sources:
-            for instance in networks:
-                if not instance.get('db'):
-                    continue
-                if not instance['db']['type'] == DatabaseType.MULTI:
-                    continue
-                el = ET.SubElement(self.StaticSection, "Member", attrib={
-                    "Name": instance.get('db', {}).get('component_name', f"{instance['name']}_Instance"),
-                    "Datatype": f'"{instance["name"]}"',
-                })
-                ET.SubElement(ET.SubElement(el, "AttributeList"), "BooleanAttribute", attrib={
-                    "Name": "SetPoint",
-                    "SystemDefined": "true",
-                }).text = "true"
-
-        return self.export(self.root)
+# class FB(PlcBlock):
+#     def __init__(self, name: str, number: int, db: dict[str, Any]) -> None:
+#         super().__init__("FB", name, number, db)
+#
+#         self.OutputSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Output"})
+#         self.InOutSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "InOut"})
+#         self.StaticSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Static"})
+#
+#     def build(self, programming_language: str, network_sources: list[list[dict[str, Any]]]) -> str:
+#         super().build(programming_language, network_sources)
+#
+#         if self.db.get('type') == DatabaseType.MULTI:
+#             db = self.db
+#             for section in db['sections']:
+#                 for member in section['members']:
+#                     match section['name']:
+#                         case "Input":
+#                             ET.SubElement(self.InputSection, "Member", attrib={
+#                                 "Name": member['Name'],
+#                                 "Datatype": member['Datatype']
+#                             })
+#                         case "Output":
+#                             ET.SubElement(self.OutputSection, "Member", attrib={
+#                                 "Name": member['Name'],
+#                                 "Datatype": member['Datatype']
+#                             })
+#
+#         for networks in network_sources:
+#             for instance in networks:
+#                 if not instance.get('db'):
+#                     continue
+#                 if not instance['db']['type'] == DatabaseType.MULTI:
+#                     continue
+#                 el = ET.SubElement(self.StaticSection, "Member", attrib={
+#                     "Name": instance.get('db', {}).get('component_name', f"{instance['name']}_Instance"),
+#                     "Datatype": f'"{instance["name"]}"',
+#                 })
+#                 ET.SubElement(ET.SubElement(el, "AttributeList"), "BooleanAttribute", attrib={
+#                     "Name": "SetPoint",
+#                     "SystemDefined": "true",
+#                 }).text = "true"
+#
+#         return self.export(self.root)
 
 
 

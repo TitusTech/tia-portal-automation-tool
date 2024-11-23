@@ -19,7 +19,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
 
         plc_software: Siemens.Engineering.HW.Software = api.get_plc_software(imports, device)
         api.generate_tag_tables(device_data, plc_software)
-        api.generate_tag_tables(device_data, plc_software, "HMI tags")
+        # api.generate_tag_tables(device_data, plc_software, "HMI tags")
         for tag_table in device_data.get('PLC tags', []):
             table: Siemens.Engineering.SW.Tags.PlcTagTable = api.find_tag_table(imports, tag_table['Name'], plc_software)
             if not isinstance(table, SE.SW.Tags.PlcTagTable):
@@ -27,7 +27,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
             for tag_data in tag_table['Tags']:
                 api.create_tag(table, tag_data['Name'], tag_data['DataTypeName'], tag_data['LogicalAddress'])
 
-        api.generate_user_data_types(imports, device_data['PLC data types'], plc_software)
+        api.generate_user_data_types(imports, device_data.get('PLC data types', []), plc_software)
 
 
 
