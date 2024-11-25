@@ -98,10 +98,31 @@ class ProgramBlockData:
     Folder: list[str]
     Number: int
 
+
 @dataclass
 class PlcBlockData(ProgramBlockData):
     ProgrammingLanguage: str
     NetworkSources: list[NetworkSourceData]
+
+
+@dataclass
+class NetworkSourceContainer:
+    Title: str
+    Comment: str
+    Instances: list
+
+@dataclass
+class ProgramBlockContainer:
+    Type: DocumentSWType
+    Name: str
+    Folder: list[str]
+    Number: int
+
+@dataclass
+class PlcBlockContainer(ProgramBlockContainer):
+    ProgrammingLanguage: str
+    NetworkSources: list[NetworkSourceContainer]
+
 
 @dataclass
 class DatabaseBlockData(ProgramBlockData):
@@ -393,6 +414,8 @@ def enumerate_tags_in_tag_table(table: Siemens.Engineering.SW.Tags.PlcTagTable) 
     return tags
     
 
+
+
 def find_tag_table(imports: Imports, name: str, plc_software: Siemens.Engineering.HW.Software) -> Siemens.Engineering.SW.Tags.PlcTagTable | None:
     SE: Siemens.Engineering = imports.DLL
 
@@ -494,6 +517,26 @@ def xml_extract_plcstruct(xml: Path) -> list[dict]:
         return tags
 
 
+def get_plc_from_software(blockgroup: Siemens.Engineering.SW.Blocks.BlockGroup, from_folder: list[str], name: str) -> Siemens.Engineering.SW.Blocks.PlcBlock:
+    logging.debug(f"Looking for PlcBlock {name} in BlockGroup {blockgroup.Name} with remaining folders to traverse: {from_folder}")
+
+    if len(from_folder) == 0:
+        plc: Siemens.Engineering.SW.Blocks.PlcBlock = blockgroup.Blocks.Find(name)
+        if not plc:
+            logging.info(f"PlcBlock {name} not found in BlockGroup {blockgrouop.Name}")
+            return
+        logging.info(f"Found: PlcBlock {plc.Name}")
+        return plc
+
+    if len(from_folder[0]) == 0:
+        return get_plc_from_software(blockgroup, from_folder[1:], name)
+
+    current_blockgroup: Siemens.Engineering.SW.Blocks.PlcBlockGroup | None = blockgroup.Groups.Find(from_folder[0])
+    if not current_blockgroup: return
+
+    return get_plc_from_software(current_blockgroup, from_folder[1:], name)
+
+
 def get_mastercopy_from_folder(mastercopyfolder: Siemens.Engineering.Library.MasterCopies.MasterCopyUserFolder, folder: list[str], name: str) -> Siemens.Engineering.Library.MasterCopies.MasterCopy | None:
     logging.debug(f"Looking for MasterCopy {name} in MasterCopyFolder {mastercopyfolder.Name} with remaining folders to traverse: {folder}")
 
@@ -514,8 +557,7 @@ def get_mastercopy_from_folder(mastercopyfolder: Siemens.Engineering.Library.Mas
 
     return get_mastercopy_from_folder(current_folder, folder[1:], name)
 
-
-def import_mastercopy_to_plc(blockgroup: Siemens.Engineering.SW.Blocks.BlockGroup,
+def import_mastercopy_to_software(blockgroup: Siemens.Engineering.SW.Blocks.BlockGroup,
                              folder: list[str],
                              mastercopy: Siemens.Engineering.Library.MasterCopies.MasterCopy
                              ) -> Siemens.Engineering.SW.Blocks.PlcBlock | None:
@@ -527,48 +569,105 @@ def import_mastercopy_to_plc(blockgroup: Siemens.Engineering.SW.Blocks.BlockGrou
         return plcblock
 
     if len(folder[0]) == 0:
-        return import_mastercopy_to_plc(blockgroup, folder[1:], mastercopy)
+        return import_mastercopy_to_software(blockgroup, folder[1:], mastercopy)
 
     current_group: Siemens.Engineering.SW.Blocks.BlockGroup | None = blockgroup.Groups.Find(folder[0])
     if not current_group:
         current_group = blockgroup.Groups.Create(folder[0])
 
-    return import_mastercopy_to_plc(current_group, folder[1:], mastercopy)
+    return import_mastercopy_to_software(current_group, folder[1:], mastercopy)
 
 
-def create_instance_from_library(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: LibraryInstanceData):
+def create_instance_from_library(TIA: Siemens.Engineering.TiaPortal,
+                                 plc_software: Siemens.Engineering.HW.Software,
+                                 data: LibraryInstanceData
+                                 ) -> Siemens.Engineering.SW.Blocks.PlcBlock | None:
     library: Siemens.Engineering.GlobalLibraries.GlobalLibrary  = get_library(TIA, data.Library)
     if not library:
-        logging.info(f"Instance {data.Name} not added to PLC {plc_software.Name}. GlobalLibrary {data.Library} not found.")
+        logging.info(f"Instance {data.Name} not added to PlcSoftware {plc_software.Name}. GlobalLibrary {data.Library} not found.")
         return
 
     mastercopy: Siemens.Engineering.Library.MasterCopies.MasterCopy = get_mastercopy_from_folder(library.MasterCopyFolder, data.FromFolder, data.Name)
     if not mastercopy:
-        logging.info(f"Instance {data.Name} not added to PLC {plc_software.Name}. MasterCopy {data.Name} not found.")
+        logging.info(f"Instance {data.Name} not added to PlcSoftware {plc_software.Name}. MasterCopy {data.Name} not found.")
         return
 
-    import_mastercopy_to_plc(plc_software.BlockGroup, data.ToFolder, mastercopy)
+    plcblock: Siemens.Engineering.SW.Blocks.PlcBlock | None = import_mastercopy_to_software(plc_software.BlockGroup, data.ToFolder, mastercopy)
 
+    return plcblock
 
-    return
+def generate_instances(TIA: Siemens.Engineering.TiaPortal,
+                       plc_software: Siemens.Engineering.HW.Software,
+                       instances: list[InstanceData | LibraryInstanceData | PlcBlockData]
+                       ) -> list[Siemens.Engineering.SW.Blocks.PlcBlock]:
+    logging.info(f"Generating Instances: {instances}")
 
-    
-    
+    plcblocks: list[Siemens.Engineering.SW.Blocks.PlcBlock] = []
 
-def generate_network_sources(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: list[NetworkSourceData]):
-    for block in data:
-        for instance in block.Instances:
-            if instance.Type == Source.LIBRARY:
-                create_instance_from_library(TIA, plc_software, instance)
-                # next is add as instance as xml
-            
+    for instance in instances:
+        if type(instance) is LibraryInstanceData: # IF type is LIBRARY
+            block: Siemens.Engineering.SW.Blocks.PlcBlock = create_instance_from_library(TIA, plc_software, instance)
+            if block:
+                plcblocks.append(block)
 
+        if type(instance) is InstanceData: # IF type if LOCAL
+            block: Siemens.Engineering.SW.Blocks.PlcBlock = get_plc_from_software(plc_software.BlockGroup, instance.FromFolder, instance.Name)
+            if not block:
+                logging.info(f"Instance {instance.Name} not added to PlcSoftware {plc_software.Name}. PlcBlock {instance.Name} not found.")
+                continue
+            plcblocks.append(block)
 
-def generate_program_blocks(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: list[PlcBlockData]):
+        if type(instance) is PlcBlockData:
+            block: Siemens.Engineering.SW.Blocks.PlcBlock = generate_plcblock(TIA, plc_software, instance)
+            plcblocks.append(block)
+
+        if type(instance) is DatabaseBlockData:
+            print('not yet implemented')
+
+    return plcblocks
+
+def generate_network_sources(TIA: Siemens.Engineering.TiaPortal,
+                             plc_software: Siemens.Engineering.HW.Software,
+                             network_sources: list[NetworkSourceData]
+                             ) -> list:
+    logging.info(f"Generating NetworkSources: {network_sources}")
+
+    containers: list[NetworkSourceContainer] = []
+    for block in network_sources:
+        instances: list[Siemens.Engineering.SW.Blocks.PlcBlock] = generate_instances(TIA, plc_software, block.Instances)
+        container = NetworkSourceContainer(Title=block.Title,
+                                           Comment=block.Comment,
+                                           Instances=instances
+                                           )
+        containers.append(container)
+
+    logging.debug(f"NetworkSources: {containers}")
+
+    return containers
+
+def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
+                      plc_software: Siemens.Engineering.HW.Software,
+                      block: PlcBlockData
+                      ) -> PlcBlockContainer:
+    container = PlcBlockContainer(Type=block.Type,
+                                  Name=block.Name,
+                                  Folder=block.Folder,
+                                  Number=block.Number,
+                                  ProgrammingLanguage=block.ProgrammingLanguage,
+                                  NetworkSources=[]
+                                  )
+    container.NetworkSources = generate_network_sources(TIA, plc_software, block.NetworkSources)
+    return container
+
+def generate_program_blocks(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: list[PlcBlockData]) -> list[PlcBlockContainer]:
+    logging.info(f"Generating Program Blocks: {data}")
+
+    containers: list[PlcBlockContainer] = []
     for block in data:
         if hasattr(block, "NetworkSources"):
-            generate_network_sources(TIA, plc_software, block.NetworkSources)
+            container = generate_plcblock(TIA, plc_software, block)
+            containers.append(container)
+    
+    # goal here is to create xml
 
-
-
-
+    return containers
