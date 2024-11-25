@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
@@ -34,6 +36,7 @@ class SWBlockData:
     Name: str
     Number: int
     ProgrammingLanguage: str
+    NetworkSources: list[NetworkSourceContainer]
 
 @dataclass
 class OBData(SWBlockData):
@@ -129,11 +132,16 @@ class NetworkSourceContainer:
     Comment: str
     Instances: list
 
+
+@dataclass
+class InstanceContainer:
+    Name: str
+    BlockType: str
+
 @dataclass
 class ProgramBlockContainer:
     Type: DocumentSWType
     Name: str
-    Folder: list[str]
     Number: int
 
 @dataclass

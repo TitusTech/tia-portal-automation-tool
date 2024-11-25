@@ -14,6 +14,7 @@ from modules.structs import XMLNS
 from modules.structs import PlcStructData
 from modules.structs import SWBlockData
 from modules.structs import OBData
+from modules.structs import NetworkSourceContainer
 
 
 class Document:
@@ -119,6 +120,13 @@ class OB(SWBlock):
             "Informative": "true",
         })
 
+        id = 3
+        for network_source in data.NetworkSources:
+            CompileUnit = SWBlocksCompileUnit(data.ProgrammingLanguage, network_source, id).root
+            self.ObjectList.append(CompileUnit)
+            id += 5
+        
+
 class FB(SWBlock):
     def __init__(self, data: SWBlockData) -> None:
         super().__init__(DocumentSWType.BlocksFB, data.Name, data.Number, data.ProgrammingLanguage)
@@ -129,6 +137,8 @@ class FB(SWBlock):
         self._create_static_section()
         self._create_temp_section()
         self._create_constant_section()
+
+
 
 class FC(SWBlock):
     def __init__(self, data: SWBlockData) -> None:
@@ -143,23 +153,57 @@ class FC(SWBlock):
 
 
 class SWBlocksCompileUnit:
-    def __init__(self, id: int, programming_language: str, network_sources) -> None:
+    def __init__(self, programming_language: str, network_source: NetworkSourceContainer, id) -> None:
         self.root: ET.Element = ET.Element("SW.Blocks.CompileUnit", attrib={
-            'ID': str(id),
+            'ID': format(id, 'X'),
             'CompositionName': "CompileUnits",
         })
         self.AttributeList = ET.SubElement(self.root, "AttributeList")
+        self.ObjectList = ET.SubElement(self.root, "ObjectList")
         NetworkSource = ET.SubElement(self.AttributeList, "NetworkSource")
         ET.SubElement(self.AttributeList, "ProgrammingLanguage").text = programming_language
 
+        self._generate_texts(id, network_source.Title, network_source.Comment)
+
         FlgNet = ET.SubElement(NetworkSource, "FlgNet")
-        FlgNet.set('xmlns', XMLNS.SECTIONS.value)
 
-        self.Parts = ET.SubElement(FlgNet, "Parts")
-        self.Wires = ET.SubElement(FlgNet, "Wires")
+        if network_source.Instances:
+            FlgNet.set('xmlns', XMLNS.SECTIONS.value)
 
-    def et(self) -> ET.Element:
-        return self.root
+            self.Parts = ET.SubElement(FlgNet, "Parts")
+            self.Wires = ET.SubElement(FlgNet, "Wires")
+
+        return
+
+    def _generate_texts(self, id: int, title: str, comment: str):
+        Comment = generate_MultilingualText(id, "Comment", comment)
+        Title = generate_MultilingualText(id + 3, "Title", title)
+        self.ObjectList.append(Comment)
+        self.ObjectList.append(Title)
+
+def generate_MultilingualTextItem(id: int, text: str) -> ET.Element:
+    root = ET.Element("MultilingualTextItem", attrib={
+        'ID': format(id, 'X'),
+        'CompositionName': "Items"
+    })
+
+    AttributeList = ET.SubElement(root, "AttributeList")
+    ET.SubElement(AttributeList, "Culture").text = "en-US"
+    ET.SubElement(AttributeList, "Text").text = text
+
+    return root
+    
+
+def generate_MultilingualText(id: int, composition_name: str, text: str) -> ET.Element:
+    root = ET.Element("MultilingualText", attrib={
+        'ID': format(id, 'X'),
+        'CompositionName': composition_name
+    })
+    MultilingualTextItem = generate_MultilingualTextItem(id+1, text)
+    ObjectList = ET.SubElement(root, "ObjectList")
+    ObjectList.append(MultilingualTextItem)
+
+    return root
 
 
 

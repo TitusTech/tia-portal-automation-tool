@@ -8,7 +8,7 @@ import tempfile
 import xml.etree.ElementTree as ET
 
 from modules import logger
-from modules.structs import PlcStructData, DocumentSWType,  XMLNS
+from modules.structs import InstanceContainer, PlcStructData, DocumentSWType,  XMLNS
 from modules.structs import ProjectData
 from modules.structs import LibraryData
 from modules.structs import DeviceCreationData
@@ -19,6 +19,8 @@ from modules.structs import InstanceData, LibraryInstanceData
 from modules.structs import PlcBlockData, DatabaseBlockData
 from modules.structs import NetworkSourceData
 from modules.structs import NetworkSourceContainer, ProgramBlockContainer, PlcBlockContainer
+from modules.structs import OBData
+from modules.xml_builder import OB, FB, FC
 from modules.xml_builder import PlcStruct
 
 
@@ -500,32 +502,41 @@ def create_instance_from_library(TIA: Siemens.Engineering.TiaPortal,
 def generate_instances(TIA: Siemens.Engineering.TiaPortal,
                        plc_software: Siemens.Engineering.HW.Software,
                        instances: list[InstanceData | LibraryInstanceData | PlcBlockData]
-                       ) -> list[Siemens.Engineering.SW.Blocks.PlcBlock]:
+                       ) -> list[InstanceContainer | PlcBlockContainer]:
     logging.info(f"Generating Instances: {instances}")
 
-    plcblocks: list[Siemens.Engineering.SW.Blocks.PlcBlock] = []
+    containers: list[InstanceContainer | PlcBlockContainer] = []
 
     for instance in instances:
         if type(instance) is LibraryInstanceData: # IF type is LIBRARY
             block: Siemens.Engineering.SW.Blocks.PlcBlock = create_instance_from_library(TIA, plc_software, instance)
-            if block:
-                plcblocks.append(block)
+            if not block:
+                continue
+
+            container = InstanceContainer(Name=block.Name,
+                                          BlockType=block.ToString().split('.')[-1]
+                                          )
+            containers.append(container)
 
         if type(instance) is InstanceData: # IF type if LOCAL
             block: Siemens.Engineering.SW.Blocks.PlcBlock = get_plc_from_software(plc_software.BlockGroup, instance.FromFolder, instance.Name)
             if not block:
                 logging.info(f"Instance {instance.Name} not added to PlcSoftware {plc_software.Name}. PlcBlock {instance.Name} not found.")
                 continue
-            plcblocks.append(block)
+            container = InstanceContainer(Name=block.Name,
+                                          BlockType=block.ToString().split('.')[-1]
+                                          )
+            containers.append(container)
 
         if type(instance) is PlcBlockData:
             block: Siemens.Engineering.SW.Blocks.PlcBlock = generate_plcblock(TIA, plc_software, instance)
-            plcblocks.append(block)
+            containers.append(block)
 
         if type(instance) is DatabaseBlockData:
             print('not yet implemented')
 
-    return plcblocks
+
+    return containers
 
 def generate_network_sources(TIA: Siemens.Engineering.TiaPortal,
                              plc_software: Siemens.Engineering.HW.Software,
@@ -535,7 +546,7 @@ def generate_network_sources(TIA: Siemens.Engineering.TiaPortal,
 
     containers: list[NetworkSourceContainer] = []
     for block in network_sources:
-        instances: list[Siemens.Engineering.SW.Blocks.PlcBlock] = generate_instances(TIA, plc_software, block.Instances)
+        instances: list[InstanceContainer | PlcBlockContainer] = generate_instances(TIA, plc_software, block.Instances)
         container = NetworkSourceContainer(Title=block.Title,
                                            Comment=block.Comment,
                                            Instances=instances
@@ -550,27 +561,41 @@ def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
                       plc_software: Siemens.Engineering.HW.Software,
                       block: PlcBlockData
                       ) -> PlcBlockContainer:
+    logging.info(f"Generating Program Block: {block}")
     container = PlcBlockContainer(Type=block.Type,
                                   Name=block.Name,
-                                  Folder=block.Folder,
                                   Number=block.Number,
                                   ProgrammingLanguage=block.ProgrammingLanguage,
                                   NetworkSources=[]
                                   )
     container.NetworkSources = generate_network_sources(TIA, plc_software, block.NetworkSources)
+    
+    logging.debug(f"Program Block: {container}")
     return container
 
 def generate_program_blocks(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: list[PlcBlockData]):
-    logging.info(f"Generating Program Blocks: {data}")
 
     containers: list[ProgramBlockContainer] = []
     for block in data:
         if hasattr(block, "NetworkSources"):
             container = generate_plcblock(TIA, plc_software, block)
+            match container.Type:
+                case DocumentSWType.BlocksOB:
+                    obdata = OBData(Name=container.Name,
+                                    Number=container.Number,
+                                    ProgrammingLanguage=container.ProgrammingLanguage,
+                                    NetworkSources=container.NetworkSources
+                                  )
+                    ob = OB(obdata)
+                    xml = ob.xml()
+                    logging.debug(f"Generated OB: {xml}")
+
+
             containers.append(container)
         else:
             print(f'to be implemented for database blocks: {block}')
     
     # goal here is to create xml
 
-    return containers
+    return
+
