@@ -163,7 +163,7 @@ class SWBlocksCompileUnit:
         NetworkSource = ET.SubElement(self.AttributeList, "NetworkSource")
         ET.SubElement(self.AttributeList, "ProgrammingLanguage").text = programming_language
 
-        self._generate_texts(id, network_source.Title, network_source.Comment)
+        self._generate_texts(id+1, network_source.Title, network_source.Comment)
 
         FlgNet = ET.SubElement(NetworkSource, "FlgNet")
 
@@ -177,9 +177,11 @@ class SWBlocksCompileUnit:
 
     def _generate_texts(self, id: int, title: str, comment: str):
         Comment = generate_MultilingualText(id, "Comment", comment)
-        Title = generate_MultilingualText(id + 3, "Title", title)
+        Title = generate_MultilingualText(id + 2, "Title", title)
         self.ObjectList.append(Comment)
         self.ObjectList.append(Title)
+
+
 
 def generate_MultilingualTextItem(id: int, text: str) -> ET.Element:
     root = ET.Element("MultilingualTextItem", attrib={
