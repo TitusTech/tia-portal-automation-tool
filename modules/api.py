@@ -1,24 +1,26 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
 from pathlib import Path
-from typing import Any, Union
+from typing import Any
 import logging
 import tempfile
 import xml.etree.ElementTree as ET
 
 from modules import logger
-from modules.xml_builder import DocumentSWType, PlcStruct, OB, FB, GlobalDB, XMLNS
+from modules.structs import PlcStructData, DocumentSWType,  XMLNS
+from modules.structs import ProjectData
+from modules.structs import LibraryData
+from modules.structs import DeviceCreationData
+from modules.structs import MasterCopiesDeviceData
+from modules.structs import ModuleData, ModulesContainerData
+from modules.structs import TagData, TagTableData
+from modules.structs import InstanceData, LibraryInstanceData
+from modules.structs import PlcBlockData, DatabaseBlockData
+from modules.structs import NetworkSourceData
+from modules.structs import NetworkSourceContainer, ProgramBlockContainer, PlcBlockContainer
+from modules.xml_builder import PlcStruct
 
-
-
-logger.setup(None, 10)
-log = logging.getLogger(__name__)
-
-class Source(Enum):
-    LIBRARY = "LIBRARY"
-    LOCAL = "LOCAL"
 
 @dataclass
 class Imports:
@@ -26,109 +28,8 @@ class Imports:
     DirectoryInfo: System.IO.DirectoryInfo
     FileInfo: System.IO.FileInfo
 
-
-@dataclass
-class ProjectData:
-    Name: str
-    Directory: Path
-    Overwrite: bool
-
-@dataclass
-class LibraryData:
-    FilePath: Path
-    ReadOnly: bool
-
-@dataclass
-class DeviceCreationData:
-    TypeIdentifier: str
-    Name: str
-    DeviceName: str
-
-@dataclass
-class MasterCopiesDeviceData:
-    Libraries: list[str]
-
-
-@dataclass
-class ModuleData:
-    TypeIdentifier: str
-    Name: str
-    PositionNumber: int
-
-@dataclass
-class ModulesContainerData:
-    LocalModules: list[ModuleData]
-    HmiModules: list[ModuleData]
-    SlotsRequired: int
-
-
-@dataclass
-class TagData:
-    Name: str
-    DataTypeName: str
-    LogicalAddress: str
-
-@dataclass
-class TagTableData:
-    Name: str
-    # Tags: list[TagData]
-
-
-@dataclass
-class InstanceData:
-    Type: Source
-    Name: str
-    FromFolder: list[str]
-    ToFolder: list[str]
-
-@dataclass
-class LibraryInstanceData(InstanceData):
-    Library: str
-
-@dataclass
-class NetworkSourceData:
-    Instances: list[Union[InstanceData, LibraryInstanceData, PlcBlockData]]
-    Title: str
-    Comment: str
-
-@dataclass
-class ProgramBlockData:
-    Type: DocumentSWType
-    Name: str
-    Folder: list[str]
-    Number: int
-
-
-@dataclass
-class PlcBlockData(ProgramBlockData):
-    ProgrammingLanguage: str
-    NetworkSources: list[NetworkSourceData]
-
-
-@dataclass
-class NetworkSourceContainer:
-    Title: str
-    Comment: str
-    Instances: list
-
-@dataclass
-class ProgramBlockContainer:
-    Type: DocumentSWType
-    Name: str
-    Folder: list[str]
-    Number: int
-
-@dataclass
-class PlcBlockContainer(ProgramBlockContainer):
-    ProgrammingLanguage: str
-    NetworkSources: list[NetworkSourceContainer]
-
-
-@dataclass
-class DatabaseBlockData(ProgramBlockData):
-    InstanceType: str
-
-
+logger.setup(None, 10)
+log = logging.getLogger(__name__)
 
 def get_tia_portal_process_ids(imports: Imports) -> list[int]:
     SE: Siemens.Engineering = imports.DLL
@@ -523,7 +424,7 @@ def get_plc_from_software(blockgroup: Siemens.Engineering.SW.Blocks.BlockGroup, 
     if len(from_folder) == 0:
         plc: Siemens.Engineering.SW.Blocks.PlcBlock = blockgroup.Blocks.Find(name)
         if not plc:
-            logging.info(f"PlcBlock {name} not found in BlockGroup {blockgrouop.Name}")
+            logging.info(f"PlcBlock {name} not found in BlockGroup {blockgroup.Name}")
             return
         logging.info(f"Found: PlcBlock {plc.Name}")
         return plc

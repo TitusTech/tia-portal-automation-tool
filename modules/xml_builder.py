@@ -1,5 +1,3 @@
-from enum import Enum
-from dataclasses import dataclass
 from typing import Any
 import xml.etree.ElementTree as ET
 
@@ -10,40 +8,12 @@ import xml.etree.ElementTree as ET
 #       - Implement Single InstanceDB
 #       - Implement Multi InstanceDB
 
-
-class OBEventClass(Enum):
-    ProgramCycle = "ProgramCycle"
-    Startup = "Startup"
-    # extend
-
-@dataclass
-class PlcStructData:
-    Name: str
-    Types: list
-
-class DocumentSWType(Enum):
-    TypesPlcStruct = "SW.Types.PlcStruct"
-    BlocksOB = "SW.Blocks.OB"
-    BlocksFB = "SW.Blocks.FB"
-    BlocksFC = "SW.Blocks.FC"
-    BlocksGlobalDB = "SW.Blocks.GlobalDB"
-
-@dataclass
-class SWBlockData:
-    Name: str
-    Number: int
-    ProgrammingLanguage: str
-
-@dataclass
-class OBData(SWBlockData):
-    EventClass: OBEventClass = OBEventClass.ProgramCycle
-
-
-class XMLNS(Enum):
-    SECTIONS = "http://www.siemens.com/automation/Openness/SW/Interface/v5"
-    FLGNET = "http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v4"
-
-
+from modules.structs import DocumentSWType
+from modules.structs import OBEventClass
+from modules.structs import XMLNS
+from modules.structs import PlcStructData
+from modules.structs import SWBlockData
+from modules.structs import OBData
 
 
 class Document:
@@ -76,7 +46,10 @@ class PlcStruct(SWType):
         super().__init__(DocumentSWType.TypesPlcStruct, plcstructdata.Name)
 
         for udt in plcstructdata.Types:
-            self._add_member(udt.get('Name', "Element_1"), udt.get('Datatype', "Bool"), udt.get('attributes', {}))
+            self._add_member(udt.get('Name', "Element_1"),
+                             udt.get('Datatype', "Bool"),
+                             udt.get('attributes', {}))
+        return
 
     def _add_member(self, name: str, datatype: str, attributes: dict):
         Member: ET.Element = ET.SubElement(self.Section, "Member", attrib={
@@ -187,6 +160,8 @@ class SWBlocksCompileUnit:
 
     def et(self) -> ET.Element:
         return self.root
+
+
 
 
 

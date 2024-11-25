@@ -4,14 +4,14 @@ from pathlib import Path
 from typing import Any
 
 from modules import api
-from modules.api import ProjectData
-from modules.api import LibraryData
-from modules.api import DeviceCreationData
-from modules.api import ModuleData, ModulesContainerData
-from modules.api import TagTableData, TagData
-from modules.api import MasterCopiesDeviceData
-from modules.api import InstanceData, LibraryInstanceData, NetworkSourceData, ProgramBlockData, PlcBlockData, DatabaseBlockData, Source
-from modules.xml_builder import DocumentSWType, PlcStructData
+from modules.structs import ProjectData
+from modules.structs import LibraryData
+from modules.structs import DeviceCreationData
+from modules.structs import ModuleData, ModulesContainerData
+from modules.structs import TagTableData, TagData
+from modules.structs import MasterCopiesDeviceData
+from modules.structs import InstanceData, LibraryInstanceData, NetworkSourceData, ProgramBlockData, PlcBlockData, DatabaseBlockData, Source
+from modules.structs import DocumentSWType, PlcStructData
 
 
 def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, Any]):

@@ -2,8 +2,8 @@ from enum import Enum
 from pathlib import Path
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
-from modules.xml_builder import DocumentSWType
-from modules.api import Source
+from modules.structs import DocumentSWType
+from modules.structs import Source
 
 
 class DatabaseType(Enum):
