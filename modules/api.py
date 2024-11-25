@@ -659,14 +659,16 @@ def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
     container.NetworkSources = generate_network_sources(TIA, plc_software, block.NetworkSources)
     return container
 
-def generate_program_blocks(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: list[PlcBlockData]) -> list[PlcBlockContainer]:
+def generate_program_blocks(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: list[PlcBlockData]):
     logging.info(f"Generating Program Blocks: {data}")
 
-    containers: list[PlcBlockContainer] = []
+    containers: list[ProgramBlockContainer] = []
     for block in data:
         if hasattr(block, "NetworkSources"):
             container = generate_plcblock(TIA, plc_software, block)
             containers.append(container)
+        else:
+            print(f'to be implemented for database blocks: {block}')
     
     # goal here is to create xml
 
