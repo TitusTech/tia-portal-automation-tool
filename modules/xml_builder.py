@@ -198,7 +198,7 @@ class SWBlocksCompileUnit:
 		        # 	</Constant>
 		        # </Access>
                 Call = ET.SubElement(self.Parts, "Call", attrib={'UId': str(21)})
-                CallInfo = ET.SubElement(Call, "CallInfo", attrib={'Name': instance.Name, 'BlockType': instance.Type.value})
+                CallInfo = ET.SubElement(Call, "CallInfo", attrib={'Name': instance.Name, 'BlockType': instance.Type.value.split('.')[-1]})
                 if instance.Type != DocumentSWType.BlocksFC:
                     InstanceTag = ET.SubElement(CallInfo, "Instance", attrib={'Scope': "GlobalVariable", 'UId': str(22)})
                     db_name = instance.Database.Name if instance.Database.Name != "" else f"{instance.Name}_DB"
