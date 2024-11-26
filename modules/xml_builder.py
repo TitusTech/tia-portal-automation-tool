@@ -160,12 +160,11 @@ class SWBlocksCompileUnit:
         })
         self.AttributeList = ET.SubElement(self.root, "AttributeList")
         self.ObjectList = ET.SubElement(self.root, "ObjectList")
-        NetworkSource = ET.SubElement(self.AttributeList, "NetworkSource")
+        self.NetworkSource = ET.SubElement(self.AttributeList, "NetworkSource")
         ET.SubElement(self.AttributeList, "ProgrammingLanguage").text = programming_language
 
         self._generate_texts(id+1, network_source.Title, network_source.Comment)
 
-        self.FlgNet = ET.SubElement(NetworkSource, "FlgNet")
         self._create_instances(network_source.Instances)
 
 
@@ -183,6 +182,7 @@ class SWBlocksCompileUnit:
         if not instances:
             return
 
+        self.FlgNet = ET.SubElement(self.NetworkSource, "FlgNet")
         self.FlgNet.set('xmlns', XMLNS.FLGNET.value)
         self.Parts = ET.SubElement(self.FlgNet, "Parts")
         self.Wires = ET.SubElement(self.FlgNet, "Wires")
