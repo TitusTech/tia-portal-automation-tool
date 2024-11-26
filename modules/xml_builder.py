@@ -199,9 +199,7 @@ class SWBlocksCompileUnit:
 		        # </Access>
                 Call = ET.SubElement(self.Parts, "Call", attrib={'UId': str(21)})
                 CallInfo = ET.SubElement(Call, "CallInfo", attrib={'Name': instance.Name, 'BlockType': instance.BlockType})
-                print(instance)
                 if instance.BlockType != "FC":
-                    print(instance.BlockType, "<-- NO FC ALLOWED")
                     InstanceTag = ET.SubElement(CallInfo, "Instance", attrib={'Scope': "GlobalVariable", 'UId': str(22)})
                     ET.SubElement(InstanceTag, "Component", attrib={'Name': instance.NameOfDB})
 
