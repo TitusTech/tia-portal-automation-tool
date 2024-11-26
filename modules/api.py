@@ -16,7 +16,7 @@ from modules.structs import MasterCopiesDeviceData
 from modules.structs import ModuleData, ModulesContainerData
 from modules.structs import TagData, TagTableData
 from modules.structs import InstanceData, LibraryInstanceData
-from modules.structs import PlcBlockData, DatabaseBlockData
+from modules.structs import PlcBlockData, DatabaseData
 from modules.structs import NetworkSourceData
 from modules.structs import NetworkSourceContainer, ProgramBlockContainer, PlcBlockContainer
 from modules.structs import OBData
@@ -507,6 +507,19 @@ def generate_instances(TIA: Siemens.Engineering.TiaPortal,
 
     containers: list[InstanceContainer | PlcBlockContainer] = []
 
+    def _create_and_add_container(block, instance) -> bool:
+        if not block:
+            return False
+
+        container = InstanceContainer(Name=block.Name,
+                                      Type=DocumentSWType[block.Type],
+                                      Database=block.Database
+                                      )
+        containers.append(container)
+
+
+        return True
+
     for instance in instances:
         if type(instance) is LibraryInstanceData: # IF type is LIBRARY
             block: Siemens.Engineering.SW.Blocks.PlcBlock = create_instance_from_library(TIA, plc_software, instance)
@@ -514,14 +527,15 @@ def generate_instances(TIA: Siemens.Engineering.TiaPortal,
                 continue
 
             container = InstanceContainer(Name=block.Name,
-                                          BlockType=block.ToString().split('.')[-1],
-                                          NameOfDB=instance.NameOfDB
+                                          Type=DocumentSWType[block.Type],
+                                          Database=block.Database
                                           )
             containers.append(container)
 
             if "FC" in block.ToString():
                 continue
-            plc_software.BlockGroup.Blocks.CreateInstanceDB(instance.NameOfDB, True, 1, block.Name)
+            db_name = instance.Database.Name if instance.Database.Name != "" else f"{instance.Name}_DB"
+            plc_software.BlockGroup.Blocks.CreateInstanceDB(db_name, True, 1, block.Name)
 
         if type(instance) is InstanceData: # IF type if LOCAL
             block: Siemens.Engineering.SW.Blocks.PlcBlock = get_plc_from_software(plc_software.BlockGroup, instance.FromFolder, instance.Name)
@@ -529,23 +543,22 @@ def generate_instances(TIA: Siemens.Engineering.TiaPortal,
                 logging.info(f"Instance {instance.Name} not added to PlcSoftware {plc_software.Name}. PlcBlock {instance.Name} not found.")
                 continue
             container = InstanceContainer(Name=block.Name,
-                                          BlockType=block.ToString().split('.')[-1],
-                                          NameOfDB=instance.NameOfDB
+                                          Type=DocumentSWType[block.Type],
+                                          Database=block.Database
                                           )
             containers.append(container)
             if "FC" in block.ToString():
                 continue
-            plc_software.BlockGroup.Blocks.CreateInstanceDB(instance.NameOfDB, True, 1, block.Name)
+            db_name = instance.Database.Name if instance.Database.Name != "" else f"{instance.Name}_DB"
+            plc_software.BlockGroup.Blocks.CreateInstanceDB(db_name, True, 1, block.Name)
 
         if type(instance) is PlcBlockData:
             block: Siemens.Engineering.SW.Blocks.PlcBlock = generate_plcblock(TIA, plc_software, instance)
             containers.append(block)
 
-        if type(instance) is DatabaseBlockData:
+        if type(instance) is DatabaseData:
             print('not yet implemented')
 
-        # if isinstance(instance, InstanceData):
-        #     plc_software.BlockGroup.Blocks.CreateInstanceDB(block.NameOfDB, True, 1, block.Name)
 
 
 
@@ -580,8 +593,7 @@ def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
                                   Number=block.Number,
                                   ProgrammingLanguage=block.ProgrammingLanguage,
                                   NetworkSources=[],
-                                  BlockType=block.Type.value.split('.')[-1],
-                                  NameOfDB=block.NameOfDB
+                                  Database=block.Database
                                   )
     container.NetworkSources = generate_network_sources(TIA, plc_software, block.NetworkSources)
     

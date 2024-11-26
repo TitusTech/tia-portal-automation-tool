@@ -198,10 +198,11 @@ class SWBlocksCompileUnit:
 		        # 	</Constant>
 		        # </Access>
                 Call = ET.SubElement(self.Parts, "Call", attrib={'UId': str(21)})
-                CallInfo = ET.SubElement(Call, "CallInfo", attrib={'Name': instance.Name, 'BlockType': instance.BlockType})
-                if instance.BlockType != "FC":
+                CallInfo = ET.SubElement(Call, "CallInfo", attrib={'Name': instance.Name, 'BlockType': instance.Type.value})
+                if instance.Type != DocumentSWType.BlocksFC:
                     InstanceTag = ET.SubElement(CallInfo, "Instance", attrib={'Scope': "GlobalVariable", 'UId': str(22)})
-                    ET.SubElement(InstanceTag, "Component", attrib={'Name': instance.NameOfDB})
+                    db_name = instance.Database.Name if instance.Database.Name != "" else f"{instance.Name}_DB"
+                    ET.SubElement(InstanceTag, "Component", attrib={'Name': db_name})
 
 		        # but wires remain the same for single instance, maybe
                 Wire = ET.SubElement(self.Wires, "Wire", attrib={'UId': str(24)})

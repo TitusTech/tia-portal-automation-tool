@@ -16,8 +16,13 @@ class DocumentSWType(Enum):
     BlocksOB = "SW.Blocks.OB"
     BlocksFB = "SW.Blocks.FB"
     BlocksFC = "SW.Blocks.FC"
-    BlocksGlobalDB = "SW.Blocks.GlobalDB"
 
+
+class DatabaseType(Enum):
+    InstanceDB = "SW.Blocks.InstanceDB"
+    GlobalDB = "SW.Blocks.GlobalDB"
+    ArrayDB = "SW.Blocks.ArrayDB"
+    Multi = "Multi"
 
 
 class XMLNS(Enum):
@@ -95,13 +100,25 @@ class TagTableData:
     # Tags: list[TagData]
 
 
+
+
+
+@dataclass
+class DatabaseData:
+    Type: DatabaseType
+    Name: str
+    Folder: list[str]
+    Number: int
+
+
 @dataclass
 class InstanceData:
-    Type: Source
+    Source: Source
+    Type: DocumentSWType
     Name: str
     FromFolder: list[str]
     ToFolder: list[str]
-    NameOfDB: str
+    Database: DatabaseData
 
 @dataclass
 class LibraryInstanceData(InstanceData):
@@ -115,7 +132,7 @@ class NetworkSourceData:
 
 @dataclass
 class ProgramBlockData:
-    Type: DocumentSWType
+    Type: DocumentSWType | DatabaseType
     Name: str
     Folder: list[str]
     Number: int
@@ -125,7 +142,7 @@ class ProgramBlockData:
 class PlcBlockData(ProgramBlockData):
     ProgrammingLanguage: str
     NetworkSources: list[NetworkSourceData]
-    NameOfDB: str
+    Database: DatabaseData
 
 
 @dataclass
@@ -138,12 +155,12 @@ class NetworkSourceContainer:
 @dataclass
 class InstanceContainer:
     Name: str
-    BlockType: str
-    NameOfDB: str
+    Type: DocumentSWType
+    Database: DatabaseData
 
 @dataclass
 class ProgramBlockContainer:
-    Type: DocumentSWType
+    Type: DocumentSWType | DatabaseType
     Name: str
     Number: int
 
@@ -151,13 +168,5 @@ class ProgramBlockContainer:
 class PlcBlockContainer(ProgramBlockContainer):
     ProgrammingLanguage: str
     NetworkSources: list[NetworkSourceContainer]
-    BlockType: str
-    NameOfDB: str
-
-
-@dataclass
-class DatabaseBlockData(ProgramBlockData):
-    InstanceType: str
-
-
+    Database: DatabaseData
 

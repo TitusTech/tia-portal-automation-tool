@@ -4,13 +4,13 @@ from pathlib import Path
 from typing import Any
 
 from modules import api
-from modules.structs import ProjectData
+from modules.structs import DatabaseType, ProjectData
 from modules.structs import LibraryData
 from modules.structs import DeviceCreationData
 from modules.structs import ModuleData, ModulesContainerData
 from modules.structs import TagTableData, TagData
 from modules.structs import MasterCopiesDeviceData
-from modules.structs import InstanceData, LibraryInstanceData, NetworkSourceData, ProgramBlockData, PlcBlockData, DatabaseBlockData, Source
+from modules.structs import InstanceData, LibraryInstanceData, NetworkSourceData, PlcBlockData, DatabaseData, Source
 from modules.structs import DocumentSWType, PlcStructData
 
 
@@ -62,15 +62,15 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
 
 
 
-def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseBlockData:
-    if data['type'] == DocumentSWType.BlocksGlobalDB:
-        return DatabaseBlockData(Type=data['type'],
-                                 Name=data['name'],
-                                 Number=data.get('number', 1),
-                                 Folder=data.get('folder', []),
-                                 InstanceType=data['instance_type']
-                                 )
+def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
+    if data['type'] in [DatabaseType.GlobalDB, DatabaseType.InstanceDB]:
+        return DatabaseData(Type=data['type'],
+                            Name=data['name'],
+                            Number=data.get('number', 1),
+                            Folder=data.get('folder', [])
+                            )
 
+    if data['type'] == DatabaseType.Multi: pass
 
     network_sources = []
     for ns in data.get('network_sources', []):
@@ -80,18 +80,20 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseBlockData:
             match instance['type']:
                 case Source.LIBRARY:
                     inst = LibraryInstanceData(Type=instance['type'],
+                                               Source=instance['source'],
                                                Library=instance['library'],
                                                Name=instance['name'],
                                                FromFolder=instance.get('from_folder', []),
                                                ToFolder=instance.get('to_folder', []),
-                                               NameOfDB=instance.get('name_of_db', f"{instance['name']}_DB")
+                                               Database=clean_instance_database(instance)
                                               )
                 case Source.LOCAL:
                     inst = InstanceData(Type=instance['type'],
+                                        Source=instance['source'],
                                         Name=instance['name'],
                                         FromFolder=instance.get('from_folder', []),
                                         ToFolder=instance.get('to_folder', []),
-                                        NameOfDB=instance.get('name_of_db', f"{instance['name']}_DB")
+                                        Database=clean_instance_database(instance)
                                         )
                 case DocumentSWType.BlocksFB | DocumentSWType.BlocksOB | DocumentSWType.BlocksFC:
                     inst = clean_program_block_data(instance)
@@ -111,11 +113,20 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseBlockData:
                             Number=data.get('number', 1),
                             Folder=data.get('folder', []),
                             NetworkSources=network_sources,
-                            NameOfDB=data.get('name_of_db', f"{data['name']}_DB")
+                            Database=clean_instance_database(data)
                            )
     return plcblock
 
 
+def clean_instance_database(instance: dict) -> DatabaseData:
+    db = instance.get('db', {})
+
+    return DatabaseData(Type=db.get('type', DatabaseType.InstanceDB),
+                        Name=db.get('name', ""),
+                        Folder=db.get('folder', []),
+                        Number=db.get('number')
+                        )
+    
 
 
 # def execute_old(SE: Siemens.Engineering, config: dict[Any, Any], settings: dict[str, Any]):

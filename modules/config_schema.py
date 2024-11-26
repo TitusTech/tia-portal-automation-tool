@@ -1,16 +1,8 @@
-from enum import Enum
 from pathlib import Path
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
-from modules.structs import DocumentSWType
+from modules.structs import DocumentSWType, DatabaseType
 from modules.structs import Source
-
-
-class DatabaseType(Enum):
-    GLOBAL      = "GLOBAL"
-    SINGLE      = "SINGLE"
-    MULTI       = "MULTI"
-    LOCAL       = "LOCAL"
 
 schema_wire = Schema({
     "name": str,
@@ -80,20 +72,28 @@ schema_multi_instance_db = Schema({
 
 ###
 
+
 schema_plcblock = {
     "type": And(str, Use(DocumentSWType)),
     "name": str,
     Optional("folder", default=[]): And(list, [str]),
     Optional("number", default=1): int,
-    Optional("name_of_db", default="_DB"): str,
 }
 
+schema_db = Schema({
+    "type": And(str, Use(DatabaseType)),
+    "name": str,
+    Optional("folder", default=[]): And(list, [str]),
+    Optional("number", default=1): int,
+})
+
 schema_instance_source = {
-    "type": Use(Source),
+    "source": Use(Source),
+    "type": And(str, Use(DocumentSWType)),
     "name": str,
     Optional("from_folder", default=[]): And(list, [str]),
     Optional("to_folder", default=[]): And(list, [str]),
-    Optional("name_of_db"): str,
+    Optional("db"): schema_db,
 
 }
 
@@ -105,6 +105,7 @@ schema_instance_library = Schema({
 schema_ob_fb_fc = {
     **schema_plcblock,
     "programming_language": str,
+    Optional("db"): schema_db,
 }
 
 schema_network_source = {
@@ -125,47 +126,6 @@ schema_network_source.update({
     Optional("instances", default=[]): [Or(Schema(schema_instance_source), schema_instance_library, Schema(schema_ob_fb_fc))],
 })
 
-schema_db = {
-    **schema_plcblock,
-    "instance_type": str
-}
-
-
-
-#####-
-
-schema_program_block = {
-    "name": str,
-    "programming_language": And(str, Use(str.upper)),
-    Optional("number", default=0): int,
-}
-
-schema_program_block.update({
-    "type": And(str, Or(Use(DocumentSWType), Use(DatabaseType))),
-    Optional("source", default={}): Or(schema_source_library, schema_source_plc),
-    Optional('network_sources', default=[]): And(list, [[Schema(schema_program_block)]]),
-    # Optional('network_sources', default=[]): [],
-})
-
-schema_program_block_ob = {**schema_program_block}
-schema_program_block_fb = {**schema_program_block}
-schema_program_block_fc = {**schema_program_block}
-schema_program_block_ob.update({
-    Optional('db', default={}): schema_instancedb,
-    # Optional('network_sources', default=[]): [Schema(schema_program_block_ob)]),
-    Optional('network_sources', default=[]): And(list, [[Schema(schema_program_block_ob)]]),
-})
-schema_program_block_fb.update({
-    Optional('db', default={}): Or(schema_instancedb, schema_multi_instance_db),
-    Optional('network_sources', default=[]): And(list, [[Schema(schema_program_block_fb)]]),
-})
-schema_program_block_fc.update({
-    Optional('db', default={}): Or(schema_instancedb,),
-    Optional('network_sources', default=[]): And(list, [[Schema(schema_program_block_fc)]]),
-})
-schema_program_block_ob = Schema(schema_program_block_ob)
-schema_program_block_fb = Schema(schema_program_block_fb)
-schema_program_block_fc = Schema(schema_program_block_fc)
 
 
 
@@ -234,7 +194,7 @@ schema_device_plc = {
         #                                                       )
         #                                                    ]
         #                                             ),
-        Optional("Program blocks", default=[]): [Or(Schema(schema_ob_fb_fc), Schema(schema_db))],
+        Optional("Program blocks", default=[]): [Or(Schema(schema_ob_fb_fc), schema_db)],
         Optional("PLC tags", default=[]): [schema_plc_tag_table],
         Optional("PLC data types", default=[]): [schema_plc_data_types],
         Optional("Local modules", default=[]): [schema_module],
