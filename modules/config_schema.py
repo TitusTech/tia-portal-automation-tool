@@ -93,7 +93,7 @@ schema_instance_source = {
     "name": str,
     Optional("from_folder", default=[]): And(list, [str]),
     Optional("to_folder", default=[]): And(list, [str]),
-    Optional("name_of_db", default="_DB"): str,
+    Optional("name_of_db"): str,
 
 }
 
