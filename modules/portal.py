@@ -84,12 +84,14 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseBlockData:
                                                Name=instance['name'],
                                                FromFolder=instance.get('from_folder', []),
                                                ToFolder=instance.get('to_folder', []),
+                                               NameOfDB=instance.get('name_of_db', "_DB")
                                               )
                 case Source.LOCAL:
                     inst = InstanceData(Type=instance['type'],
                                         Name=instance['name'],
                                         FromFolder=instance.get('from_folder', []),
-                                        ToFolder=instance.get('to_folder', [])
+                                        ToFolder=instance.get('to_folder', []),
+                                        NameOfDB=instance.get('name_of_db', "_DB")
                                         )
                 case DocumentSWType.BlocksFB | DocumentSWType.BlocksOB | DocumentSWType.BlocksFC:
                     inst = clean_program_block_data(instance)
@@ -109,6 +111,7 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseBlockData:
                             Number=data.get('number', 1),
                             Folder=data.get('folder', []),
                             NetworkSources=network_sources,
+                            NameOfDB=data.get('name_of_db', "_DB")
                            )
     return plcblock
 

@@ -101,6 +101,7 @@ class InstanceData:
     Name: str
     FromFolder: list[str]
     ToFolder: list[str]
+    NameOfDB: str
 
 @dataclass
 class LibraryInstanceData(InstanceData):
@@ -124,6 +125,7 @@ class ProgramBlockData:
 class PlcBlockData(ProgramBlockData):
     ProgrammingLanguage: str
     NetworkSources: list[NetworkSourceData]
+    NameOfDB: str
 
 
 @dataclass
@@ -137,6 +139,7 @@ class NetworkSourceContainer:
 class InstanceContainer:
     Name: str
     BlockType: str
+    NameOfDB: str
 
 @dataclass
 class ProgramBlockContainer:
@@ -148,6 +151,8 @@ class ProgramBlockContainer:
 class PlcBlockContainer(ProgramBlockContainer):
     ProgrammingLanguage: str
     NetworkSources: list[NetworkSourceContainer]
+    BlockType: str
+    NameOfDB: str
 
 
 @dataclass

@@ -165,13 +165,9 @@ class SWBlocksCompileUnit:
 
         self._generate_texts(id+1, network_source.Title, network_source.Comment)
 
-        FlgNet = ET.SubElement(NetworkSource, "FlgNet")
+        self.FlgNet = ET.SubElement(NetworkSource, "FlgNet")
+        self._create_instances(network_source.Instances)
 
-        if network_source.Instances:
-            FlgNet.set('xmlns', XMLNS.SECTIONS.value)
-
-            self.Parts = ET.SubElement(FlgNet, "Parts")
-            self.Wires = ET.SubElement(FlgNet, "Wires")
 
         return
 
@@ -180,6 +176,38 @@ class SWBlocksCompileUnit:
         Title = generate_MultilingualText(id + 2, "Title", title)
         self.ObjectList.append(Comment)
         self.ObjectList.append(Title)
+
+        return
+
+    def _create_instances(self, instances: list):
+        if not instances:
+            return
+
+        self.FlgNet.set('xmlns', XMLNS.FLGNET.value)
+        self.Parts = ET.SubElement(self.FlgNet, "Parts")
+        self.Wires = ET.SubElement(self.FlgNet, "Wires")
+
+        for instance in instances:
+            # for now, we only do 1 instance per network source
+            if len(instances) == 1:
+                # parts can differ like this one:
+                # <Access Scope="LiteralConstant" UId="21">
+		        # 	<Constant>
+		        # 		<ConstantType>Bool</ConstantType>
+		        # 		<ConstantValue>FALSE</ConstantValue>
+		        # 	</Constant>
+		        # </Access>
+                Call = ET.SubElement(self.Parts, "Call", attrib={'UId': str(21)})
+                CallInfo = ET.SubElement(Call, "CallInfo", attrib={'Name': instance.Name, 'BlockType': instance.BlockType})
+                InstanceTag = ET.SubElement(CallInfo, "Instance", attrib={'Scope': "GlobalVariable", 'UId': str(22)})
+                ET.SubElement(InstanceTag, "Component", attrib={'Name': instance.NameOfDB})
+
+		        # but wires remain the same for single instance, maybe
+                Wire = ET.SubElement(self.Wires, "Wire", attrib={'UId': str(24)})
+                ET.SubElement(Wire, "OpenCon", attrib={'UId': str(23)})
+                ET.SubElement(Wire, "NameCon", attrib={'UId': str(21), 'Name': "en"})
+
+        return
 
 
 

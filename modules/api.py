@@ -514,7 +514,8 @@ def generate_instances(TIA: Siemens.Engineering.TiaPortal,
                 continue
 
             container = InstanceContainer(Name=block.Name,
-                                          BlockType=block.ToString().split('.')[-1]
+                                          BlockType=block.ToString().split('.')[-1],
+                                          NameOfDB=instance.NameOfDB
                                           )
             containers.append(container)
 
@@ -524,7 +525,8 @@ def generate_instances(TIA: Siemens.Engineering.TiaPortal,
                 logging.info(f"Instance {instance.Name} not added to PlcSoftware {plc_software.Name}. PlcBlock {instance.Name} not found.")
                 continue
             container = InstanceContainer(Name=block.Name,
-                                          BlockType=block.ToString().split('.')[-1]
+                                          BlockType=block.ToString().split('.')[-1],
+                                          NameOfDB=instance.NameOfDB
                                           )
             containers.append(container)
 
@@ -566,7 +568,9 @@ def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
                                   Name=block.Name,
                                   Number=block.Number,
                                   ProgrammingLanguage=block.ProgrammingLanguage,
-                                  NetworkSources=[]
+                                  NetworkSources=[],
+                                  BlockType=block.Type.value.split('.')[-1],
+                                  NameOfDB=block.NameOfDB
                                   )
     container.NetworkSources = generate_network_sources(TIA, plc_software, block.NetworkSources)
     

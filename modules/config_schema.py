@@ -85,6 +85,7 @@ schema_plcblock = {
     "name": str,
     Optional("folder", default=[]): And(list, [str]),
     Optional("number", default=1): int,
+    Optional("name_of_db", default="_DB"): str,
 }
 
 schema_instance_source = {
@@ -92,6 +93,7 @@ schema_instance_source = {
     "name": str,
     Optional("from_folder", default=[]): And(list, [str]),
     Optional("to_folder", default=[]): And(list, [str]),
+    Optional("name_of_db", default="_DB"): str,
 
 }
 
