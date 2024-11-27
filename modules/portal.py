@@ -59,7 +59,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         plcblockdata = []
         for block in device_data.get('Program blocks', []):
             plcblockdata.append(clean_program_block_data(block))
-        api.generate_program_blocks(TIA, plc_software, plcblockdata)
+        api.generate_program_blocks(imports, TIA, plc_software, plcblockdata)
 
 
 

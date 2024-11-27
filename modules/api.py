@@ -366,6 +366,26 @@ def import_xml(imports: Imports, xml: Path, plc_software: Siemens.Engineering.HW
 
     return
 
+def import_xml_to_block_group(imports: Imports,
+                              xml_data: str,
+                              plc_software: Siemens.Engineering.HW.Software,
+                              folder: list[str]
+                              ) -> Siemens.Engineering.SW.Blocks.PlcBlock:
+    SE: Siemens.Engineering = imports.DLL
+    FileInfo: FileInfo = imports.FileInfo
+
+    filename = write_xml(xml_data)
+
+    logging.info(f"Importing XML {filename.absolute()}...")
+
+    xml_path: FileInfo = FileInfo(filename.absolute().as_posix())
+    blockgroup = get_folder_of_block_group(plc_software.BlockGroup, folder)
+    plcblock: Siemens.Engineering.SW.Blocks.PlcBlock = blockgroup.Blocks.Import(xml_path, SE.ImportOptions.Override)
+
+    logging.info(f"Imported XML {xml_path}")
+
+    return plcblock
+
 
 def write_xml(xml: str) -> Path:
     with tempfile.NamedTemporaryFile(suffix='.xml', delete=False) as temp:
@@ -640,14 +660,20 @@ def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
     return container
 
 
-def generate_program_blocks(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: list[PlcBlockData|GlobalDBData]):
+def generate_program_blocks(imports: Imports,
+                            TIA: Siemens.Engineering.TiaPortal,
+                            plc_software: Siemens.Engineering.HW.Software,
+                            data: list[PlcBlockData|GlobalDBData]
+                            ):
     for block in data:
-        print(block)
         if type(block) == PlcBlockData:
             generate_plcblock(TIA, plc_software, block)
         if type(block) == GlobalDBData:
             globaldb = GlobalDB(block)
             xml = globaldb.xml()
+
             logging.debug(f"Generated GlobalDB: {xml}")
+
+            import_xml_to_block_group(imports, xml, plc_software, block.Folder)
 
     return
