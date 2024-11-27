@@ -126,7 +126,7 @@ def clean_instance_database(instance: dict) -> DatabaseData:
     return DatabaseData(Type=db.get('type', DatabaseType.InstanceDB),
                         Name=db.get('name', ""),
                         Folder=db.get('folder', []),
-                        Number=db.get('number')
+                        Number=db.get('number', 1)
                         )
     
 
