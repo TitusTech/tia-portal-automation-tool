@@ -97,7 +97,7 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
                                             Database=clean_instance_database(instance)
                                             )
             else:
-                if instance.get('source') in [DocumentSWType.BlocksFB, DocumentSWType.BlocksOB, DocumentSWType.BlocksFC]:
+                if instance.get('type') in [DocumentSWType.BlocksFB, DocumentSWType.BlocksOB, DocumentSWType.BlocksFC]:
                     inst = clean_program_block_data(instance)
 
             if not inst: continue

@@ -615,33 +615,33 @@ def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
                                   Database=block.Database
                                   )
     container.NetworkSources = generate_network_sources(TIA, plc_software, block.NetworkSources)
+    match container.Type:
+        case DocumentSWType.BlocksOB:
+            obdata = OBData(Name=container.Name,
+                            Number=container.Number,
+                            ProgrammingLanguage=container.ProgrammingLanguage,
+                            NetworkSources=container.NetworkSources
+                          )
+            ob = OB(obdata)
+            xml = ob.xml()
+            logging.debug(f"Generated OB: {xml}")
+
+        case DocumentSWType.BlocksFB:
+            print(f"FC to be implemented: {block}")
+
+        case DocumentSWType.BlocksFC:
+            print(f"FC to be implemented: {block}")
+
     
     logging.debug(f"Program Block: {container}")
     return container
 
 def generate_program_blocks(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: list[PlcBlockData]):
-
-    containers: list[ProgramBlockContainer] = []
     for block in data:
         if hasattr(block, "NetworkSources"):
-            container = generate_plcblock(TIA, plc_software, block)
-            match container.Type:
-                case DocumentSWType.BlocksOB:
-                    obdata = OBData(Name=container.Name,
-                                    Number=container.Number,
-                                    ProgrammingLanguage=container.ProgrammingLanguage,
-                                    NetworkSources=container.NetworkSources
-                                  )
-                    ob = OB(obdata)
-                    xml = ob.xml()
-                    logging.debug(f"Generated OB: {xml}")
-
-
-            containers.append(container)
+            generate_plcblock(TIA, plc_software, block)
         else:
             print(f'to be implemented for database blocks: {block}')
-    
-    # goal here is to create xml
 
     return
 
