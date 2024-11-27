@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from modules import api
-from modules.structs import DatabaseType, ProjectData
+from modules.structs import ProjectData
 from modules.structs import LibraryData
 from modules.structs import DeviceCreationData
 from modules.structs import ModuleData, ModulesContainerData
@@ -12,6 +12,7 @@ from modules.structs import TagTableData, TagData
 from modules.structs import MasterCopiesDeviceData
 from modules.structs import InstanceData, LibraryInstanceData, NetworkSourceData, PlcBlockData, DatabaseData, Source
 from modules.structs import DocumentSWType, PlcStructData
+from modules.structs import DatabaseType, GlobalDBData, DatabaseStruct
 
 
 def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, Any]):
@@ -63,7 +64,15 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
 
 
 def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
-    if data['type'] in [DatabaseType.GlobalDB, DatabaseType.InstanceDB]:
+    if data['type'] == DatabaseType.GlobalDB:
+        return GlobalDBData(Type=data['type'],
+                            Name=data['name'],
+                            Number=data.get('number', 1),
+                            Folder=data.get('folder', []),
+                            Structs=clean_database_struct(data['data']),
+                            Attributes=data.get('attributes', {}),
+                            )
+    if data['type'] == DatabaseType.InstanceDB:
         return DatabaseData(Type=data['type'],
                             Name=data['name'],
                             Number=data.get('number', 1),
@@ -129,6 +138,17 @@ def clean_instance_database(instance: dict) -> DatabaseData:
                         Number=db.get('number', 1)
                         )
     
+
+def clean_database_struct(structs: list[dict]) -> list[DatabaseStruct]:
+    databasestructs: list[DatabaseStruct] = []
+    for struct in structs:
+        dbs = DatabaseStruct(Name=struct['name'],
+                             Datatype=struct['datatype'],
+                             Retain=struct.get('retain', True),
+                             Attributes=struct.get('attributes', {})
+                             )
+        databasestructs.append(dbs)
+    return databasestructs
 
 
 # def execute_old(SE: Siemens.Engineering, config: dict[Any, Any], settings: dict[str, Any]):

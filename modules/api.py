@@ -8,7 +8,7 @@ import tempfile
 import xml.etree.ElementTree as ET
 
 from modules import logger
-from modules.structs import InstanceContainer, PlcStructData, DocumentSWType,  XMLNS
+from modules.structs import XMLNS
 from modules.structs import ProjectData
 from modules.structs import LibraryData
 from modules.structs import DeviceCreationData
@@ -16,11 +16,14 @@ from modules.structs import MasterCopiesDeviceData
 from modules.structs import ModuleData, ModulesContainerData
 from modules.structs import TagData, TagTableData
 from modules.structs import InstanceData, LibraryInstanceData
-from modules.structs import PlcBlockData, DatabaseData
+from modules.structs import PlcBlockData, PlcBlockContainer
+from modules.structs import DatabaseData
+from modules.structs import PlcStructData
 from modules.structs import NetworkSourceData
-from modules.structs import NetworkSourceContainer, ProgramBlockContainer, PlcBlockContainer
+from modules.structs import NetworkSourceContainer
+from modules.structs import GlobalDBData, InstanceContainer, DocumentSWType
 from modules.structs import OBData
-from modules.xml_builder import OB, FB, FC
+from modules.xml_builder import OB, FB, FC, GlobalDB
 from modules.xml_builder import PlcStruct
 
 
@@ -636,12 +639,15 @@ def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
     logging.debug(f"Program Block: {container}")
     return container
 
-def generate_program_blocks(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: list[PlcBlockData]):
+
+def generate_program_blocks(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: list[PlcBlockData|GlobalDBData]):
     for block in data:
-        if hasattr(block, "NetworkSources"):
+        print(block)
+        if type(block) == PlcBlockData:
             generate_plcblock(TIA, plc_software, block)
-        else:
-            print(f'to be implemented for database blocks: {block}')
+        if type(block) == GlobalDBData:
+            globaldb = GlobalDB(block)
+            xml = globaldb.xml()
+            logging.debug(f"Generated GlobalDB: {xml}")
 
     return
-

@@ -101,7 +101,12 @@ class TagTableData:
 
 
 
-
+@dataclass
+class DatabaseStruct:
+    Name: str
+    Datatype: str
+    Retain: bool
+    Attributes: dict
 
 @dataclass
 class DatabaseData:
@@ -109,6 +114,13 @@ class DatabaseData:
     Name: str
     Folder: list[str]
     Number: int
+
+
+@dataclass
+class GlobalDBData(DatabaseData):
+    Structs: list[DatabaseStruct]
+    Attributes: dict
+
 
 
 @dataclass
@@ -143,7 +155,6 @@ class PlcBlockData(ProgramBlockData):
     ProgrammingLanguage: str
     NetworkSources: list[NetworkSourceData]
     Database: DatabaseData
-
 
 @dataclass
 class NetworkSourceContainer:

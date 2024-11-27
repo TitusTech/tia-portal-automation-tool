@@ -25,25 +25,6 @@ schema_source_library = Schema({
 })
 
 
-schema_database = {
-    "type": And(str, Use(DatabaseType)),
-    "name": str,
-    "programming_language": And(str, Use(str.upper)),
-    Optional("number", default=1): int,
-}
-
-schema_globaldb = Schema(schema_database)
-schema_instancedb = Schema({
-    **schema_database,
-    "instanceOfName": str,
-    Optional("data", {}): Schema({
-        Optional("Address", default="DB"): str,
-        Optional("BlockNumber", default=1): int,
-        Optional("BitOffset", default=0): int,
-        Optional("Informative", default=True): bool,
-    }),
-})
-
 schema_sections_members_attributelist = Schema({
     "BooleanAttribute": list[dict],
 })
@@ -83,29 +64,51 @@ schema_plcblock = {
 schema_db = Schema({
     "type": And(str, Use(DatabaseType)),
     "name": str,
+})
+
+schema_instancedb = Schema({
+    **schema_db.schema,
     Optional("folder", default=[]): And(list, [str]),
     Optional("number", default=1): int,
 })
 
-schema_instance_source = {
+schema_db_data = Schema({
+    "name": str,
+    "datatype": str,
+    Optional("retain", default=True): bool,
+    Optional("attributes", default={}): dict
+})
+
+schema_globaldb = Schema({
+    **schema_instancedb.schema,
+    Optional("data", default={}): list,
+    Optional("attributes", default={}): dict,
+})
+
+schema_multi_instance_db = Schema({
+    "type": And(str, Use(DatabaseType)),
+    "data": dict
+})
+
+schema_instance_source = Schema({
     "source": Use(Source),
     "type": And(str, Use(DocumentSWType)),
     "name": str,
     Optional("from_folder", default=[]): And(list, [str]),
     Optional("to_folder", default=[]): And(list, [str]),
-    Optional("db"): schema_db,
+    Optional("db"): schema_instancedb,
 
-}
+})
 
 schema_instance_library = Schema({
-    **schema_instance_source,
+    **schema_instance_source.schema,
     "library": str,
 })
 
 schema_ob_fb_fc = {
     **schema_plcblock,
     "programming_language": str,
-    Optional("db"): schema_db,
+    Optional("db"): schema_instancedb,
 }
 
 schema_network_source = {
@@ -187,14 +190,7 @@ schema_device_plc = {
         **schema_device,
         "p_deviceName": str, # NewPlcDevice
         Optional("slots_required", default=2): int,
-        # Optional("Program blocks", default=[]): And(list, [Or(schema_program_block_ob,
-        #                                                       schema_program_block_fb,
-        #                                                       schema_program_block_fc,
-        #                                                       schema_globaldb
-        #                                                       )
-        #                                                    ]
-        #                                             ),
-        Optional("Program blocks", default=[]): [Or(Schema(schema_ob_fb_fc), schema_db)],
+        Optional("Program blocks", default=[]): [Or(Schema(schema_ob_fb_fc), schema_instancedb, schema_globaldb)],
         Optional("PLC tags", default=[]): [schema_plc_tag_table],
         Optional("PLC data types", default=[]): [schema_plc_data_types],
         Optional("Local modules", default=[]): [schema_module],

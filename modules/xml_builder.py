@@ -9,16 +9,19 @@ import xml.etree.ElementTree as ET
 #       - Implement Multi InstanceDB
 
 from modules.structs import DocumentSWType
+from modules.structs import DatabaseType
+from modules.structs import DatabaseStruct
 from modules.structs import OBEventClass
 from modules.structs import XMLNS
 from modules.structs import PlcStructData
 from modules.structs import SWBlockData
 from modules.structs import OBData
+from modules.structs import GlobalDBData
 from modules.structs import NetworkSourceContainer
 
 
 class Document:
-    def __init__(self, document_type: DocumentSWType, name: str) -> None:
+    def __init__(self, document_type: DocumentSWType | DatabaseType, name: str) -> None:
         self.root = ET.fromstring("<Document />") 
         self.SWDoc = ET.SubElement(self.root, document_type.value, attrib={'ID': str(0)})
         self.AttributeList = ET.SubElement(self.SWDoc, "AttributeList")
@@ -68,7 +71,7 @@ class PlcStruct(SWType):
 
 
 class SWBlock(Document):
-    def __init__(self, document_type: DocumentSWType, name: str, number: int, programming_language: str) -> None:
+    def __init__(self, document_type: DocumentSWType | DatabaseType, name: str, number: int, programming_language: str) -> None:
         super().__init__(document_type, name)
 
         ET.SubElement(self.AttributeList, "Number").text = str(number)
@@ -102,7 +105,7 @@ class SWBlock(Document):
 
 class OB(SWBlock):
     def __init__(self, data: OBData) -> None:
-        data.Number = 1 if ((data.Number > 1 and data.Number < 123) or data.Number == 0) else data.Number # EventClasses have different number rules
+        data.Number = max(123, min(data.Number, 32767)) if data.Number != 1 else 1 # EventClasses have different number rules
         super().__init__(DocumentSWType.BlocksOB, data.Name, data.Number, data.ProgrammingLanguage)
 
         ET.SubElement(self.AttributeList, "SecondaryType").text = data.EventClass.value # default is ProgramCycle
@@ -213,6 +216,43 @@ class SWBlocksCompileUnit:
 
 
 
+class GlobalDB(SWBlock):
+    def __init__(self, data: GlobalDBData) -> None:
+        data.Number = max(1, min(data.Number, 599999))
+        super().__init__(DatabaseType.GlobalDB, data.Name, data.Number, "DB")
+
+        self._create_static_section()
+
+        for struct in data.Structs:
+            self._add_struct(struct)
+
+        return
+
+    def _add_struct(self, struct: DatabaseStruct):
+        Member = ET.SubElement(self.StaticSection,
+                               "Member",
+                               attrib={'Name': struct.Name,
+                                       'Datatype': struct.Datatype,
+                                       'Remanence': "Retain" if struct.Retain else "NonRetain",
+                                       'Accessibility': "Public"
+                                       }
+                               )
+        Member.append(generate_boolean_attributes(struct))
+
+        return
+
+
+def generate_boolean_attributes(struct: DatabaseStruct) -> ET.Element:
+    AttributeList = ET.Element("AttributeList")
+    for attrib in struct.Attributes:
+        ET.SubElement(AttributeList, "BooleanAttribute", attrib={
+            'Name': attrib,
+            'SystemDefined': "true"
+        }).text = str(struct.Attributes[attrib]).lower()
+
+    return AttributeList
+
+
 def generate_MultilingualTextItem(id: int, text: str) -> ET.Element:
     root = ET.Element("MultilingualTextItem", attrib={
         'ID': format(id, 'X'),
@@ -236,8 +276,6 @@ def generate_MultilingualText(id: int, composition_name: str, text: str) -> ET.E
     ObjectList.append(MultilingualTextItem)
 
     return root
-
-
 
 
 
@@ -479,12 +517,3 @@ class PlcBlock(XML):
 
 
 
-class GlobalDB(XML):
-    def __init__(self, block_type: str, name: str, number: int) -> None:
-        super().__init__(block_type, name, number)
-
-    def build(self, programming_language: str) -> str:
-        ET.SubElement(self.AttributeList, "ProgrammingLanguage").text = programming_language
-        ET.SubElement(self.SWBlock, "ObjectList")
-
-        return self.export(self.root)
