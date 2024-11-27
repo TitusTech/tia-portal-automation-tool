@@ -144,6 +144,7 @@ def get_library(TIA: Siemens.Engineering.TiaPortal, name: str) -> Siemens.Engine
             return glob_lib
 
 
+
 def clone_mastercopy_to_plc(block_group: Siemens.Engineering.SW.Blocks.PlcBlockGroup, mastercopyfolder: Siemens.Engineering.Library.MasterCopies.MasterCopyFolder):
     if not mastercopyfolder: return
 
@@ -163,6 +164,7 @@ def clone_mastercopy_to_plc(block_group: Siemens.Engineering.SW.Blocks.PlcBlockG
         block_group.Blocks.CreateFrom(mastercopy)
 
     return
+
 
 def generate_mastercopies_to_device(TIA: Siemens.Engineering.TiaPortal, plc_software: Siemens.Engineering.HW.Software, data: MasterCopiesDeviceData):
     logging.info(f"Copying {len(data.Libraries)} Libraries to {plc_software.Name}...")
@@ -420,6 +422,28 @@ def xml_extract_plcstruct(xml: Path) -> list[dict]:
         return tags
 
 
+def get_folder_of_block_group(blockgroup: Siemens.Engineering.SW.Blocks.PlcBlockGroup,
+                              folder: list[str],
+                              make_folders: bool = False
+                              )-> Siemens.Engineering.SW.Blocks.BlockGroup:
+    logging.debug(f"Current BlockGroup: {blockgroup.Name}")
+    logging.debug(f"Remaining Folders: {folder}")
+
+    if len(folder) == 0:
+        return blockgroup
+
+    if len(folder[0]) == 0 or (len(folder[0])*" ") == folder[0]:
+        return get_folder_of_block_group(blockgroup, folder[1:], make_folders)
+
+    current_blockgroup: Siemens.Engineering.SW.Blocks.PlcBlockGroup | None = blockgroup.Groups.Find(folder[0])
+    if not current_blockgroup: 
+        if make_folders:
+            current_blockgroup = blockgroup.Groups.Create(folder[0])
+        else:
+            return
+
+    return get_folder_of_block_group(current_blockgroup, folder[1:], make_folders)
+
 def get_plc_from_software(blockgroup: Siemens.Engineering.SW.Blocks.BlockGroup, from_folder: list[str], name: str) -> Siemens.Engineering.SW.Blocks.PlcBlock:
     logging.debug(f"Looking for PlcBlock {name} in BlockGroup {blockgroup.Name} with remaining folders to traverse: {from_folder}")
 
@@ -480,6 +504,18 @@ def import_mastercopy_to_software(blockgroup: Siemens.Engineering.SW.Blocks.Bloc
 
     return import_mastercopy_to_software(current_group, folder[1:], mastercopy)
 
+def create_database_instance(plc_software: Siemens.Engineering.HW.Software,
+                             instance_name: str,
+                             database_name: str,
+                             number: int,
+                             folder: list[str]
+                             ) -> Siemens.Engineering.SW.Blocks.InstanceDB:
+    db_name = database_name if database_name != "" else f"{instance_name}_DB"
+    blockgroup: Siemens.Engineering.SW.Blocks.BlockGroup = get_folder_of_block_group(plc_software.BlockGroup, folder, make_folders=True)
+    instance_db: Siemens.Engineering.SW.Blocks.InstanceDB = blockgroup.Blocks.CreateInstanceDB(db_name, True, number, instance_name)
+
+    return instance_db
+
 
 def create_instance_from_library(TIA: Siemens.Engineering.TiaPortal,
                                  plc_software: Siemens.Engineering.HW.Software,
@@ -512,12 +548,19 @@ def generate_instances(TIA: Siemens.Engineering.TiaPortal,
             return False
 
         container = InstanceContainer(Name=block.Name,
-                                      Type=DocumentSWType[block.Type],
-                                      Database=block.Database
+                                      Type=instance.Type,
+                                      Database=instance.Database
                                       )
         containers.append(container)
 
-
+        if "FC" in block.ToString():
+            return False
+        create_database_instance(plc_software,
+                                 block.Name,
+                                 instance.Database.Name,
+                                 instance.Database.Number,
+                                 instance.Database.Folder
+                                 )
         return True
 
     for instance in instances:
@@ -525,42 +568,18 @@ def generate_instances(TIA: Siemens.Engineering.TiaPortal,
             block: Siemens.Engineering.SW.Blocks.PlcBlock = create_instance_from_library(TIA, plc_software, instance)
             if not block:
                 continue
+            _create_and_add_container(block, instance)
 
-            container = InstanceContainer(Name=block.Name,
-                                          Type=instance.Type,
-                                          Database=instance.Database
-                                          )
-            containers.append(container)
-
-            if "FC" in block.ToString():
-                continue
-            db_name = instance.Database.Name if instance.Database.Name != "" else f"{block.Name}_DB"
-            plc_software.BlockGroup.Blocks.CreateInstanceDB(db_name, True, 1, block.Name)
-
-        if type(instance) is InstanceData: # IF type if LOCAL
+        elif type(instance) is InstanceData: # IF type if LOCAL
             block: Siemens.Engineering.SW.Blocks.PlcBlock = get_plc_from_software(plc_software.BlockGroup, instance.FromFolder, instance.Name)
             if not block:
                 logging.info(f"Instance {instance.Name} not added to PlcSoftware {plc_software.Name}. PlcBlock {instance.Name} not found.")
                 continue
-            container = InstanceContainer(Name=block.Name,
-                                          Type=instance.Type,
-                                          Database=instance.Database
-                                          )
-            containers.append(container)
-            if "FC" in block.ToString():
-                continue
-            db_name = instance.Database.Name if instance.Database.Name != "" else f"{block.Name}_DB"
-            plc_software.BlockGroup.Blocks.CreateInstanceDB(db_name, True, 1, block.Name)
+            _create_and_add_container(block, instance)
 
-        if type(instance) is PlcBlockData:
+        elif type(instance) is PlcBlockData:
             block: Siemens.Engineering.SW.Blocks.PlcBlock = generate_plcblock(TIA, plc_software, instance)
             containers.append(block)
-
-        if type(instance) is DatabaseData:
-            print('not yet implemented')
-
-
-
 
     return containers
 
