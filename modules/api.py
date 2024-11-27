@@ -527,8 +527,8 @@ def generate_instances(TIA: Siemens.Engineering.TiaPortal,
                 continue
 
             container = InstanceContainer(Name=block.Name,
-                                          Type=DocumentSWType[block.Type],
-                                          Database=block.Database
+                                          Type=instance.Type,
+                                          Database=instance.Database
                                           )
             containers.append(container)
 
@@ -543,8 +543,8 @@ def generate_instances(TIA: Siemens.Engineering.TiaPortal,
                 logging.info(f"Instance {instance.Name} not added to PlcSoftware {plc_software.Name}. PlcBlock {instance.Name} not found.")
                 continue
             container = InstanceContainer(Name=block.Name,
-                                          Type=DocumentSWType[block.Type],
-                                          Database=block.Database
+                                          Type=instance.Type,
+                                          Database=instance.Database
                                           )
             containers.append(container)
             if "FC" in block.ToString():

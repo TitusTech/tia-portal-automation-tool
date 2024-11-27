@@ -77,25 +77,27 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
         instances = []
         for instance in ns.get('instances', []):
             inst = None
-            match instance['type']:
-                case Source.LIBRARY:
-                    inst = LibraryInstanceData(Type=instance['type'],
-                                               Source=instance['source'],
-                                               Library=instance['library'],
-                                               Name=instance['name'],
-                                               FromFolder=instance.get('from_folder', []),
-                                               ToFolder=instance.get('to_folder', []),
-                                               Database=clean_instance_database(instance)
-                                              )
-                case Source.LOCAL:
-                    inst = InstanceData(Type=instance['type'],
-                                        Source=instance['source'],
-                                        Name=instance['name'],
-                                        FromFolder=instance.get('from_folder', []),
-                                        ToFolder=instance.get('to_folder', []),
-                                        Database=clean_instance_database(instance)
-                                        )
-                case DocumentSWType.BlocksFB | DocumentSWType.BlocksOB | DocumentSWType.BlocksFC:
+            if instance.get('source'):
+                match instance['source']:
+                    case Source.LIBRARY:
+                        inst = LibraryInstanceData(Type=instance['type'],
+                                                   Source=instance['source'],
+                                                   Library=instance['library'],
+                                                   Name=instance['name'],
+                                                   FromFolder=instance.get('from_folder', []),
+                                                   ToFolder=instance.get('to_folder', []),
+                                                   Database=clean_instance_database(instance)
+                                                  )
+                    case Source.LOCAL:
+                        inst = InstanceData(Type=instance['type'],
+                                            Source=instance['source'],
+                                            Name=instance['name'],
+                                            FromFolder=instance.get('from_folder', []),
+                                            ToFolder=instance.get('to_folder', []),
+                                            Database=clean_instance_database(instance)
+                                            )
+            else:
+                if instance.get('source') in [DocumentSWType.BlocksFB, DocumentSWType.BlocksOB, DocumentSWType.BlocksFC]:
                     inst = clean_program_block_data(instance)
 
             if not inst: continue
