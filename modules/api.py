@@ -534,7 +534,7 @@ def generate_instances(TIA: Siemens.Engineering.TiaPortal,
 
             if "FC" in block.ToString():
                 continue
-            db_name = instance.Database.Name if instance.Database.Name != "" else f"{instance.Name}_DB"
+            db_name = instance.Database.Name if instance.Database.Name != "" else f"{block.Name}_DB"
             plc_software.BlockGroup.Blocks.CreateInstanceDB(db_name, True, 1, block.Name)
 
         if type(instance) is InstanceData: # IF type if LOCAL
@@ -549,7 +549,7 @@ def generate_instances(TIA: Siemens.Engineering.TiaPortal,
             containers.append(container)
             if "FC" in block.ToString():
                 continue
-            db_name = instance.Database.Name if instance.Database.Name != "" else f"{instance.Name}_DB"
+            db_name = instance.Database.Name if instance.Database.Name != "" else f"{block.Name}_DB"
             plc_software.BlockGroup.Blocks.CreateInstanceDB(db_name, True, 1, block.Name)
 
         if type(instance) is PlcBlockData:
