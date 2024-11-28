@@ -17,7 +17,6 @@ from modules.structs import ModuleData, ModulesContainerData
 from modules.structs import TagData, TagTableData
 from modules.structs import InstanceData, LibraryInstanceData
 from modules.structs import PlcBlockData, PlcBlockContainer
-from modules.structs import DatabaseData
 from modules.structs import PlcStructData
 from modules.structs import NetworkSourceData
 from modules.structs import NetworkSourceContainer
@@ -420,11 +419,12 @@ def generate_user_data_types(imports: Imports, plc_software: Siemens.Engineering
             filename.unlink()
 
 
-def xml_extract_plcstruct(xml: Path) -> list[dict]:
+def extract_plcstruct_from_xml(xml: Path) -> list[dict]:
     with open(xml) as file:
+        file.seek(3)
         data = file.read()
-        weird_char = data[0:3]
-        data = data.replace(weird_char, '')
+        # weird_char = data[0:3]
+        # data = data.replace(weird_char, '')
 
         root = ET.fromstring(data)
         section = root.find(".//ns:Section", {"ns": XMLNS.SECTIONS.value})
@@ -444,6 +444,75 @@ def xml_extract_plcstruct(xml: Path) -> list[dict]:
         
         return tags
 
+def extract_globaldb_from_xml(imports: Imports,
+                              plc_software: Siemens.Engineering.HW.Software,
+                              folder: list[str],
+                              globaldb_name: str
+                              ) -> dict:
+    db = get_plc_from_software(plc_software.BlockGroup, folder, globaldb_name)
+    if not db: return {}
+
+    compile_single_sw(imports, db)
+    xml_data = extract_xml_of_plcblock(imports, db)
+
+    exported_db = {'type': "SW.Blocks.GlobalDB",
+                   'name': db.Name,
+                   'folder': folder,
+                   'data': [],
+                   'attributes': {}
+                   }
+    
+    root = ET.fromstring(xml_data)
+    section = root.find(".//ns:Section", {"ns": XMLNS.SECTIONS.value})
+    if section is None: return {}
+
+    for member in section:
+        attribs = member.attrib
+        attribs['datatype'] = attribs['Datatype'].replace('"', r'\"')
+        for elements in member:
+            if elements.tag == "AttributeList":
+                for el in elements:
+                    attribs["attributes"] = {el.attrib['name']: el.text}
+        StartValue = member.find(".//ns:StartValue", {"ns": "http://www.siemens.com/automation/Openness/SW/Interface/v5"})
+        if StartValue is not None:
+            attribs["StartValue"] = StartValue.text or ""
+        exported_db['data'].append(attribs)
+
+    MemoryLayout = root.find(".//MemoryLayout")
+    if MemoryLayout is not None:
+        exported_db['attributes']['MemoryLayout'] = MemoryLayout.text
+
+    return exported_db
+
+def compile_single_sw(imports: Imports, plcblock: Siemens.Engineering.SW.Blocks.PlcBlock):
+    SE: Siemens.Engineering = imports.DLL
+
+    singleCompile = plcblock.GetService[SE.Compiler.ICompilable]()
+    result = singleCompile.Compile()
+
+    return
+
+def extract_xml_of_plcblock(imports: Imports,
+                           plcblock: Siemens.Engineering.SW.Blocks.PlcBlock
+                           ) -> str:
+    SE: Siemens.Engineering = imports.DLL
+    FileInfo: FileInfo = imports.FileInfo
+
+    logging.debug(f"Exporting XML of PlcBlock {plcblock.Name}")
+
+    filename = tempfile.mktemp()
+    filepath = Path(filename)
+    plcblock.Export(FileInfo(filepath.absolute().as_posix()), getattr(SE.ExportOptions, "None"))
+
+    with open(filepath) as file:
+        file.seek(3) # get rid of the random weird bytes
+        xml_data = file.read()
+
+    filepath.unlink()
+
+    logging.debug(f"Extracted XML: {xml_data}")
+
+    return xml_data
 
 def get_folder_of_block_group(blockgroup: Siemens.Engineering.SW.Blocks.PlcBlockGroup,
                               folder: list[str],

@@ -106,6 +106,7 @@ class DatabaseStruct:
     Name: str
     Datatype: str
     Retain: bool
+    StartValue: str
     Attributes: dict
 
 @dataclass

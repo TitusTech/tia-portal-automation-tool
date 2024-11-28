@@ -82,6 +82,7 @@ schema_db_data = Schema({
 schema_globaldb = Schema({
     **schema_instancedb.schema,
     Optional("data", default={}): list,
+    Optional("start_value", default=""): str,
     Optional("attributes", default={}): dict,
 })
 

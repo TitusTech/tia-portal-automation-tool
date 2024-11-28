@@ -145,6 +145,7 @@ def clean_database_struct(structs: list[dict]) -> list[DatabaseStruct]:
         dbs = DatabaseStruct(Name=struct['name'],
                              Datatype=struct['datatype'],
                              Retain=struct.get('retain', True),
+                             StartValue=struct.get('start_value', ""),
                              Attributes=struct.get('attributes', {})
                              )
         databasestructs.append(dbs)

@@ -226,6 +226,9 @@ class GlobalDB(SWBlock):
         for struct in data.Structs:
             self._add_struct(struct)
 
+        for attrib in data.Attributes:
+            ET.SubElement(self.AttributeList, attrib).text = data.Attributes[attrib]
+
         return
 
     def _add_struct(self, struct: DatabaseStruct):
@@ -237,7 +240,12 @@ class GlobalDB(SWBlock):
                                        'Accessibility': "Public"
                                        }
                                )
-        Member.append(generate_boolean_attributes(struct))
+        if struct.StartValue != '':
+            ET.SubElement(Member, "StartValue").text = struct.StartValue
+
+        bool_attribs = generate_boolean_attributes(struct)
+        if len(bool_attribs):
+            Member.append(bool_attribs)
 
         return
 
