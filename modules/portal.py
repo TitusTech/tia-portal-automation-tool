@@ -12,7 +12,7 @@ from modules.structs import TagTableData, TagData
 from modules.structs import MasterCopiesDeviceData
 from modules.structs import InstanceData, LibraryInstanceData, NetworkSourceData, PlcBlockData, DatabaseData, Source
 from modules.structs import DocumentSWType, PlcStructData
-from modules.structs import DatabaseType, GlobalDBData, DatabaseStruct
+from modules.structs import DatabaseType, GlobalDBData, VariableStruct
 
 
 def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, Any]):
@@ -79,7 +79,6 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
                             Folder=data.get('folder', [])
                             )
 
-    if data['type'] == DatabaseType.Multi: pass
 
     network_sources = []
     for ns in data.get('network_sources', []):
@@ -124,7 +123,8 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
                             Number=data.get('number', 1),
                             Folder=data.get('folder', []),
                             NetworkSources=network_sources,
-                            Database=clean_instance_database(data)
+                            Database=clean_instance_database(data),
+                            Variables=data.get('variables', {})
                            )
     return plcblock
 
@@ -139,10 +139,10 @@ def clean_instance_database(instance: dict) -> DatabaseData:
                         )
     
 
-def clean_database_struct(structs: list[dict]) -> list[DatabaseStruct]:
-    databasestructs: list[DatabaseStruct] = []
+def clean_database_struct(structs: list[dict]) -> list[VariableStruct]:
+    databasestructs: list[VariableStruct] = []
     for struct in structs:
-        dbs = DatabaseStruct(Name=struct['name'],
+        dbs = VariableStruct(Name=struct['name'],
                              Datatype=struct['datatype'],
                              Retain=struct.get('retain', True),
                              StartValue=struct.get('start_value', ""),

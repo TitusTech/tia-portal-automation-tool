@@ -22,7 +22,7 @@ class DatabaseType(Enum):
     InstanceDB = "SW.Blocks.InstanceDB"
     GlobalDB = "SW.Blocks.GlobalDB"
     ArrayDB = "SW.Blocks.ArrayDB"
-    Multi = "Multi"
+    MultiInstance = "MultiInstance"
 
 
 class XMLNS(Enum):
@@ -36,16 +36,31 @@ class PlcStructData:
     Name: str
     Types: list
 
+
+@dataclass
+class VariableStruct:
+    Name: str
+    Datatype: str
+    Retain: bool
+    StartValue: str
+    Attributes: dict
+
+@dataclass 
+class VariableSection:
+    Name: str
+    Variable: list[VariableStruct]
+
 @dataclass
 class SWBlockData:
     Name: str
     Number: int
     ProgrammingLanguage: str
-    NetworkSources: list[NetworkSourceContainer]
+    Variables: list[VariableSection]
 
 @dataclass
 class OBData(SWBlockData):
-    EventClass: OBEventClass = OBEventClass.ProgramCycle
+    NetworkSources: list[NetworkSourceContainer]
+    EventClass: OBEventClass
 
 
 class Source(Enum):
@@ -100,15 +115,6 @@ class TagTableData:
     # Tags: list[TagData]
 
 
-
-@dataclass
-class DatabaseStruct:
-    Name: str
-    Datatype: str
-    Retain: bool
-    StartValue: str
-    Attributes: dict
-
 @dataclass
 class DatabaseData:
     Type: DatabaseType
@@ -119,7 +125,7 @@ class DatabaseData:
 
 @dataclass
 class GlobalDBData(DatabaseData):
-    Structs: list[DatabaseStruct]
+    Structs: list[VariableSection]
     Attributes: dict
 
 
@@ -156,6 +162,7 @@ class PlcBlockData(ProgramBlockData):
     ProgrammingLanguage: str
     NetworkSources: list[NetworkSourceData]
     Database: DatabaseData
+    Variables: list[VariableSection]
 
 @dataclass
 class NetworkSourceContainer:
@@ -181,4 +188,5 @@ class PlcBlockContainer(ProgramBlockContainer):
     ProgrammingLanguage: str
     NetworkSources: list[NetworkSourceContainer]
     Database: DatabaseData
+    Variables: list[VariableSection]
 

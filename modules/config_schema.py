@@ -54,41 +54,42 @@ schema_multi_instance_db = Schema({
 ###
 
 
+schema_variable_struct = Schema({
+    "name": str,
+    "datatype": str,
+    Optional("retain", default=True): bool,
+    Optional("start_value", default=""): str,
+    Optional("attributes", default={}): dict,
+})
+
+schema_variable_section = Schema({
+    "name": str,
+    "data": [schema_variable_struct],
+})
+
 schema_plcblock = {
     "type": And(str, Use(DocumentSWType)),
     "name": str,
     Optional("folder", default=[]): And(list, [str]),
     Optional("number", default=1): int,
+    Optional("variables", default=[]): [schema_variable_section],
 }
 
 schema_db = Schema({
     "type": And(str, Use(DatabaseType)),
-    "name": str,
 })
 
 schema_instancedb = Schema({
     **schema_db.schema,
+    "name": str,
     Optional("folder", default=[]): And(list, [str]),
     Optional("number", default=1): int,
 })
 
-schema_db_data = Schema({
-    "name": str,
-    "datatype": str,
-    Optional("retain", default=True): bool,
-    Optional("attributes", default={}): dict
-})
-
 schema_globaldb = Schema({
     **schema_instancedb.schema,
-    Optional("data", default={}): list,
-    Optional("start_value", default=""): str,
+    Optional("data", default=[]): [schema_variable_struct],
     Optional("attributes", default={}): dict,
-})
-
-schema_multi_instance_db = Schema({
-    "type": And(str, Use(DatabaseType)),
-    "data": dict
 })
 
 schema_instance_source = Schema({
@@ -98,7 +99,6 @@ schema_instance_source = Schema({
     Optional("from_folder", default=[]): And(list, [str]),
     Optional("to_folder", default=[]): And(list, [str]),
     Optional("db"): schema_instancedb,
-
 })
 
 schema_instance_library = Schema({
@@ -109,7 +109,7 @@ schema_instance_library = Schema({
 schema_ob_fb_fc = {
     **schema_plcblock,
     "programming_language": str,
-    Optional("db"): schema_instancedb,
+    Optional("db"): Or(schema_instancedb, schema_db),
 }
 
 schema_network_source = {
@@ -191,7 +191,7 @@ schema_device_plc = {
         **schema_device,
         "p_deviceName": str, # NewPlcDevice
         Optional("slots_required", default=2): int,
-        Optional("Program blocks", default=[]): [Or(Schema(schema_ob_fb_fc), schema_instancedb, schema_globaldb)],
+        Optional("Program blocks", default=[]): [Or(Schema(schema_ob_fb_fc), schema_globaldb)],
         Optional("PLC tags", default=[]): [schema_plc_tag_table],
         Optional("PLC data types", default=[]): [schema_plc_data_types],
         Optional("Local modules", default=[]): [schema_module],

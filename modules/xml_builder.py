@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 
 from modules.structs import DocumentSWType
 from modules.structs import DatabaseType
-from modules.structs import DatabaseStruct
+from modules.structs import VariableStruct
 from modules.structs import OBEventClass
 from modules.structs import XMLNS
 from modules.structs import PlcStructData
@@ -71,33 +71,48 @@ class PlcStruct(SWType):
 
 
 class SWBlock(Document):
-    def __init__(self, document_type: DocumentSWType | DatabaseType, name: str, number: int, programming_language: str) -> None:
+    def __init__(self,
+                 document_type: DocumentSWType | DatabaseType,
+                 name: str,
+                 number: int,
+                 programming_language: str,
+                 variables: list[VariableStruct]
+                 ) -> None:
         super().__init__(document_type, name)
 
         ET.SubElement(self.AttributeList, "Number").text = str(number)
         ET.SubElement(self.AttributeList, "ProgrammingLanguage").text = programming_language
         self.ObjectList = ET.SubElement(self.SWDoc, "ObjectList")
 
+        self.sections_enabled: list[str] = []
+
     def _create_input_section(self):
         self.InputSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Input"})
+        self.sections_enabled.append("Input")
 
     def _create_output_section(self):
         self.OutputSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Output"})
+        self.sections_enabled.append("Output")
 
     def _create_temp_section(self):
         self.TempSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Temp"})
+        self.sections_enabled.append("Temp")
 
     def _create_constant_section(self):
         self.ConstantSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Constant"})
+        self.sections_enabled.append("Constant")
 
     def _create_inout_section(self):
         self.InOutSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "InOut"})
+        self.sections_enabled.append("InOut")
 
     def _create_static_section(self):
         self.StaticSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Static"})
+        self.sections_enabled.append("Static")
 
     def _create_return_section(self):
         self.ReturnSection = ET.SubElement(self.Sections, "Section", attrib={"Name": "Return"})
+        self.sections_enabled.append("Return")
         ET.SubElement(self.ReturnSection, "Member", attrib={
             'Name': "Ret_Val", 
             'Datatype': "Void",
@@ -106,7 +121,7 @@ class SWBlock(Document):
 class OB(SWBlock):
     def __init__(self, data: OBData) -> None:
         data.Number = max(123, min(data.Number, 32767)) if data.Number != 1 else 1 # EventClasses have different number rules
-        super().__init__(DocumentSWType.BlocksOB, data.Name, data.Number, data.ProgrammingLanguage)
+        super().__init__(DocumentSWType.BlocksOB, data.Name, data.Number, data.ProgrammingLanguage, data.Variables)
 
         ET.SubElement(self.AttributeList, "SecondaryType").text = data.EventClass.value # default is ProgramCycle
         self._create_input_section()
@@ -132,7 +147,7 @@ class OB(SWBlock):
 
 class FB(SWBlock):
     def __init__(self, data: SWBlockData) -> None:
-        super().__init__(DocumentSWType.BlocksFB, data.Name, data.Number, data.ProgrammingLanguage)
+        super().__init__(DocumentSWType.BlocksFB, data.Name, data.Number, data.ProgrammingLanguage, data.Variables)
 
         self._create_input_section()
         self._create_output_section()
@@ -219,7 +234,7 @@ class SWBlocksCompileUnit:
 class GlobalDB(SWBlock):
     def __init__(self, data: GlobalDBData) -> None:
         data.Number = max(1, min(data.Number, 599999))
-        super().__init__(DatabaseType.GlobalDB, data.Name, data.Number, "DB")
+        super().__init__(DatabaseType.GlobalDB, data.Name, data.Number, "DB", data.Structs)
 
         self._create_static_section()
 
@@ -231,7 +246,7 @@ class GlobalDB(SWBlock):
 
         return
 
-    def _add_struct(self, struct: DatabaseStruct):
+    def _add_struct(self, struct: VariableStruct):
         Member = ET.SubElement(self.StaticSection,
                                "Member",
                                attrib={'Name': struct.Name,
@@ -250,7 +265,7 @@ class GlobalDB(SWBlock):
         return
 
 
-def generate_boolean_attributes(struct: DatabaseStruct) -> ET.Element:
+def generate_boolean_attributes(struct: VariableStruct) -> ET.Element:
     AttributeList = ET.Element("AttributeList")
     for attrib in struct.Attributes:
         ET.SubElement(AttributeList, "BooleanAttribute", attrib={

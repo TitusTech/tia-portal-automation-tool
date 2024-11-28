@@ -21,7 +21,7 @@ from modules.structs import PlcStructData
 from modules.structs import NetworkSourceData
 from modules.structs import NetworkSourceContainer
 from modules.structs import GlobalDBData, InstanceContainer, DocumentSWType
-from modules.structs import OBData
+from modules.structs import OBData, OBEventClass
 from modules.xml_builder import OB, FB, FC, GlobalDB
 from modules.xml_builder import PlcStruct
 
@@ -704,7 +704,8 @@ def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
                                   Number=block.Number,
                                   ProgrammingLanguage=block.ProgrammingLanguage,
                                   NetworkSources=[],
-                                  Database=block.Database
+                                  Database=block.Database,
+                                  Variables=block.Variables
                                   )
     container.NetworkSources = generate_network_sources(TIA, plc_software, block.NetworkSources)
     match container.Type:
@@ -712,7 +713,9 @@ def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
             obdata = OBData(Name=container.Name,
                             Number=container.Number,
                             ProgrammingLanguage=container.ProgrammingLanguage,
-                            NetworkSources=container.NetworkSources
+                            NetworkSources=container.NetworkSources,
+                            Variables=container.Variables,
+                            EventClass=OBEventClass.ProgramCycle
                           )
             ob = OB(obdata)
             xml = ob.xml()
