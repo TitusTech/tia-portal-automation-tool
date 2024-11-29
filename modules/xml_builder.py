@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 
 from modules.structs import DocumentSWType
 from modules.structs import DatabaseType
-from modules.structs import VariableStruct
+from modules.structs import VariableStruct, VariableSection
 from modules.structs import OBEventClass
 from modules.structs import XMLNS
 from modules.structs import PlcStructData
@@ -76,9 +76,10 @@ class SWBlock(Document):
                  name: str,
                  number: int,
                  programming_language: str,
-                 variables: list[VariableStruct]
+                 variables: list[VariableSection]
                  ) -> None:
         super().__init__(document_type, name)
+        self.variables: list[VariableSection] = variables
 
         ET.SubElement(self.AttributeList, "Number").text = str(number)
         ET.SubElement(self.AttributeList, "ProgrammingLanguage").text = programming_language
@@ -117,6 +118,48 @@ class SWBlock(Document):
             'Name': "Ret_Val", 
             'Datatype': "Void",
         })
+
+    def _add_variables(self):
+        for section in self.variables:
+            if not section.Name in self.sections_enabled:
+                continue
+
+            if section.Name == "Input":
+                self._create_member(section.Variables, self.InputSection)
+            if section.Name == "Output":
+                self._create_member(section.Variables, self.OutputSection)
+            if section.Name == "Temp":
+                self._create_member(section.Variables, self.TempSection)
+            if section.Name == "Constant":
+                self._create_member(section.Variables, self.ConstantSection)
+            if section.Name == "InOut":
+                self._create_member(section.Variables, self.InOutSection)
+            if section.Name == "Return":
+                self._create_member(section.Variables, self.ReturnSection)
+            if section.Name == "Static":
+                self._create_member(section.Variables, self.StaticSection)
+
+        return
+
+    def _create_member(self, structs: list[VariableStruct], section: ET.Element):
+        for struct in structs:
+            Member = ET.SubElement(section,
+                                   "Member",
+                                   attrib={'Name': struct.Name,
+                                           'Datatype': struct.Datatype,
+                                           'Remanence': "Retain" if struct.Retain else "NonRetain",
+                                           'Accessibility': "Public"
+                                           }
+                                   )
+            if struct.StartValue != '':
+                ET.SubElement(Member, "StartValue").text = struct.StartValue
+
+            bool_attribs = generate_boolean_attributes(struct)
+            if len(bool_attribs):
+                Member.append(bool_attribs)
+
+        return
+
 
 class OB(SWBlock):
     def __init__(self, data: OBData) -> None:
@@ -234,12 +277,14 @@ class SWBlocksCompileUnit:
 class GlobalDB(SWBlock):
     def __init__(self, data: GlobalDBData) -> None:
         data.Number = max(1, min(data.Number, 599999))
-        super().__init__(DatabaseType.GlobalDB, data.Name, data.Number, "DB", data.Structs)
+        section_struct = VariableSection("Static", data.Structs)
+        super().__init__(DatabaseType.GlobalDB, data.Name, data.Number, "DB", [section_struct])
 
         self._create_static_section()
 
-        for struct in data.Structs:
-            self._add_struct(struct)
+        # for struct in data.Structs:
+        #     self._add_struct(struct)
+        self._add_variables()
 
         for attrib in data.Attributes:
             ET.SubElement(self.AttributeList, attrib).text = data.Attributes[attrib]

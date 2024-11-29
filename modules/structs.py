@@ -48,7 +48,7 @@ class VariableStruct:
 @dataclass 
 class VariableSection:
     Name: str
-    Variable: list[VariableStruct]
+    Variables: list[VariableStruct]
 
 @dataclass
 class SWBlockData:
@@ -125,7 +125,7 @@ class DatabaseData:
 
 @dataclass
 class GlobalDBData(DatabaseData):
-    Structs: list[VariableSection]
+    Structs: list[VariableStruct]
     Attributes: dict
 
 
