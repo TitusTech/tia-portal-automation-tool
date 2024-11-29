@@ -62,6 +62,9 @@ class OBData(SWBlockData):
     NetworkSources: list[NetworkSourceContainer]
     EventClass: OBEventClass
 
+@dataclass
+class FBData(SWBlockData):
+    NetworkSources: list[NetworkSourceContainer]
 
 class Source(Enum):
     LIBRARY = "LIBRARY"

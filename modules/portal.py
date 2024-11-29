@@ -13,6 +13,7 @@ from modules.structs import MasterCopiesDeviceData
 from modules.structs import InstanceData, LibraryInstanceData, NetworkSourceData, PlcBlockData, DatabaseData, Source
 from modules.structs import DocumentSWType, PlcStructData
 from modules.structs import DatabaseType, GlobalDBData, VariableStruct
+from modules.structs import VariableStruct, VariableSection
 
 
 def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, Any]):
@@ -69,7 +70,7 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
                             Name=data['name'],
                             Number=data.get('number', 1),
                             Folder=data.get('folder', []),
-                            Structs=clean_database_struct(data['data']),
+                            Structs=clean_variable_structs(data['data']),
                             Attributes=data.get('attributes', {}),
                             )
     if data['type'] == DatabaseType.InstanceDB:
@@ -124,7 +125,7 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
                             Folder=data.get('folder', []),
                             NetworkSources=network_sources,
                             Database=clean_instance_database(data),
-                            Variables=data.get('variables', {})
+                            Variables=clean_variable_sections(data.get('variables', []))
                            )
     return plcblock
 
@@ -139,17 +140,26 @@ def clean_instance_database(instance: dict) -> DatabaseData:
                         )
     
 
-def clean_database_struct(structs: list[dict]) -> list[VariableStruct]:
-    databasestructs: list[VariableStruct] = []
+def clean_variable_structs(structs: list[dict]) -> list[VariableStruct]:
+    variables: list[VariableStruct] = []
     for struct in structs:
-        dbs = VariableStruct(Name=struct['name'],
+        var = VariableStruct(Name=struct['name'],
                              Datatype=struct['datatype'],
                              Retain=struct.get('retain', True),
                              StartValue=struct.get('start_value', ""),
                              Attributes=struct.get('attributes', {})
                              )
-        databasestructs.append(dbs)
-    return databasestructs
+        variables.append(var)
+    return variables
+
+def clean_variable_sections(sections: list[dict]) -> list[VariableSection]:
+    var_sections: list[VariableSection] = []
+
+    for section in sections:
+        sec = VariableSection(Name=section['name'], Variables=clean_variable_structs(section['data']))
+        var_sections.append(sec)
+    return var_sections
+
 
 
 # def execute_old(SE: Siemens.Engineering, config: dict[Any, Any], settings: dict[str, Any]):

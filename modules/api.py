@@ -21,7 +21,7 @@ from modules.structs import PlcStructData
 from modules.structs import NetworkSourceData
 from modules.structs import NetworkSourceContainer
 from modules.structs import GlobalDBData, InstanceContainer, DocumentSWType
-from modules.structs import OBData, OBEventClass
+from modules.structs import OBData, OBEventClass, FBData
 from modules.xml_builder import OB, FB, FC, GlobalDB
 from modules.xml_builder import PlcStruct
 
@@ -722,7 +722,16 @@ def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
             logging.debug(f"Generated OB: {xml}")
 
         case DocumentSWType.BlocksFB:
-            print(f"FC to be implemented: {block}")
+            fbdata = FBData(Name=container.Name,
+                            Number=container.Number,
+                            ProgrammingLanguage=container.ProgrammingLanguage,
+                            NetworkSources=container.NetworkSources,
+                            Variables=container.Variables
+                            )
+            print(fbdata)
+            fb = FB(fbdata)
+            xml = fb.xml()
+            logging.debug(f"Generated FB: {xml}")
 
         case DocumentSWType.BlocksFC:
             print(f"FC to be implemented: {block}")
