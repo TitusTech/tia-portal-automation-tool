@@ -199,6 +199,9 @@ class FB(SWBlock):
         self._create_temp_section()
         self._create_constant_section()
 
+        self._add_variables()
+
+
 
 
 class FC(SWBlock):
@@ -282,30 +285,10 @@ class GlobalDB(SWBlock):
 
         self._create_static_section()
 
-        # for struct in data.Structs:
-        #     self._add_struct(struct)
         self._add_variables()
 
         for attrib in data.Attributes:
             ET.SubElement(self.AttributeList, attrib).text = data.Attributes[attrib]
-
-        return
-
-    def _add_struct(self, struct: VariableStruct):
-        Member = ET.SubElement(self.StaticSection,
-                               "Member",
-                               attrib={'Name': struct.Name,
-                                       'Datatype': struct.Datatype,
-                                       'Remanence': "Retain" if struct.Retain else "NonRetain",
-                                       'Accessibility': "Public"
-                                       }
-                               )
-        if struct.StartValue != '':
-            ET.SubElement(Member, "StartValue").text = struct.StartValue
-
-        bool_attribs = generate_boolean_attributes(struct)
-        if len(bool_attribs):
-            Member.append(bool_attribs)
 
         return
 
