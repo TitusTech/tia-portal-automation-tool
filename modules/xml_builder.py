@@ -15,7 +15,7 @@ from modules.structs import OBEventClass
 from modules.structs import XMLNS
 from modules.structs import PlcStructData
 from modules.structs import SWBlockData
-from modules.structs import OBData
+from modules.structs import OBData, FBData
 from modules.structs import GlobalDBData
 from modules.structs import NetworkSourceContainer
 
@@ -189,7 +189,7 @@ class OB(SWBlock):
         
 
 class FB(SWBlock):
-    def __init__(self, data: SWBlockData) -> None:
+    def __init__(self, data: FBData) -> None:
         super().__init__(DocumentSWType.BlocksFB, data.Name, data.Number, data.ProgrammingLanguage, data.Variables)
 
         self._create_input_section()
@@ -201,7 +201,32 @@ class FB(SWBlock):
 
         self._add_variables()
 
+        id = 3
+        for network_source in data.NetworkSources:
+            CompileUnit = SWBlocksCompileUnit(data.ProgrammingLanguage, network_source, id).root
+            self.ObjectList.append(CompileUnit)
+            id += 5
 
+        return
+
+    def _create_member(self, structs: list[VariableStruct], section: ET.Element):
+        # code duplication lol
+        for struct in structs:
+            Member = ET.SubElement(section,
+                                   "Member",
+                                   attrib={'Name': struct.Name,
+                                           'Datatype': struct.Datatype,
+                                           'Accessibility': "Public"
+                                           }
+                                   )
+            if struct.StartValue != '':
+                ET.SubElement(Member, "StartValue").text = struct.StartValue
+
+            bool_attribs = generate_boolean_attributes(struct)
+            if len(bool_attribs):
+                Member.append(bool_attribs)
+
+        return
 
 
 class FC(SWBlock):
@@ -230,7 +255,6 @@ class SWBlocksCompileUnit:
         self._generate_texts(id+1, network_source.Title, network_source.Comment)
 
         self._create_instances(network_source.Instances)
-
 
         return
 
@@ -264,7 +288,10 @@ class SWBlocksCompileUnit:
                 Call = ET.SubElement(self.Parts, "Call", attrib={'UId': str(21)})
                 CallInfo = ET.SubElement(Call, "CallInfo", attrib={'Name': instance.Name, 'BlockType': instance.Type.value.split('.')[-1]})
                 if instance.Type != DocumentSWType.BlocksFC:
-                    InstanceTag = ET.SubElement(CallInfo, "Instance", attrib={'Scope': "GlobalVariable", 'UId': str(22)})
+                    scope = "GlobalVariable"
+                    if instance.Database.Type == DatabaseType.MultiInstance:
+                        scope = "LocalVariable"
+                    InstanceTag = ET.SubElement(CallInfo, "Instance", attrib={'Scope': scope, 'UId': str(22)})
                     db_name = instance.Database.Name if instance.Database.Name != "" else f"{instance.Name}_DB"
                     ET.SubElement(InstanceTag, "Component", attrib={'Name': db_name})
 
@@ -274,7 +301,6 @@ class SWBlocksCompileUnit:
                 ET.SubElement(Wire, "NameCon", attrib={'UId': str(21), 'Name': "en"})
 
         return
-
 
 
 class GlobalDB(SWBlock):

@@ -728,7 +728,6 @@ def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
                             NetworkSources=container.NetworkSources,
                             Variables=container.Variables
                             )
-            print(fbdata)
             fb = FB(fbdata)
             xml = fb.xml()
             logging.debug(f"Generated FB: {xml}")

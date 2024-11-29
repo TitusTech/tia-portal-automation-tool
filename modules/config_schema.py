@@ -77,11 +77,11 @@ schema_plcblock = {
 
 schema_db = Schema({
     "type": And(str, Use(DatabaseType)),
+    "name": str,
 })
 
 schema_instancedb = Schema({
     **schema_db.schema,
-    "name": str,
     Optional("folder", default=[]): And(list, [str]),
     Optional("number", default=1): int,
 })
