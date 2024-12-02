@@ -22,6 +22,7 @@ from modules.structs import NetworkSourceData
 from modules.structs import NetworkSourceContainer
 from modules.structs import GlobalDBData, InstanceContainer, DocumentSWType
 from modules.structs import OBData, OBEventClass, FBData
+from modules.structs import DatabaseType
 from modules.xml_builder import OB, FB, FC, GlobalDB
 from modules.xml_builder import PlcStruct
 
@@ -627,7 +628,8 @@ def create_instance_from_library(TIA: Siemens.Engineering.TiaPortal,
 
     return plcblock
 
-def generate_instances(TIA: Siemens.Engineering.TiaPortal,
+def generate_instances(imports: Imports,
+                       TIA: Siemens.Engineering.TiaPortal,
                        plc_software: Siemens.Engineering.HW.Software,
                        instances: list[InstanceData | LibraryInstanceData | PlcBlockData]
                        ) -> list[InstanceContainer | PlcBlockContainer]:
@@ -646,6 +648,8 @@ def generate_instances(TIA: Siemens.Engineering.TiaPortal,
         containers.append(container)
 
         if "FC" in block.ToString():
+            return False
+        if instance.Database.Type == DatabaseType.MultiInstance:
             return False
         create_database_instance(plc_software,
                                  block.Name,
@@ -670,12 +674,13 @@ def generate_instances(TIA: Siemens.Engineering.TiaPortal,
             _create_and_add_container(block, instance)
 
         elif type(instance) is PlcBlockData:
-            block: Siemens.Engineering.SW.Blocks.PlcBlock = generate_plcblock(TIA, plc_software, instance)
+            block: Siemens.Engineering.SW.Blocks.PlcBlock = generate_plcblock(imports, TIA, plc_software, instance)
             containers.append(block)
 
     return containers
 
-def generate_network_sources(TIA: Siemens.Engineering.TiaPortal,
+def generate_network_sources(imports: Imports,
+                             TIA: Siemens.Engineering.TiaPortal,
                              plc_software: Siemens.Engineering.HW.Software,
                              network_sources: list[NetworkSourceData]
                              ) -> list:
@@ -683,7 +688,7 @@ def generate_network_sources(TIA: Siemens.Engineering.TiaPortal,
 
     containers: list[NetworkSourceContainer] = []
     for block in network_sources:
-        instances: list[InstanceContainer | PlcBlockContainer] = generate_instances(TIA, plc_software, block.Instances)
+        instances: list[InstanceContainer | PlcBlockContainer] = generate_instances(imports, TIA, plc_software, block.Instances)
         container = NetworkSourceContainer(Title=block.Title,
                                            Comment=block.Comment,
                                            Instances=instances
@@ -694,7 +699,8 @@ def generate_network_sources(TIA: Siemens.Engineering.TiaPortal,
 
     return containers
 
-def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
+def generate_plcblock(imports: Imports,
+                      TIA: Siemens.Engineering.TiaPortal,
                       plc_software: Siemens.Engineering.HW.Software,
                       block: PlcBlockData
                       ) -> PlcBlockContainer:
@@ -707,7 +713,7 @@ def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
                                   Database=block.Database,
                                   Variables=block.Variables
                                   )
-    container.NetworkSources = generate_network_sources(TIA, plc_software, block.NetworkSources)
+    container.NetworkSources = generate_network_sources(imports, TIA, plc_software, block.NetworkSources)
     match container.Type:
         case DocumentSWType.BlocksOB:
             obdata = OBData(Name=container.Name,
@@ -732,6 +738,9 @@ def generate_plcblock(TIA: Siemens.Engineering.TiaPortal,
             xml = fb.xml()
             logging.debug(f"Generated FB: {xml}")
 
+            import_xml_to_block_group(imports, xml, plc_software, block.Folder)
+            create_database_instance(plc_software, block.Name, block.Database.Name, block.Database.Number, block.Database.Folder)
+
         case DocumentSWType.BlocksFC:
             print(f"FC to be implemented: {block}")
 
@@ -747,7 +756,7 @@ def generate_program_blocks(imports: Imports,
                             ):
     for block in data:
         if type(block) == PlcBlockData:
-            generate_plcblock(TIA, plc_software, block)
+            generate_plcblock(imports, TIA, plc_software, block)
         if type(block) == GlobalDBData:
             globaldb = GlobalDB(block)
             xml = globaldb.xml()
