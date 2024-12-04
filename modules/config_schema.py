@@ -53,6 +53,13 @@ schema_multi_instance_db = Schema({
 
 ###
 
+schema_wire_paramaters = Schema({
+    "name": str,
+    "section": str,
+    "type": str,
+    "value": Or(str, list[str]),
+    Optional("negated", default=False): bool,
+})
 
 schema_variable_struct = Schema({
     "name": str,
@@ -70,9 +77,10 @@ schema_variable_section = Schema({
 schema_plcblock = {
     "type": And(str, Use(DocumentSWType)),
     "name": str,
-    Optional("folder", default=[]): And(list, [str]),
+    Optional("folder", default=[]): [str],
     Optional("number", default=1): int,
     Optional("variables", default=[]): [schema_variable_section],
+    Optional("wires", default=[]): [schema_wire_paramaters],
 }
 
 schema_db = Schema({
@@ -99,6 +107,7 @@ schema_instance_source = Schema({
     Optional("from_folder", default=[]): And(list, [str]),
     Optional("to_folder", default=[]): And(list, [str]),
     Optional("db"): schema_instancedb,
+    Optional("wires", default=[]): [schema_wire_paramaters],
 })
 
 schema_instance_library = Schema({

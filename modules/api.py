@@ -739,7 +739,9 @@ def generate_plcblock(imports: Imports,
             logging.debug(f"Generated FB: {xml}")
 
             import_xml_to_block_group(imports, xml, plc_software, block.Folder)
-            create_database_instance(plc_software, block.Name, block.Database.Name, block.Database.Number, block.Database.Folder)
+
+            if block.Database.Type != DatabaseType.MultiInstance:
+                create_database_instance(plc_software, block.Name, block.Database.Name, block.Database.Number, block.Database.Folder)
 
         case DocumentSWType.BlocksFC:
             print(f"FC to be implemented: {block}")

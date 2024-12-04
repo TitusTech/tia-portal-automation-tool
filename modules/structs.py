@@ -134,6 +134,14 @@ class GlobalDBData(DatabaseData):
 
 
 @dataclass
+class WireParameter:
+    Name: str
+    Section: str
+    Type: str
+    Value: str | list[str]
+    Negated: bool
+
+@dataclass
 class InstanceData:
     Source: Source
     Type: DocumentSWType
@@ -141,6 +149,7 @@ class InstanceData:
     FromFolder: list[str]
     ToFolder: list[str]
     Database: DatabaseData
+    Parameters: list[WireParameter]
 
 @dataclass
 class LibraryInstanceData(InstanceData):
@@ -166,6 +175,7 @@ class PlcBlockData(ProgramBlockData):
     NetworkSources: list[NetworkSourceData]
     Database: DatabaseData
     Variables: list[VariableSection]
+    Parameters: list[WireParameter]
 
 @dataclass
 class NetworkSourceContainer:

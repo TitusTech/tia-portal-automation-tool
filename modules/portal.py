@@ -14,6 +14,7 @@ from modules.structs import InstanceData, LibraryInstanceData, NetworkSourceData
 from modules.structs import DocumentSWType, PlcStructData
 from modules.structs import DatabaseType, GlobalDBData, VariableStruct
 from modules.structs import VariableStruct, VariableSection
+from modules.structs import WireParameter
 
 
 def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, Any]):
@@ -95,7 +96,8 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
                                                    Name=instance['name'],
                                                    FromFolder=instance.get('from_folder', []),
                                                    ToFolder=instance.get('to_folder', []),
-                                                   Database=clean_instance_database(instance)
+                                                   Database=clean_instance_database(instance),
+                                                   Parameters=clean_wire_parameters(data.get('wires', []))
                                                   )
                     case Source.LOCAL:
                         inst = InstanceData(Type=instance['type'],
@@ -103,7 +105,8 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
                                             Name=instance['name'],
                                             FromFolder=instance.get('from_folder', []),
                                             ToFolder=instance.get('to_folder', []),
-                                            Database=clean_instance_database(instance)
+                                            Database=clean_instance_database(instance),
+                                            Parameters=clean_wire_parameters(data.get('wires', []))
                                             )
             else:
                 if instance.get('type') in [DocumentSWType.BlocksFB, DocumentSWType.BlocksOB, DocumentSWType.BlocksFC]:
@@ -125,7 +128,8 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
                             Folder=data.get('folder', []),
                             NetworkSources=network_sources,
                             Database=clean_instance_database(data),
-                            Variables=clean_variable_sections(data.get('variables', []))
+                            Variables=clean_variable_sections(data.get('variables', [])),
+                            Parameters=clean_wire_parameters(data.get('wires', []))
                            )
     return plcblock
 
@@ -159,6 +163,21 @@ def clean_variable_sections(sections: list[dict]) -> list[VariableSection]:
         sec = VariableSection(Name=section['name'], Variables=clean_variable_structs(section['data']))
         var_sections.append(sec)
     return var_sections
+
+
+def clean_wire_parameters(parameters: list[dict]) -> list[WireParameter]:
+    wires: list[WireParameter] = []
+
+    for param in parameters:
+        wire = WireParameter(Name=param['name'],
+                             Section=param['section'],
+                             Type=param['type'],
+                             Value=param['value'],
+                             Negated=param.get('negated', False)
+                             )
+        wires.append(wire)
+
+    return wires
 
 
 
