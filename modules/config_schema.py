@@ -2,6 +2,7 @@ from pathlib import Path
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
 from modules.structs import DocumentSWType, DatabaseType
+from modules.structs import PlcWatchForceType
 from modules.structs import Source
 
 schema_wire = Schema({
@@ -169,6 +170,32 @@ schema_module = Schema({
         "PositionNumber": int,
     })
 
+
+schema_watchforce_entry = Schema({
+    "Name": str,
+    Optional("Address", default=''): str,
+    Optional("DisplayFormat", default=""): str,
+    Optional("MonitorTrigger", default=""): str,
+})
+schema_plcwatch_table_entry = Schema({
+    **schema_watchforce_entry.schema,
+    Optional("ModifyIntention", default=False): bool,
+    Optional("ModifyTrigger", default="Permanent"): str,
+    Optional("ModifyValue", default=""): str,
+})
+
+schema_plcforce_table_entry = Schema({
+    **schema_watchforce_entry.schema,
+    Optional("ForceIntention", default=False): bool,
+    Optional("ForceValue", default=""): str,
+})
+
+schema_watch_and_force_table = Schema({
+    "type": And(str, Use(PlcWatchForceType)),
+    "Name": str,
+    "Entries": [Or(schema_plcwatch_table_entry, schema_plcforce_table_entry)],
+})
+
 schema_network_interface = Schema({
     # Optional("Name"): str, # read only
     Optional("Address"): str,
@@ -204,6 +231,7 @@ schema_device_plc = {
         Optional("PLC tags", default=[]): [schema_plc_tag_table],
         Optional("PLC data types", default=[]): [schema_plc_data_types],
         Optional("Local modules", default=[]): [schema_module],
+        Optional("Watch and force tables", default=[]): [schema_watch_and_force_table],
     }
 
 

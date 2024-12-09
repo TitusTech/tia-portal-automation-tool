@@ -16,6 +16,10 @@ class DocumentSWType(Enum):
     BlocksOB = "SW.Blocks.OB"
     BlocksFB = "SW.Blocks.FB"
     BlocksFC = "SW.Blocks.FC"
+    PlcWatchTable = "SW.WatchAndForceTables.PlcWatchTable"
+    PlcForceTable = "SW.WatchAndForceTables.PlcForceTable"
+    PlcWatchTableEntry = "SW.WatchAndForceTables.PlcWatchTableEntry"
+    PlcForceTableEntry = "SW.WatchAndForceTables.PlcForceTableEntry"
 
 
 class DatabaseType(Enum):
@@ -30,6 +34,9 @@ class XMLNS(Enum):
     FLGNET = "http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v4"
 
 
+class PlcWatchForceType(Enum):
+    PlcWatchTable = "PlcWatchTable"
+    PlcForceTable = "PlcForceTable"
 
 @dataclass
 class PlcStructData:
@@ -203,3 +210,29 @@ class PlcBlockContainer(ProgramBlockContainer):
     Database: DatabaseData
     Variables: list[VariableSection]
 
+
+
+@dataclass
+class WatchForceTable:
+    Name: str
+    Address: str
+    DisplayFormat: str
+    MonitorTrigger: str
+
+@dataclass
+class PlcForceTableEntryData(WatchForceTable):
+    ForceIntention: bool
+    ForceValue: str
+
+@dataclass
+class PlcWatchTableEntryData(WatchForceTable):
+    ModifyIntention: bool
+    ModifyTrigger: str
+    ModifyValue: str
+
+
+@dataclass
+class WatchAndForceTablesData:
+    Type: PlcWatchForceType
+    Name: str
+    Entries: list[PlcForceTableEntryData | PlcWatchTableEntryData]

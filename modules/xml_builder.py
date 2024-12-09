@@ -1,12 +1,5 @@
-from typing import Any
 import xml.etree.ElementTree as ET
 
-
-# TODO: 
-#       - Implement Instance (Network Sources) creation
-#       - Under Instances, implement Wire and Parts creation
-#       - Implement Single InstanceDB
-#       - Implement Multi InstanceDB
 
 from modules.structs import DocumentSWType
 from modules.structs import DatabaseType
@@ -18,24 +11,33 @@ from modules.structs import SWBlockData
 from modules.structs import OBData, FBData
 from modules.structs import GlobalDBData
 from modules.structs import NetworkSourceContainer
+from modules.structs import PlcForceTableEntryData, PlcWatchTableEntryData, WatchForceTable
 
 
-class Document:
+class BaseDocument:
     def __init__(self, document_type: DocumentSWType | DatabaseType, name: str) -> None:
         self.root = ET.fromstring("<Document />") 
         self.SWDoc = ET.SubElement(self.root, document_type.value, attrib={'ID': str(0)})
         self.AttributeList = ET.SubElement(self.SWDoc, "AttributeList")
-        self.Interface = ET.SubElement(self.AttributeList, "Interface")
-        self.Sections = ET.SubElement(self.Interface, "Sections")
-        self.Sections.set('xmlns', XMLNS.SECTIONS.value)
         ET.SubElement(self.AttributeList, "Name").text = name
-        ET.SubElement(self.AttributeList, "Namespace")
+
+        return
 
     def export(self, root: ET.Element) -> str:
         return ET.tostring(root, encoding='utf-8').decode('utf-8')
 
     def xml(self) -> str:
         return self.export(self.root)
+
+class Document(BaseDocument):
+    def __init__(self, document_type: DocumentSWType | DatabaseType, name: str) -> None:
+        super().__init__(document_type, name)
+
+        self.Interface = ET.SubElement(self.AttributeList, "Interface")
+        self.Sections = ET.SubElement(self.Interface, "Sections")
+        self.Sections.set('xmlns', XMLNS.SECTIONS.value)
+        ET.SubElement(self.AttributeList, "Namespace")
+
 
 class SWType(Document):
     def __init__(self, document_type: DocumentSWType, name: str) -> None:
@@ -319,6 +321,80 @@ class GlobalDB(SWBlock):
 
         for attrib in data.Attributes:
             ET.SubElement(self.AttributeList, attrib).text = data.Attributes[attrib]
+
+        return
+
+
+class WatchAndForceTables(BaseDocument):
+    def __init__(self, document_type: DocumentSWType | DatabaseType, name: str) -> None:
+        super().__init__(document_type, name)
+
+        self.ObjectList = ET.SubElement(self.SWDoc, "ObjectList")
+
+        return
+
+    def _create_entry_element(self, kind: DocumentSWType, id: int) -> ET.Element:
+        Entry = ET.SubElement(self.ObjectList,
+                              DocumentSWType.PlcWatchTableEntry.value,
+                              attrib={"ID": format(id, 'X'),
+                                      "CompositionName": "Entries"
+                                      }
+                              )
+        if kind == DocumentSWType.PlcForceTableEntry:
+            Entry.tag = DocumentSWType.PlcForceTableEntry.value
+
+        return Entry
+
+    def _create_base_entry(self, Entry: ET.Element, entry: WatchForceTable):
+        AttributeList = ET.SubElement(Entry, "AttributeList")
+
+        ET.SubElement(AttributeList, "Name").text = entry.Name
+        if entry.Address:
+            ET.SubElement(AttributeList, "Address").text = entry.Address
+        if entry.DisplayFormat:
+            ET.SubElement(AttributeList, "DisplayFormat").text = entry.DisplayFormat
+        if entry.MonitorTrigger:
+            ET.SubElement(AttributeList, "MonitorTrigger").text = entry.MonitorTrigger
+        
+        if type(entry) == PlcWatchTableEntryData:
+            if entry.ModifyIntention:
+                ET.SubElement(AttributeList, "ModifyIntention").text = str(entry.ModifyIntention)
+            if entry.ModifyTrigger:
+                ET.SubElement(AttributeList, "ModifyTrigger").text = entry.ModifyTrigger
+            if entry.ModifyValue:
+                ET.SubElement(AttributeList, "ModifyValue").text = entry.ModifyValue
+
+        if type(entry) == PlcForceTableEntryData:
+            if entry.ForceIntention:
+                ET.SubElement(AttributeList, "ForceIntention").text = str(entry.ForceIntention)
+            if entry.ForceValue:
+                ET.SubElement(AttributeList, "ForceValue").text = entry.ForceValue
+
+        return
+
+
+class PlcWatchTable(WatchAndForceTables):
+    def __init__(self, name: str, entries: list[PlcWatchTableEntryData]) -> None:
+        super().__init__(DocumentSWType.PlcWatchTable, name)
+
+        id = 1
+        for entry in entries:
+            Entry = self._create_entry_element(DocumentSWType.PlcWatchTableEntry, id)
+            self._create_base_entry(Entry, entry)
+            id += 3
+
+        return
+
+
+class PlcForceTable(WatchAndForceTables):
+    def __init__(self, name: str, entries: list[PlcForceTableEntryData | PlcWatchTableEntryData]) -> None:
+        super().__init__(DocumentSWType.PlcForceTable, name)
+
+        id = 1
+        for entry in entries:
+            Entry = self._create_entry_element(DocumentSWType.PlcForceTableEntry, id)
+            self._create_base_entry(Entry, entry)
+            id += 3
 
         return
 

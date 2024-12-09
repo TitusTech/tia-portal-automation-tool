@@ -23,6 +23,7 @@ from modules.structs import NetworkSourceContainer
 from modules.structs import GlobalDBData, InstanceContainer, DocumentSWType
 from modules.structs import OBData, OBEventClass, FBData
 from modules.structs import DatabaseType
+from modules.structs import WatchAndForceTablesData, PlcForceTableEntryData, PlcWatchTableEntryData
 from modules.xml_builder import OB, FB, FC, GlobalDB
 from modules.xml_builder import PlcStruct
 
@@ -485,6 +486,55 @@ def extract_globaldb_from_xml(imports: Imports,
 
     return exported_db
 
+def enumerate_watch_tables_entries(plc_software: Siemens.Engineering.HW.Software) -> list[dict]:
+    tables: Siemens.Engineering.SW.WatchAndForceTables.PlcWatchTable = plc_software.WatchAndForceTableGroup.WatchTables
+
+    watch_tables: list[dict] = []
+
+    for watch_table in tables:
+        entries: list[dict] = []
+        for e in watch_table.Entries:
+            entry = {"Name": e.Name,
+                    "Address": e.Address,
+                     "DisplayFormat": e.DisplayFormat.ToString(),
+                     "ModifyIntention": e.ModifyIntention,
+                     "ModifyTrigger": e.ModifyTrigger.ToString(),
+                     "ModifyValue": e.ModifyValue,
+                     "MonitorTrigger": e.MonitorTrigger.ToString()
+                    }
+            entries.append(entry)
+        table = {
+            "Name": watch_table.Name,
+            "Entries": entries
+        }
+        watch_tables.append(table)
+
+    return watch_tables
+
+def enumerate_force_tables_entries(plc_software: Siemens.Engineering.HW.Software) -> list[dict]:
+    tables: Siemens.Engineering.SW.WatchAndForceTables.PlcForceTable = plc_software.WatchAndForceTableGroup.ForceTables
+
+    force_tables: list[dict] = []
+    for force_table in tables:
+        entries: list[dict] = []
+        for e in force_table.Entries:
+            entry = {"Name": e.Name,
+                    "Address": e.Address,
+                     "DisplayFormat": e.DisplayFormat.ToString(),
+                     "ForceIntention": e.ForceIntention,
+                     "ForceValue": e.ForceValue,
+                     "MonitorTrigger": e.MonitorTrigger.ToString()
+                    }
+            entries.append(entry)
+        table = {
+            "Name": force_table.Name,
+            "Entries": entries
+        }
+        force_tables.append(table)
+
+    return force_tables
+
+
 def compile_single_sw(imports: Imports, plcblock: Siemens.Engineering.SW.Blocks.PlcBlock):
     SE: Siemens.Engineering = imports.DLL
 
@@ -494,8 +544,8 @@ def compile_single_sw(imports: Imports, plcblock: Siemens.Engineering.SW.Blocks.
     return
 
 def extract_xml_of_plcblock(imports: Imports,
-                           plcblock: Siemens.Engineering.SW.Blocks.PlcBlock
-                           ) -> str:
+                            plcblock: Siemens.Engineering.SW.Blocks.PlcBlock
+                            ) -> str:
     SE: Siemens.Engineering = imports.DLL
     FileInfo: FileInfo = imports.FileInfo
 
@@ -767,4 +817,7 @@ def generate_program_blocks(imports: Imports,
 
             import_xml_to_block_group(imports, xml, plc_software, block.Folder)
 
+    return
+
+def generate_watch_and_force_tables(plc_software: Siemens.Engineering.HW.Software, entry: WatchAndForceTablesData):
     return

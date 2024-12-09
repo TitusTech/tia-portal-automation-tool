@@ -4,8 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from modules import api
-from modules.structs import ProjectData
-from modules.structs import LibraryData
+from modules.structs import LibraryData, ProjectData
 from modules.structs import DeviceCreationData
 from modules.structs import ModuleData, ModulesContainerData
 from modules.structs import TagTableData, TagData
@@ -15,6 +14,7 @@ from modules.structs import DocumentSWType, PlcStructData
 from modules.structs import DatabaseType, GlobalDBData, VariableStruct
 from modules.structs import VariableStruct, VariableSection
 from modules.structs import WireParameter
+from modules.structs import WatchAndForceTablesData, PlcWatchForceType, PlcWatchTableEntryData, PlcForceTableEntryData
 
 
 def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, Any]):
@@ -41,6 +41,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         tagtabledata = [TagTableData(table.get('Name', 'Tag table_1')) for table in device_data.get('PLC tags', [])]
         plcstructdata = [PlcStructData(p.get('Name'), p.get('types')) for p in device_data.get('PLC data types', [])]
         requiredlibsdata = MasterCopiesDeviceData(device_data.get('required_libraries', []))
+
 
         api.generate_mastercopies_to_device(TIA, plc_software, requiredlibsdata)
         api.generate_modules(modules_container, device)
@@ -180,6 +181,39 @@ def clean_wire_parameters(parameters: list[dict]) -> list[WireParameter]:
     return wires
 
 
+def clean_watch_and_force_tables(tables: list[dict]) -> list[WatchAndForceTablesData]:
+    data: list[WatchAndForceTablesData] = []
+
+    for table in tables:
+        entries = []
+        for entry in table.get('Entries', []):
+            if table['type'] == PlcWatchForceType.PlcWatchTable:
+                e = PlcWatchTableEntryData(Name=entry['Name'],
+                                           Address=entry.get('Address', ''),
+                                           DisplayFormat=entry.get('DisplayFormat', ''),
+                                           MonitorTrigger=entry.get('MonitorTrigger', ''),
+                                           ModifyIntention=entry.get('ModifyIntention', False),
+                                           ModifyTrigger=entry.get('ModifyTrigger', "Permanent"),
+                                           ModifyValue=entry.get('ModifyValue', '')
+                                           )
+                entries.append(e)
+            if table['type'] == PlcWatchForceType.PlcForceTable:
+                e = PlcForceTableEntryData(Name=entry['Name'],
+                                           Address=entry.get('Address', ''),
+                                           DisplayFormat=entry.get('DisplayFormat', ''),
+                                           MonitorTrigger=entry.get('MonitorTrigger', ''),
+                                           ForceIntention=entry.get('ForceIntention', False),
+                                           ForceValue=entry.get('ForceValue', '')
+                                           )
+                entries.append(e)
+
+        t = WatchAndForceTablesData(Type=table['type'],
+                                    Name=table['Name'],
+                                    Entries=entries
+                                    )
+        data.append(t)
+
+    return data
 
 # def execute_old(SE: Siemens.Engineering, config: dict[Any, Any], settings: dict[str, Any]):
 #     # do tags next, but before that finish network setup of device
