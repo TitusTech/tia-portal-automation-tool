@@ -236,3 +236,11 @@ class WatchAndForceTablesData:
     Type: PlcWatchForceType
     Name: str
     Entries: list[PlcForceTableEntryData | PlcWatchTableEntryData]
+
+
+@dataclass
+class SubnetData:
+    Name: str
+    Address: str
+    IoController: str
+

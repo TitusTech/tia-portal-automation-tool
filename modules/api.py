@@ -24,6 +24,7 @@ from modules.structs import GlobalDBData, InstanceContainer, DocumentSWType
 from modules.structs import OBData, OBEventClass, FBData
 from modules.structs import DatabaseType
 from modules.structs import WatchAndForceTablesData,  PlcWatchForceType
+from modules.structs import SubnetData
 from modules.xml_builder import OB, FB, FC, GlobalDB
 from modules.xml_builder import PlcForceTable, PlcWatchTable
 from modules.xml_builder import PlcStruct
@@ -820,11 +821,11 @@ def generate_program_blocks(imports: Imports,
 
     return
 
-def generate_watch_and_force_tables(imports: Imports, plc_software: Siemens.Engineering.HW.Software, tables: list[WatchAndForceTablesData]):
+def generate_watch_and_force_tables(imports: Imports, plc_software: Siemens.Engineering.HW.Software, data: list[WatchAndForceTablesData]):
     SE: Siemens.Engineering = imports.DLL
     FileInfo: FileInfo = imports.FileInfo
 
-    for wft in tables:
+    for wft in data:
         if wft.Type == PlcWatchForceType.PlcWatchTable:
             wt = PlcWatchTable(wft.Name, wft.Entries)
             xml = wt.xml()
@@ -845,4 +846,10 @@ def generate_watch_and_force_tables(imports: Imports, plc_software: Siemens.Engi
             xml_path = FileInfo(filename.absolute().as_posix())
             plc_software.WatchAndForceTableGroup.ForceTables.Import(xml_path, SE.ImportOptions.Override)
 
+    return
+
+
+def connect_subnets(itf: Siemens.Engineering.HW.Features.NetworkInterface, data: SubnetData):
+    subnet: Siemens.Engineering.HW.Subnet = itf.Nodes[0].CreateAndConnectToSubnet(data.Name)
+    io_system: Siemens.Engineering.HW.IoSystem = itf.IoControllers[0].CreateIoSystem(data.IoController)
     return
