@@ -374,7 +374,7 @@ class WatchAndForceTables(BaseDocument):
 
 
 class PlcWatchTable(WatchAndForceTables):
-    def __init__(self, name: str, entries: list[PlcWatchTableEntryData]) -> None:
+    def __init__(self, name: str, entries: list[PlcForceTableEntryData | PlcWatchTableEntryData]) -> None:
         super().__init__(DocumentSWType.PlcWatchTable, name)
 
         id = 1

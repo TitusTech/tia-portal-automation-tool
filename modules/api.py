@@ -23,8 +23,9 @@ from modules.structs import NetworkSourceContainer
 from modules.structs import GlobalDBData, InstanceContainer, DocumentSWType
 from modules.structs import OBData, OBEventClass, FBData
 from modules.structs import DatabaseType
-from modules.structs import WatchAndForceTablesData, PlcForceTableEntryData, PlcWatchTableEntryData
+from modules.structs import WatchAndForceTablesData,  PlcWatchForceType
 from modules.xml_builder import OB, FB, FC, GlobalDB
+from modules.xml_builder import PlcForceTable, PlcWatchTable
 from modules.xml_builder import PlcStruct
 
 
@@ -819,5 +820,29 @@ def generate_program_blocks(imports: Imports,
 
     return
 
-def generate_watch_and_force_tables(plc_software: Siemens.Engineering.HW.Software, entry: WatchAndForceTablesData):
+def generate_watch_and_force_tables(imports: Imports, plc_software: Siemens.Engineering.HW.Software, tables: list[WatchAndForceTablesData]):
+    SE: Siemens.Engineering = imports.DLL
+    FileInfo: FileInfo = imports.FileInfo
+
+    for wft in tables:
+        if wft.Type == PlcWatchForceType.PlcWatchTable:
+            wt = PlcWatchTable(wft.Name, wft.Entries)
+            xml = wt.xml()
+
+            logging.debug(f"Generated WatchTable: {xml}")
+
+            filename = write_xml(xml)
+            xml_path = FileInfo(filename.absolute().as_posix())
+            plc_software.WatchAndForceTableGroup.WatchTables.Import(xml_path, SE.ImportOptions.Override)
+
+        if wft.Type == PlcWatchForceType.PlcForceTable:
+            wt = PlcForceTable(wft.Name, wft.Entries)
+            xml = wt.xml()
+
+            logging.debug(f"Generated ForceTable: {xml}")
+
+            filename = write_xml(xml)
+            xml_path = FileInfo(filename.absolute().as_posix())
+            plc_software.WatchAndForceTableGroup.ForceTables.Import(xml_path, SE.ImportOptions.Override)
+
     return

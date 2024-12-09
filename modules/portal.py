@@ -41,6 +41,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         tagtabledata = [TagTableData(table.get('Name', 'Tag table_1')) for table in device_data.get('PLC tags', [])]
         plcstructdata = [PlcStructData(p.get('Name'), p.get('types')) for p in device_data.get('PLC data types', [])]
         requiredlibsdata = MasterCopiesDeviceData(device_data.get('required_libraries', []))
+        watchandforcetablesdata = clean_watch_and_force_tables(device_data.get('Watch and force tables', []))
 
 
         api.generate_mastercopies_to_device(TIA, plc_software, requiredlibsdata)
@@ -63,6 +64,8 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         for block in device_data.get('Program blocks', []):
             plcblockdata.append(clean_program_block_data(block))
         api.generate_program_blocks(imports, TIA, plc_software, plcblockdata)
+        api.generate_watch_and_force_tables(imports, plc_software, watchandforcetablesdata)
+
 
 
 
