@@ -85,9 +85,19 @@ class ProjectData:
     Overwrite: bool
 
 @dataclass
+class BlockInstanceParameter:
+    Name: str
+    Parameters: list[WireParameter]
+
+@dataclass
+class LibraryConfigData:
+    Template: Path
+
+@dataclass
 class LibraryData:
     FilePath: Path
     ReadOnly: bool
+    Config: LibraryConfigData
 
 @dataclass
 class DeviceCreationData:
@@ -144,7 +154,7 @@ class GlobalDBData(DatabaseData):
 class WireParameter:
     Name: str
     Section: str
-    Type: str
+    Datatype: str
     Value: str | list[str]
     Negated: bool
 

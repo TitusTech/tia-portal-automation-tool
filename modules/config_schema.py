@@ -255,9 +255,14 @@ schema_network = Schema({
     })
 
 
+schema_library_config = Schema({
+    Optional("template"): And(str, Use(Path), lambda p: Path(p)),
+})
+
 schema_library = Schema({
     "path": And(str, Use(Path), lambda p: Path(p)),
     Optional("read_only", default=True): bool,
+    Optional("config", default={}): schema_library_config,
     })
 
 schema = Schema(

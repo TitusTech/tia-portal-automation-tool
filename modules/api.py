@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+import json
 import logging
 import tempfile
 import xml.etree.ElementTree as ET
@@ -10,7 +11,7 @@ import xml.etree.ElementTree as ET
 from modules import logger
 from modules.structs import XMLNS
 from modules.structs import ProjectData
-from modules.structs import LibraryData
+from modules.structs import LibraryData, WireParameter, BlockInstanceParameter
 from modules.structs import DeviceCreationData
 from modules.structs import MasterCopiesDeviceData
 from modules.structs import ModuleData, ModulesContainerData
@@ -118,11 +119,15 @@ def create_project(imports: Imports, data: ProjectData, TIA: Siemens.Engineering
 
 
 
-def import_libraries(imports: Imports, data: list[LibraryData], TIA: Siemens.Engineering.TiaPortal) -> list[Siemens.Engineering.Library.GlobalLibrary]:
+def import_libraries(imports: Imports,
+                     TIA: Siemens.Engineering.TiaPortal,
+                     data: list[LibraryData]
+                     ) -> list[tuple[Siemens.Engineering.Library.GlobalLibrary, list[BlockInstanceParameter]]]:
     SE: Siemens.Engineering = imports.DLL
     FileInfo: FileInfo = imports.FileInfo
+    logging.debug(f"Libraries: {data}")
 
-    libraries: list[Siemens.Engineering.Library.GlobalLibrary] = []
+    libraries: list[tuple[Siemens.Engineering.Library.GlobalLibrary, list[BlockInstanceParameter]]] = []
     for library_data in data:
         library_path: FileInfo = FileInfo(library_data.FilePath.as_posix())
 
@@ -133,7 +138,27 @@ def import_libraries(imports: Imports, data: list[LibraryData], TIA: Siemens.Eng
             library = TIA.GlobalLibraries.Open(library_path, SE.OpenMode.ReadOnly) # Read access to the library. Data can be read from the library.
         else:
             library = TIA.GlobalLibraries.Open(library_path, SE.OpenMode.ReadWrite) # Read access to the library. Data can be read from the library.
-        libraries.append(library)
+
+        wire_parameters: list[BlockInstanceParameter] = []
+        if library_data.Config:
+            if library_data.Config.Template:
+                with open(library_data.Config.Template) as template_file:
+                    template = json.load(template_file)
+                    for block in template:
+                        w_params = []
+                        for param in block.get('parameters', []):
+                            instance_params = WireParameter(Name=param.get('name'),
+                                                            Section=param.get('section'),
+                                                            Datatype=param.get('datatype'),
+                                                            Value="",
+                                                            Negated=False
+                                                            )
+                            w_params.append(instance_params)
+                        block_param = BlockInstanceParameter(Name=block.get('block_name'),
+                                                            Parameters=w_params
+                                                            )
+                        wire_parameters.append(block_param)
+        libraries.append((library, wire_parameters))
 
         logging.info(f"Successfully opened GlobalLibrary: {library.Name}")
 

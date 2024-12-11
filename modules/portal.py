@@ -4,7 +4,8 @@ from pathlib import Path
 from typing import Any
 
 from modules import api
-from modules.structs import LibraryData, ProjectData
+from modules.structs import ProjectData
+from modules.structs import LibraryConfigData, LibraryData
 from modules.structs import DeviceCreationData
 from modules.structs import ModuleData, ModulesContainerData
 from modules.structs import TagTableData, TagData
@@ -23,12 +24,12 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
     TIA: Siemens.Engineering.TiaPortal = api.connect_portal(imports, config, settings)
 
     project_data = ProjectData(config['name'], config['directory'], config['overwrite'])
-    library_data = [LibraryData(Path(lib.get('path')), lib.get('read_only')) for lib in config.get('libraries', [])]
+    library_data = clean_libraries_data(config.get('libraries', []))
     dev_create_data = [DeviceCreationData(dev.get('p_typeIdentifier', 'PLC_1'), dev.get('p_name', 'NewPLCDevice'), dev.get('p_deviceName', '')) for dev in config.get('devices', [])]
 
 
     project: Siemens.Engineering.Project = api.create_project(imports, project_data, TIA)
-    api.import_libraries(imports, library_data, TIA)
+    api.import_libraries(imports, TIA, library_data)
     devices: list[Siemens.Engineering.HW.Device] = api.create_devices(dev_create_data, project)
     interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
     for i, device_data in enumerate(config['devices']):
@@ -64,7 +65,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         for block in device_data.get('Program blocks', []):
             plcblockdata.append(clean_program_block_data(block))
         api.generate_program_blocks(imports, TIA, plc_software, plcblockdata)
-        # api.generate_watch_and_force_tables(imports, plc_software, watchandforcetablesdata)
+        api.generate_watch_and_force_tables(imports, plc_software, watchandforcetablesdata)
 
 
 
@@ -102,7 +103,7 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
                                                    ToFolder=instance.get('to_folder', []),
                                                    Database=clean_instance_database(instance),
                                                    Parameters=clean_wire_parameters(data.get('wires', []))
-                                                  )
+                                                   )
                     case Source.LOCAL:
                         inst = InstanceData(Type=instance['type'],
                                             Source=instance['source'],
@@ -121,10 +122,10 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
             instances.append(inst)
 
         network_sources.append(NetworkSourceData(Title=ns.get('title', ""),
-                                Comment=ns.get('comment', ""),
-                                Instances=instances,
-                                )
-                            )
+                                                 Comment=ns.get('comment', ""),
+                                                 Instances=instances,
+                                                 )
+                               )
     plcblock = PlcBlockData(Type=data['type'],
                             Name=data['name'],
                             ProgrammingLanguage=data.get('programming_language', "FBD"),
@@ -134,7 +135,7 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
                             Database=clean_instance_database(data),
                             Variables=clean_variable_sections(data.get('variables', [])),
                             Parameters=clean_wire_parameters(data.get('wires', []))
-                           )
+                            )
     return plcblock
 
 
@@ -146,7 +147,7 @@ def clean_instance_database(instance: dict) -> DatabaseData:
                         Folder=db.get('folder', []),
                         Number=db.get('number', 1)
                         )
-    
+
 
 def clean_variable_structs(structs: list[dict]) -> list[VariableStruct]:
     variables: list[VariableStruct] = []
@@ -175,7 +176,7 @@ def clean_wire_parameters(parameters: list[dict]) -> list[WireParameter]:
     for param in parameters:
         wire = WireParameter(Name=param['name'],
                              Section=param['section'],
-                             Type=param['type'],
+                             Datatype=param['type'],
                              Value=param['value'],
                              Negated=param.get('negated', False)
                              )
@@ -217,6 +218,19 @@ def clean_watch_and_force_tables(tables: list[dict]) -> list[WatchAndForceTables
         data.append(t)
 
     return data
+
+def clean_libraries_data(data: list[dict]) -> list[LibraryData]:
+    libraries: list[LibraryData] = []
+
+    for library in data:
+        config = library.get('config', {})
+        cleaned_library = LibraryData(FilePath=Path(library.get('path')),
+                                      ReadOnly=library.get('read_only', True),
+                                      Config=LibraryConfigData(Template=config.get('template'))
+                                      )
+        libraries.append(cleaned_library)
+
+    return libraries
 
 # def execute_old(SE: Siemens.Engineering, config: dict[Any, Any], settings: dict[str, Any]):
 #     # interfaces is used here
