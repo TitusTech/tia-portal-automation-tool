@@ -11,7 +11,7 @@ import xml.etree.ElementTree as ET
 from modules import logger
 from modules.structs import XMLNS
 from modules.structs import ProjectData
-from modules.structs import LibraryData, WireParameter, BlockInstanceParameter
+from modules.structs import LibraryData, WireParameter, InstanceParameterTemplate
 from modules.structs import DeviceCreationData
 from modules.structs import MasterCopiesDeviceData
 from modules.structs import ModuleData, ModulesContainerData
@@ -122,12 +122,14 @@ def create_project(imports: Imports, data: ProjectData, TIA: Siemens.Engineering
 def import_libraries(imports: Imports,
                      TIA: Siemens.Engineering.TiaPortal,
                      data: list[LibraryData]
-                     ) -> list[tuple[Siemens.Engineering.Library.GlobalLibrary, list[BlockInstanceParameter]]]:
+                     ) -> tuple[list[Siemens.Engineering.Library.GlobalLibrary], list[InstanceParameterTemplate]]:
+
     SE: Siemens.Engineering = imports.DLL
     FileInfo: FileInfo = imports.FileInfo
     logging.debug(f"Libraries: {data}")
 
-    libraries: list[tuple[Siemens.Engineering.Library.GlobalLibrary, list[BlockInstanceParameter]]] = []
+    libraries: list[Siemens.Engineering.Library.GlobalLibrary] = []
+    wire_parameters: list[InstanceParameterTemplate] = []
     for library_data in data:
         library_path: FileInfo = FileInfo(library_data.FilePath.as_posix())
 
@@ -139,7 +141,6 @@ def import_libraries(imports: Imports,
         else:
             library = TIA.GlobalLibraries.Open(library_path, SE.OpenMode.ReadWrite) # Read access to the library. Data can be read from the library.
 
-        wire_parameters: list[BlockInstanceParameter] = []
         if library_data.Config:
             if library_data.Config.Template:
                 with open(library_data.Config.Template) as template_file:
@@ -154,15 +155,15 @@ def import_libraries(imports: Imports,
                                                             Negated=False
                                                             )
                             w_params.append(instance_params)
-                        block_param = BlockInstanceParameter(Name=block.get('block_name'),
+                        block_param = InstanceParameterTemplate(Name=block.get('block_name'),
                                                             Parameters=w_params
                                                             )
                         wire_parameters.append(block_param)
-        libraries.append((library, wire_parameters))
+        libraries.append(library)
 
         logging.info(f"Successfully opened GlobalLibrary: {library.Name}")
 
-    return libraries
+    return libraries, wire_parameters
 
 
 def get_library(TIA: Siemens.Engineering.TiaPortal, name: str) -> Siemens.Engineering.GlobalLibraries.GlobalLibrary:

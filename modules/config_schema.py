@@ -108,7 +108,8 @@ schema_instance_source = Schema({
     Optional("from_folder", default=[]): And(list, [str]),
     Optional("to_folder", default=[]): And(list, [str]),
     Optional("db"): schema_instancedb,
-    Optional("wires", default=[]): [schema_wire_paramaters],
+    Optional("wires", default=[]): [schema_wire_paramaters], # might nto be needed soon
+    Optional("parameters", default={}): dict,
 })
 
 schema_instance_library = Schema({

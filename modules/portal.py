@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from modules import api
-from modules.structs import ProjectData
+from modules.structs import InstanceParameterTemplate, ProjectData
 from modules.structs import LibraryConfigData, LibraryData
 from modules.structs import DeviceCreationData
 from modules.structs import ModuleData, ModulesContainerData
@@ -29,7 +29,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
 
 
     project: Siemens.Engineering.Project = api.create_project(imports, project_data, TIA)
-    api.import_libraries(imports, TIA, library_data)
+    libraries, template = api.import_libraries(imports, TIA, library_data)
     devices: list[Siemens.Engineering.HW.Device] = api.create_devices(dev_create_data, project)
     interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
     for i, device_data in enumerate(config['devices']):
@@ -63,14 +63,14 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
 
         plcblockdata = []
         for block in device_data.get('Program blocks', []):
-            plcblockdata.append(clean_program_block_data(block))
+            plcblockdata.append(clean_program_block_data(block, template))
         api.generate_program_blocks(imports, TIA, plc_software, plcblockdata)
         api.generate_watch_and_force_tables(imports, plc_software, watchandforcetablesdata)
 
 
 
 
-def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
+def clean_program_block_data(data: dict, template: list[InstanceParameterTemplate] = []) -> PlcBlockData | DatabaseData:
     if data['type'] == DatabaseType.GlobalDB:
         return GlobalDBData(Type=data['type'],
                             Name=data['name'],
@@ -102,7 +102,7 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
                                                    FromFolder=instance.get('from_folder', []),
                                                    ToFolder=instance.get('to_folder', []),
                                                    Database=clean_instance_database(instance),
-                                                   Parameters=clean_wire_parameters(data.get('wires', []))
+                                                   Parameters=clean_wire_parameters(instance.get('parameters', {}), instance['name'])
                                                    )
                     case Source.LOCAL:
                         inst = InstanceData(Type=instance['type'],
@@ -111,11 +111,11 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
                                             FromFolder=instance.get('from_folder', []),
                                             ToFolder=instance.get('to_folder', []),
                                             Database=clean_instance_database(instance),
-                                            Parameters=clean_wire_parameters(data.get('wires', []))
+                                            Parameters=clean_wire_parameters(instance.get('parameters', {}), instance['name'], template)
                                             )
             else:
                 if instance.get('type') in [DocumentSWType.BlocksFB, DocumentSWType.BlocksOB, DocumentSWType.BlocksFC]:
-                    inst = clean_program_block_data(instance)
+                    inst = clean_program_block_data(instance, template)
 
             if not inst: continue
 
@@ -134,7 +134,7 @@ def clean_program_block_data(data: dict) -> PlcBlockData | DatabaseData:
                             NetworkSources=network_sources,
                             Database=clean_instance_database(data),
                             Variables=clean_variable_sections(data.get('variables', [])),
-                            Parameters=clean_wire_parameters(data.get('wires', []))
+                            Parameters=clean_wire_parameters(data.get('parameters', {}), data['name'])
                             )
     return plcblock
 
@@ -170,17 +170,17 @@ def clean_variable_sections(sections: list[dict]) -> list[VariableSection]:
     return var_sections
 
 
-def clean_wire_parameters(parameters: list[dict]) -> list[WireParameter]:
+def clean_wire_parameters(data: dict, name: str, template: list[InstanceParameterTemplate] = []) -> list[WireParameter]:
     wires: list[WireParameter] = []
 
-    for param in parameters:
-        wire = WireParameter(Name=param['name'],
-                             Section=param['section'],
-                             Datatype=param['type'],
-                             Value=param['value'],
-                             Negated=param.get('negated', False)
-                             )
-        wires.append(wire)
+    for instance_T in template:
+        if instance_T.Name != name:
+            continue
+        for parameter in instance_T.Parameters:
+            if not parameter.Name in data:
+                continue
+            parameter.Value = data[parameter.Name]
+            wires.append(parameter)
 
     return wires
 

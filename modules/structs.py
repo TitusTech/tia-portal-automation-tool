@@ -85,7 +85,7 @@ class ProjectData:
     Overwrite: bool
 
 @dataclass
-class BlockInstanceParameter:
+class InstanceParameterTemplate:
     Name: str
     Parameters: list[WireParameter]
 
