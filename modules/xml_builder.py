@@ -12,6 +12,7 @@ from modules.structs import OBData, FBData
 from modules.structs import GlobalDBData
 from modules.structs import NetworkSourceContainer
 from modules.structs import PlcForceTableEntryData, PlcWatchTableEntryData, WatchForceTable
+from modules.structs import InstanceContainer
 
 
 class BaseDocument:
@@ -280,22 +281,7 @@ class SWBlocksCompileUnit:
         for instance in instances:
             # for now, we only do 1 instance per network source
             if len(instances) == 1:
-                # parts can differ like this one:
-                # <Access Scope="LiteralConstant" UId="21">
-		        # 	<Constant>
-		        # 		<ConstantType>Bool</ConstantType>
-		        # 		<ConstantValue>FALSE</ConstantValue>
-		        # 	</Constant>
-		        # </Access>
-                Call = ET.SubElement(self.Parts, "Call", attrib={'UId': str(21)})
-                CallInfo = ET.SubElement(Call, "CallInfo", attrib={'Name': instance.Name, 'BlockType': instance.Type.value.split('.')[-1]})
-                if instance.Type != DocumentSWType.BlocksFC:
-                    scope = "GlobalVariable"
-                    if instance.Database.Type == DatabaseType.MultiInstance:
-                        scope = "LocalVariable"
-                    InstanceTag = ET.SubElement(CallInfo, "Instance", attrib={'Scope': scope, 'UId': str(22)})
-                    db_name = instance.Database.Name if instance.Database.Name != "" else f"{instance.Name}_DB"
-                    ET.SubElement(InstanceTag, "Component", attrib={'Name': db_name})
+                self._insert_parts(instance)
 
 		        # but wires remain the same for single instance, maybe
                 Wire = ET.SubElement(self.Wires, "Wire", attrib={'UId': str(24)})
@@ -304,7 +290,25 @@ class SWBlocksCompileUnit:
 
         return
     
-    def _create_parts(self, parts: list) -> list[ET.Element]:
+    def _insert_parts(self, instance: InstanceContainer):
+        for parameter in instance.Parameters:
+
+        # parts can differ like this one:
+        # <Access Scope="LiteralConstant" UId="21">
+		# 	<Constant>
+		# 		<ConstantType>Bool</ConstantType>
+		# 		<ConstantValue>FALSE</ConstantValue>
+		# 	</Constant>
+		# </Access>
+        Call = ET.SubElement(self.Parts, "Call", attrib={'UId': str(21)})
+        CallInfo = ET.SubElement(Call, "CallInfo", attrib={'Name': instance.Name, 'BlockType': instance.Type.value.split('.')[-1]})
+        if instance.Type != DocumentSWType.BlocksFC:
+            scope = "GlobalVariable"
+            if instance.Database.Type == DatabaseType.MultiInstance:
+                scope = "LocalVariable"
+            InstanceTag = ET.SubElement(CallInfo, "Instance", attrib={'Scope': scope, 'UId': str(22)})
+            db_name = instance.Database.Name if instance.Database.Name != "" else f"{instance.Name}_DB"
+            ET.SubElement(InstanceTag, "Component", attrib={'Name': db_name})
         return
 
     
@@ -434,3 +438,49 @@ def generate_MultilingualText(id: int, composition_name: str, text: str) -> ET.E
 
     return root
 
+class Access:
+    def __init__(self, uid: int, scope: str) -> None:
+        self.Access = ET.Element("Access", attrib={
+            "Scope": scope,
+            "UId": str(uid),
+        })
+
+        return
+
+    def _create_symbol_constant(self, name: str):
+        self.Value = ET.Element(name)
+
+        return
+
+class AccessGlobalVariable(Access):
+    def __init__(self, value: list, uid: int) -> None:
+        super().__init__(uid, "GlobalVariable")
+
+        self._create_symbol_constant("Symbol")
+        for v in value:
+            ET.SubElement(self.Value, "Component", attrib={'Name': v})
+
+        return
+
+class AccessLiteralConstant(Access):
+    def __init__(self, value: str, const_type: str, uid: int) -> None:
+        super().__init__(uid, "LiteralConstant")
+
+        self._create_symbol_constant("Constant")
+        ET.SubElement(self.Value, "ConstantType").text = const_type
+        ET.SubElement(self.Value, "ConstantValue").text = value
+
+        return
+
+class AccessTypedConstant(Access):
+    def __init__(self, value: str, uid: int) -> None:
+        super().__init__(uid, "TypedConstant")
+
+        self._create_symbol_constant("Constant")
+        ET.SubElement(self.Value, "ConstantValue").text = value
+
+        return
+
+def generate_access(parameter:) -> ET.Element:
+    # now let's figure out how to create Access element
+    return
