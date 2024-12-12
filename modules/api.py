@@ -721,7 +721,8 @@ def generate_instances(imports: Imports,
 
         container = InstanceContainer(Name=block.Name,
                                       Type=instance.Type,
-                                      Database=instance.Database
+                                      Database=instance.Database,
+                                      Parameters=instance.Parameters
                                       )
         containers.append(container)
 
@@ -789,7 +790,8 @@ def generate_plcblock(imports: Imports,
                                   ProgrammingLanguage=block.ProgrammingLanguage,
                                   NetworkSources=[],
                                   Database=block.Database,
-                                  Variables=block.Variables
+                                  Variables=block.Variables,
+                                  Parameters=block.Parameters
                                   )
     container.NetworkSources = generate_network_sources(imports, TIA, plc_software, block.NetworkSources)
     match container.Type:

@@ -206,12 +206,16 @@ class InstanceContainer:
     Name: str
     Type: DocumentSWType
     Database: DatabaseData
+    Parameters: list[WireParameter]
+
 
 @dataclass
 class ProgramBlockContainer:
     Type: DocumentSWType | DatabaseType
     Name: str
     Number: int
+    Parameters: list[WireParameter]
+
 
 @dataclass
 class PlcBlockContainer(ProgramBlockContainer):

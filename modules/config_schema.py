@@ -81,7 +81,7 @@ schema_plcblock = {
     Optional("folder", default=[]): [str],
     Optional("number", default=1): int,
     Optional("variables", default=[]): [schema_variable_section],
-    Optional("wires", default=[]): [schema_wire_paramaters],
+    Optional("parameters", default={}): dict,
 }
 
 schema_db = Schema({
@@ -108,7 +108,6 @@ schema_instance_source = Schema({
     Optional("from_folder", default=[]): And(list, [str]),
     Optional("to_folder", default=[]): And(list, [str]),
     Optional("db"): schema_instancedb,
-    Optional("wires", default=[]): [schema_wire_paramaters], # might nto be needed soon
     Optional("parameters", default={}): dict,
 })
 
