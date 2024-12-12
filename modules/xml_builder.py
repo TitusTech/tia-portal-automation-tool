@@ -12,7 +12,7 @@ from modules.structs import OBData, FBData
 from modules.structs import GlobalDBData
 from modules.structs import NetworkSourceContainer
 from modules.structs import PlcForceTableEntryData, PlcWatchTableEntryData, WatchForceTable
-from modules.structs import InstanceContainer
+from modules.structs import InstanceContainer, WireParameter
 
 
 class BaseDocument:
@@ -281,36 +281,72 @@ class SWBlocksCompileUnit:
         for instance in instances:
             # for now, we only do 1 instance per network source
             if len(instances) == 1:
-                self._insert_parts(instance)
-
-		        # but wires remain the same for single instance, maybe
-                Wire = ET.SubElement(self.Wires, "Wire", attrib={'UId': str(24)})
-                ET.SubElement(Wire, "OpenCon", attrib={'UId': str(23)})
-                ET.SubElement(Wire, "NameCon", attrib={'UId': str(21), 'Name': "en"})
+                self._insert_parts(instance, 21)
+                self._insert_wires(instance, 21 + len(instance.Parameters))
 
         return
     
-    def _insert_parts(self, instance: InstanceContainer):
+    def _insert_parts(self, instance: InstanceContainer, uid: int):
         for parameter in instance.Parameters:
+            parameter.__dict__['UId'] = uid
+            parameter.__dict__['call'] = 21 + len(instance.Parameters)
+            access = generate_access(parameter, uid)
+            self.Parts.append(access)
+            uid += 1
 
-        # parts can differ like this one:
-        # <Access Scope="LiteralConstant" UId="21">
-		# 	<Constant>
-		# 		<ConstantType>Bool</ConstantType>
-		# 		<ConstantValue>FALSE</ConstantValue>
-		# 	</Constant>
-		# </Access>
-        Call = ET.SubElement(self.Parts, "Call", attrib={'UId': str(21)})
+        Call = ET.SubElement(self.Parts, "Call", attrib={'UId': str(uid)})
         CallInfo = ET.SubElement(Call, "CallInfo", attrib={'Name': instance.Name, 'BlockType': instance.Type.value.split('.')[-1]})
         if instance.Type != DocumentSWType.BlocksFC:
             scope = "GlobalVariable"
             if instance.Database.Type == DatabaseType.MultiInstance:
                 scope = "LocalVariable"
-            InstanceTag = ET.SubElement(CallInfo, "Instance", attrib={'Scope': scope, 'UId': str(22)})
+            InstanceTag = ET.SubElement(CallInfo, "Instance", attrib={'Scope': scope, 'UId': str(uid+1)})
             db_name = instance.Database.Name if instance.Database.Name != "" else f"{instance.Name}_DB"
             ET.SubElement(InstanceTag, "Component", attrib={'Name': db_name})
+
+        for parameter in instance.Parameters:
+            if parameter.Name == "en":
+                continue
+            ET.SubElement(CallInfo, "Parameter", attrib={
+                'Name': parameter.Name,
+                'Section': parameter.Section,
+                'Type': parameter.Datatype
+            })
+
         return
 
+    def _insert_wires(self, instance: InstanceContainer, call_uid: int):
+        # find en first
+        en_found = False
+        for param in instance.Parameters:
+            if param.Name == "en":
+                en_found = True
+                break
+
+        # add "en"
+        en_uid = call_uid + 3 - en_found
+        Wire = ET.SubElement(self.Wires, "Wire", attrib={'UId': str(en_uid)})
+        if not en_found:
+            ET.SubElement(Wire, "OpenCon", attrib={'UId': str(call_uid + 2)})
+        else:
+            ET.SubElement(Wire, "OpenCon", attrib={'UId': str(call_uid - len(instance.Parameters))})
+        ET.SubElement(Wire, "NameCon", attrib={'UId': str(call_uid), 'Name': "en"})
+
+        uid = en_uid + 1
+        for param in instance.Parameters:
+            if param.Name == "en":
+                continue
+
+            ident_uid = param.__dict__.get('UId', 23)
+            p_call_uid = param.__dict__.get('call', 23)
+
+            Wire = ET.SubElement(self.Wires, "Wire", attrib={'UId': str(uid)})
+            ET.SubElement(Wire, "IdentCon", attrib={'UId': str(ident_uid)})
+            ET.SubElement(Wire, "NameCon", attrib={'UId': str(p_call_uid), 'Name': param.Name})
+
+            uid += 1
+
+        return
     
 
 class GlobalDB(SWBlock):
@@ -448,7 +484,7 @@ class Access:
         return
 
     def _create_symbol_constant(self, name: str):
-        self.Value = ET.Element(name)
+        self.Value = ET.SubElement(self.Access, name)
 
         return
 
@@ -481,6 +517,14 @@ class AccessTypedConstant(Access):
 
         return
 
-def generate_access(parameter:) -> ET.Element:
-    # now let's figure out how to create Access element
-    return
+def generate_access(parameter: WireParameter, uid: int) -> ET.Element:
+    if isinstance(parameter.Value, list):
+        Access = AccessGlobalVariable(parameter.Value, uid)
+        return Access.Access
+    
+    if parameter.Datatype in ["Int", "Bool"]:
+        Access = AccessLiteralConstant(parameter.Value, parameter.Datatype, uid)
+        return Access.Access
+
+    Access = AccessTypedConstant(parameter.Value, uid)
+    return Access.Access
