@@ -312,6 +312,8 @@ class SWBlocksCompileUnit:
                 'Section': parameter.Section,
                 'Type': parameter.Datatype
             })
+            if parameter.Negated:
+                ET.SubElement(Call, "Negated", attrib={'Name': parameter.Name})
 
         return
 
@@ -522,7 +524,7 @@ def generate_access(parameter: WireParameter, uid: int) -> ET.Element:
         Access = AccessGlobalVariable(parameter.Value, uid)
         return Access.Access
     
-    if parameter.Datatype in ["Int", "Bool"]:
+    if parameter.Datatype in ["Int", "Bool", "UInt", "DInt"]:
         Access = AccessLiteralConstant(parameter.Value, parameter.Datatype, uid)
         return Access.Access
 

@@ -152,7 +152,7 @@ def import_libraries(imports: Imports,
                                                             Section=param.get('section'),
                                                             Datatype=param.get('datatype'),
                                                             Value="",
-                                                            Negated=False
+                                                            Negated=param.get('negated', False)
                                                             )
                             w_params.append(instance_params)
                         block_param = InstanceParameterTemplate(Name=block.get('block_name'),
