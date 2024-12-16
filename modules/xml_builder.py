@@ -281,15 +281,18 @@ class SWBlocksCompileUnit:
         for instance in instances:
             # for now, we only do 1 instance per network source
             if len(instances) == 1:
-                self._insert_parts(instance, 21)
-                self._insert_wires(instance, 21 + len(instance.Parameters))
+                last_uid = self._insert_parts(instance, 21)
+                self._insert_wires(instance, last_uid)
 
         return
     
-    def _insert_parts(self, instance: InstanceContainer, uid: int):
+    def _insert_parts(self, instance: InstanceContainer, uid: int) -> int:
         for parameter in instance.Parameters:
-            parameter.__dict__['UId'] = uid
             parameter.__dict__['call'] = 21 + len(instance.Parameters)
+            if not parameter.Value:
+                continue
+
+            parameter.__dict__['UId'] = uid
             access = generate_access(parameter, uid)
             self.Parts.append(access)
             uid += 1
@@ -305,6 +308,8 @@ class SWBlocksCompileUnit:
             ET.SubElement(InstanceTag, "Component", attrib={'Name': db_name})
 
         for parameter in instance.Parameters:
+            if parameter.Negated:
+                ET.SubElement(Call, "Negated", attrib={'Name': parameter.Name})
             if parameter.Name == "en":
                 continue
             ET.SubElement(CallInfo, "Parameter", attrib={
@@ -312,41 +317,29 @@ class SWBlocksCompileUnit:
                 'Section': parameter.Section,
                 'Type': parameter.Datatype
             })
-            if parameter.Negated:
-                ET.SubElement(Call, "Negated", attrib={'Name': parameter.Name})
 
-        return
+        return uid
 
-    def _insert_wires(self, instance: InstanceContainer, call_uid: int):
-        # find en first
-        en_found = False
+    def _insert_wires(self, instance: InstanceContainer, last_uid: int):
+        wire_values: list[tuple[ET.Element, ET.Element]] = []
         for param in instance.Parameters:
-            if param.Name == "en":
-                en_found = True
-                break
-
-        # add "en"
-        en_uid = call_uid + 3 - en_found
-        Wire = ET.SubElement(self.Wires, "Wire", attrib={'UId': str(en_uid)})
-        if not en_found:
-            ET.SubElement(Wire, "OpenCon", attrib={'UId': str(call_uid + 2)})
-        else:
-            ET.SubElement(Wire, "OpenCon", attrib={'UId': str(call_uid - len(instance.Parameters))})
-        ET.SubElement(Wire, "NameCon", attrib={'UId': str(call_uid), 'Name': "en"})
-
-        uid = en_uid + 1
-        for param in instance.Parameters:
-            if param.Name == "en":
-                continue
-
-            ident_uid = param.__dict__.get('UId', 23)
             p_call_uid = param.__dict__.get('call', 23)
+            NameCon = ET.Element("NameCon", attrib={'UId': str(p_call_uid), 'Name': param.Name})
+            if param.Value:
+                ident_uid = param.__dict__.get('UId', 23)
+                IdentCon = ET.Element("IdentCon", attrib={'UId': str(ident_uid)})
+                wire_values.append((NameCon, IdentCon))
 
-            Wire = ET.SubElement(self.Wires, "Wire", attrib={'UId': str(uid)})
-            ET.SubElement(Wire, "IdentCon", attrib={'UId': str(ident_uid)})
-            ET.SubElement(Wire, "NameCon", attrib={'UId': str(p_call_uid), 'Name': param.Name})
+            else:
+                OpenCon = ET.Element("OpenCon", attrib={'UId': str(last_uid)})
+                wire_values.append((NameCon, OpenCon))
 
-            uid += 1
+                last_uid += 1
+
+        for data in wire_values:
+            Wire = wrap_wire_data(data, last_uid)
+            self.Wires.append(Wire)
+            last_uid += 1
 
         return
     
@@ -546,3 +539,9 @@ def generate_access(parameter: WireParameter, uid: int) -> ET.Element:
 
     Access = AccessTypedConstant(parameter.Value, uid)
     return Access.Access
+
+def wrap_wire_data(elements: tuple[ET.Element, ET.Element], uid: int) -> ET.Element:
+    Wire = ET.Element("Wire", attrib={'UId': str(uid)})
+    for el in elements:
+        Wire.append(el)
+    return Wire

@@ -172,12 +172,20 @@ def clean_variable_sections(sections: list[dict]) -> list[VariableSection]:
 
 def clean_wire_parameters(data: dict, name: str, template: list[InstanceParameterTemplate] = []) -> list[WireParameter]:
     wires: list[WireParameter] = []
+    en: WireParameter = WireParameter(Name="en",
+                                      Section="",
+                                      Datatype="LiteralConstant",
+                                      Value="",
+                                      Negated=False
+                                      )
+    wires.append(en)
 
     for instance_T in template:
         if instance_T.Name != name:
             continue
         for parameter in instance_T.Parameters:
             if not parameter.Name in data:
+                parameter.Value = ""
                 continue
             parameter.Value = data[parameter.Name]
             wires.append(parameter)
