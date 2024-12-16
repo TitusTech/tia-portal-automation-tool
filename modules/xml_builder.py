@@ -282,13 +282,12 @@ class SWBlocksCompileUnit:
             # for now, we only do 1 instance per network source
             if len(instances) == 1:
                 last_uid = self._insert_parts(instance, 21)
-                self._insert_wires(instance, last_uid)
+                self._insert_wires(instance, last_uid + 2)
 
         return
     
     def _insert_parts(self, instance: InstanceContainer, uid: int) -> int:
         for parameter in instance.Parameters:
-            parameter.__dict__['call'] = 21 + len(instance.Parameters)
             if not parameter.Value:
                 continue
 
@@ -296,6 +295,8 @@ class SWBlocksCompileUnit:
             access = generate_access(parameter, uid)
             self.Parts.append(access)
             uid += 1
+        for parameter in instance.Parameters:
+            parameter.__dict__['call'] = uid
 
         Call = ET.SubElement(self.Parts, "Call", attrib={'UId': str(uid)})
         CallInfo = ET.SubElement(Call, "CallInfo", attrib={'Name': instance.Name, 'BlockType': instance.Type.value.split('.')[-1]})
