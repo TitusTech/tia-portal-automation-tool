@@ -478,10 +478,15 @@ def generate_MultilingualText(id: int, composition_name: str, text: str) -> ET.E
 
 class Access:
     def __init__(self, uid: int, scope: str) -> None:
-        self.Access = ET.Element("Access", attrib={
-            "Scope": scope,
-            "UId": str(uid),
-        })
+        if uid == -1:
+            self.Access = ET.Element("Access", attrib={
+                "Scope": scope
+            })
+        else:
+            self.Access = ET.Element("Access", attrib={
+                "Scope": scope,
+                "UId": str(uid),
+            })
 
         return
 
@@ -495,8 +500,19 @@ class AccessGlobalVariable(Access):
         super().__init__(uid, "GlobalVariable")
 
         self._create_symbol_constant("Symbol")
-        for v in value:
-            ET.SubElement(self.Value, "Component", attrib={'Name': v})
+        is_array: bool = any(isinstance(item, list) for item in value)
+        if is_array:
+            for v in value:
+                if isinstance(v, str):
+                    ET.SubElement(self.Value, "Component", attrib={'Name': v})
+                if isinstance(v, list):
+                    name = v[0]
+                    index = v[1]
+                    Component = ET.SubElement(self.Value, "Component", attrib={'Name': name, 'AccessModifier': "Array"})
+                    Component.append(AccessLiteralConstant(index, "DInt", -1).Access)
+        else:
+            for v in value:
+                ET.SubElement(self.Value, "Component", attrib={'Name': v})
 
         return
 
