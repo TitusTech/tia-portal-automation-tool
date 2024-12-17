@@ -807,6 +807,8 @@ def generate_plcblock(imports: Imports,
             xml = ob.xml()
             logging.debug(f"Generated OB: {xml}")
 
+            import_xml_to_block_group(imports, xml, plc_software, block.Folder)
+
         case DocumentSWType.BlocksFB:
             fbdata = FBData(Name=container.Name,
                             Number=container.Number,

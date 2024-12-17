@@ -174,8 +174,8 @@ def clean_wire_parameters(data: dict, name: str, template: list[InstanceParamete
     wires: list[WireParameter] = []
     en: WireParameter = WireParameter(Name="en",
                                       Section="",
-                                      Datatype="LiteralConstant",
-                                      Value="",
+                                      Datatype="Bool",
+                                      Value=data.get("en", ''),
                                       Negated=False
                                       )
     wires.append(en)
