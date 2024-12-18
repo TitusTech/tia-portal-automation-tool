@@ -97,12 +97,20 @@ class MainWindow(wx.Frame):
         _exit = _filemenu.Append(wx.ID_EXIT, "&Exit", "Terminate this tool. (Does not close TIA Portal)")
         _runmenu = wx.Menu()
         _run = _runmenu.Append(wx.NewIdRef(), "&Run", " Run project.")
+        _importmenu = wx.Menu()
+        _import_dll = _importmenu.Append(wx.NewIdRef(), "&DLL", " Import Siemens.Engineering.dll")
+        _import_library = _importmenu.Append(wx.NewIdRef(), "&Library", " Import Library")
+        _import_library_template = _importmenu.Append(wx.NewIdRef(), "&Template", " Import Template")
         self.Bind(wx.EVT_MENU, self.OnOpen, _open)
         self.Bind(wx.EVT_MENU, self.OnExit, _exit)
         self.Bind(wx.EVT_MENU, self.OnClose, _close)
         self.Bind(wx.EVT_MENU, self.OnRun, _run)
+        self.Bind(wx.EVT_MENU, self.OnSelectDLL, _import_dll)
+        self.Bind(wx.EVT_MENU, self.OnImportLibrary, _import_library)
+        self.Bind(wx.EVT_MENU, self.OnImportTemplate, _import_library_template)
         menubar.Append(_filemenu, "&File")
         menubar.Append(_runmenu, "&Action")
+        menubar.Append(_importmenu, "&Import")
         self.SetMenuBar(menubar)
 
 
@@ -181,6 +189,59 @@ class MainWindow(wx.Frame):
     def OnSelectDLL(self, e):
         dll_picker = DLLPickerWindow(self, dll_paths=self.b64_dlls, callback=self.receive_callback)
 
+    def OnImportLibrary(self, e):
+        if not self.config:
+            error_dialog = wx.MessageDialog(parent=self,
+                                            message="Config has not yet been imported",
+                                            caption="Error",
+                                            style=wx.OK|wx.ICON_ERROR
+                                            )
+            error_dialog.ShowModal()
+            return
+
+        with wx.FileDialog(self, "Open Global Library", wildcard="Global library (*.al*)|*.al*", style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST) as filedialog:
+            if filedialog.ShowModal() == wx.ID_CANCEL:
+                return
+            library_path = filedialog.GetPath()
+            library_name = Path(library_path).stem
+            library = {
+                "path": library_path,
+                "read_only": True
+            }
+            for i in range(len(self.config.get('devices', []))):
+                self.config['devices'][i]['required_libraries'] = [library_name]
+
+            self.config['libraries'] = [library]
+            self.tree.DeleteChildren(self.root_item)
+            self.populate_config(self.config)
+
+
+        return
+        
+    def OnImportTemplate(self, e):
+        if not self.config:
+            error_dialog = wx.MessageDialog(parent=self,
+                                            message="Config has not yet been imported",
+                                            caption="Error",
+                                            style=wx.OK|wx.ICON_ERROR
+                                            )
+            error_dialog.ShowModal()
+            return
+
+        with wx.FileDialog(self, "Open Library Template", wildcard="json (*.json)|*.json", style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST) as filedialog:
+            if filedialog.ShowModal() == wx.ID_CANCEL:
+                return
+            template_path = filedialog.GetPath()
+            if not self.config['libraries'][0]:
+                return
+            if not 'config' in self.config['libraries'][0]:
+                self.config['libraries'][0]['config'] = {}
+            self.config['libraries'][0]['config']['template'] = template_path
+            self.tree.DeleteChildren(self.root_item)
+            self.populate_config(self.config)
+
+
+        return
 
     def OnClose(self, e):
         self.config = {}
