@@ -1,6 +1,7 @@
 import logging
 
-FORMAT: str = '%(asctime)s [%(levelname)s] - %(message)s'
+# FORMAT: str = '%(asctime)s [%(levelname)s] - %(message)s'
+FORMAT: str = '[%(levelname)s] - %(message)s'
 
 class GUIHandler(logging.Handler):
     def __init__(self, textbox):
