@@ -882,4 +882,8 @@ def generate_watch_and_force_tables(imports: Imports, plc_software: Siemens.Engi
 def connect_subnets(itf: Siemens.Engineering.HW.Features.NetworkInterface, data: SubnetData):
     subnet: Siemens.Engineering.HW.Subnet = itf.Nodes[0].CreateAndConnectToSubnet(data.Name)
     io_system: Siemens.Engineering.HW.IoSystem = itf.IoControllers[0].CreateIoSystem(data.IoController)
+
+    if itf.Nodes[0].GetAttribute('Address') != data.Address:
+        return
+
     return
