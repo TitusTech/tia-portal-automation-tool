@@ -19,14 +19,37 @@ pip install -r requirements.txt
 
 ```
 pyinstaller --noconfirm --onefile --windowed --name "tia-portal-automation-tool" "main.py"
-cp -r res dist
 ```
 
 And done.
 
 To run, simply `python main.py`.
 
-## Caveats
+## Usage
 
-The JSON configuration allows adding of instances for every plc blocks.
-However, when the source of the plc block points to a mastercopy or plc, it won't create any instances for that plc block but it will still create the nested blocks (labeled as instances).
+### GUI
+
+1. Select Project JSON configuration (Required)
+
+  - Open the application.
+  - Navigate to the **Project** tab.
+  - Use the **Browse** button to locate the desired project JSON configuration file.
+  - Confirm selection by clicking **Open**.
+  - The **Config** tab can be used to check the imported project JSON configuration.
+
+2. Select DLL Version (Required)
+
+  - Navigate to the **Project** tab.
+  - Use the **Select DLL** button to select preinstalled DLLs from the list or select **Import** to import a specific DLL file.
+  - Click **Ok** to confirm.
+
+3. Import Template for Library (Optional)
+
+  - Ensure that a JSON configuration file has been imported.
+  - From the file menu **Import**, select **Template** to locate the desired template json file.
+  - Confirm selection by clicking **Open**.
+
+4. Execute
+
+  - In the **Project** tab, execute the automation by clicking **Execute** button.
+  - A log will be generated in the output box to indicate the current progress.
