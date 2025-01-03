@@ -10,18 +10,27 @@
 
 ## 2. **What's New in This Release?**
 
+This version is a major change that does not provide support to previous version.
+
+### Major Changes
+
+- **Change 1**: Changed the JSON configuration schema.
+- **Change 2**: Libraries now supports config templates.
+
 ### Key Features
-<!-- - **Feature 1**: Enhanced user authentication system with multi-factor authentication. -->
-<!-- - **Feature 2**: Improved UI for the settings page with better accessibility features. -->
-<!-- - **Feature 3**: New API for real-time data synchronization. -->
+- **Feature 1**: Added **Watch and Force Tables** in the configuration.
+- **Feature 2**: Added **PLC Data Types** in the configuration.
+- **Feature 3**: Program blocks now supports instantiation of parameter values for the wires.
+- **Feature 4**: Added Network Interface configuration in the schema.
+- **Feature 5**: Implemented an option to import library template JSON configuration in the GUI.
+- **Feature 6**: Supports selecting multiple versions of the DLL.
 
 ### Bug Fixes
-<!-- - **Bug Fix 1**: Fixed an issue where the app crashes when saving preferences. -->
-<!-- - **Bug Fix 2**: Resolved a bug in the notifications system that caused delayed alerts. -->
+- **Bug Fix 1**: Config failed to parse new schema.
 
 ### Improvements
-<!-- - **Improvement 1**: Optimized database queries, improving app performance. -->
-<!-- - **Improvement 2**: Better error messages for failed data sync attempts. -->
+- **Improvement 1**: Separated the codebase into separate functions for code reuse.
+- **Improvement 2**: Improved GUI and implemented new features.
 
 ---
 
