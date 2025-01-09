@@ -67,7 +67,8 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         for block in device_data.get('Program blocks', []):
             plcblockdata.append(clean_program_block_data(block, template))
         api.generate_program_blocks(imports, TIA, plc_software, plcblockdata)
-        api.generate_watch_and_force_tables(imports, plc_software, watchandforcetablesdata)
+        if settings.get('unlocked') == True:
+            api.generate_watch_and_force_tables(imports, plc_software, watchandforcetablesdata)
 
 
     subnet: Siemens.Engineering.HW.Subnet = None
