@@ -163,8 +163,8 @@ class InstanceData:
     Source: Source
     Type: DocumentSWType
     Name: str
-    FromFolder: list[str]
-    ToFolder: list[str]
+    FromFolder: str | list[str]
+    ToFolder: str | list[str]
     Database: DatabaseData
     Parameters: list[WireParameter]
 
