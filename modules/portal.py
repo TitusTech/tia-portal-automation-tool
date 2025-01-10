@@ -134,8 +134,8 @@ def clean_program_block_data(data: dict, template: list[InstanceParameterTemplat
                                                    Source=instance['source'],
                                                    Library=instance['library'],
                                                    Name=instance['name'],
-                                                   FromFolder=instance.get('from_folder', []),
-                                                   ToFolder=instance.get('to_folder', []),
+                                                   FromFolder=clean_folder_path(instance.get('from_folder', [])),
+                                                   ToFolder=clean_folder_path(instance.get('to_folder', [])),
                                                    Database=clean_instance_database(instance),
                                                    Parameters=clean_wire_parameters(instance.get('parameters', {}), instance['name'])
                                                    )
@@ -143,8 +143,8 @@ def clean_program_block_data(data: dict, template: list[InstanceParameterTemplat
                         inst = InstanceData(Type=instance['type'],
                                             Source=instance['source'],
                                             Name=instance['name'],
-                                            FromFolder=instance.get('from_folder', []),
-                                            ToFolder=instance.get('to_folder', []),
+                                            FromFolder=clean_folder_path(instance.get('from_folder', [])),
+                                            ToFolder=clean_folder_path(instance.get('to_folder', [])),
                                             Database=clean_instance_database(instance),
                                             Parameters=clean_wire_parameters(instance.get('parameters', {}), instance['name'], template)
                                             )
@@ -274,6 +274,14 @@ def clean_libraries_data(data: list[dict]) -> list[LibraryData]:
         libraries.append(cleaned_library)
 
     return libraries
+
+def clean_folder_path(data: str | list[str]) -> list[str]:
+    if isinstance(data, list):
+        return data
+
+    cleaned_path: list[str] = data.split("/")
+
+    return cleaned_path
 
 # def execute_old(SE: Siemens.Engineering, config: dict[Any, Any], settings: dict[str, Any]):
 #     # interfaces is used here
