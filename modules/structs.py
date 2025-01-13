@@ -163,6 +163,7 @@ class InstanceData:
     Source: Source
     Type: DocumentSWType
     Name: str
+    Number: int
     FromFolder: str | list[str]
     ToFolder: str | list[str]
     Database: DatabaseData
