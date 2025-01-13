@@ -105,6 +105,7 @@ schema_instance_source = Schema({
     "source": Use(Source),
     "type": And(str, Use(DocumentSWType)),
     "name": str,
+    Optional("number", default=1): int,
     Optional("from_folder", default=""): Or(str, And(list, [str])),
     Optional("to_folder", default=""): Or(str, And(list, [str])),
     Optional("db"): schema_instancedb,
