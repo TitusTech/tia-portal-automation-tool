@@ -100,14 +100,16 @@ class MainWindow(wx.Frame):
         _importmenu = wx.Menu()
         _import_dll = _importmenu.Append(wx.NewIdRef(), "&DLL", " Import Siemens.Engineering.dll")
         _import_library = _importmenu.Append(wx.NewIdRef(), "&Library", " Import Library")
-        _import_library_template = _importmenu.Append(wx.NewIdRef(), "&Template", " Import Template")
+        _import_library_template = _importmenu.Append(wx.NewIdRef(), "&Library Template", " Import Library Template")
+        _import_plcdatatype_template = _importmenu.Append(wx.NewIdRef(), "&PLC Data Type Template", " Import PLC Data Type Template")
         self.Bind(wx.EVT_MENU, self.OnOpen, _open)
         self.Bind(wx.EVT_MENU, self.OnExit, _exit)
         self.Bind(wx.EVT_MENU, self.OnClose, _close)
         self.Bind(wx.EVT_MENU, self.OnRun, _run)
         self.Bind(wx.EVT_MENU, self.OnSelectDLL, _import_dll)
         self.Bind(wx.EVT_MENU, self.OnImportLibrary, _import_library)
-        self.Bind(wx.EVT_MENU, self.OnImportTemplate, _import_library_template)
+        self.Bind(wx.EVT_MENU, self.OnImportLibraryTemplate, _import_library_template)
+        self.Bind(wx.EVT_MENU, self.OnImportPlcDataTypeTemplate, _import_plcdatatype_template)
         menubar.Append(_filemenu, "&File")
         menubar.Append(_runmenu, "&Action")
         menubar.Append(_importmenu, "&Import")
@@ -218,7 +220,8 @@ class MainWindow(wx.Frame):
 
         return
         
-    def OnImportTemplate(self, e):
+
+    def OnImportLibraryTemplate(self, e):
         if not self.config:
             error_dialog = wx.MessageDialog(parent=self,
                                             message="Config has not yet been imported",
@@ -237,6 +240,30 @@ class MainWindow(wx.Frame):
             if not 'config' in self.config['libraries'][0]:
                 self.config['libraries'][0]['config'] = {}
             self.config['libraries'][0]['config']['template'] = template_path
+            self.tree.DeleteChildren(self.root_item)
+            self.populate_config(self.config)
+
+
+        return
+
+    def OnImportPlcDataTypeTemplate(self, e):
+        if not self.config:
+            error_dialog = wx.MessageDialog(parent=self,
+                                            message="Config has not yet been imported",
+                                            caption="Error",
+                                            style=wx.OK|wx.ICON_ERROR
+                                            )
+            error_dialog.ShowModal()
+            return
+
+        with wx.FileDialog(self, "Open PLC Data Type Template", wildcard="json (*.json)|*.json", style=wx.FD_OPEN|wx.FD_FILE_MUST_EXIST) as filedialog:
+            if filedialog.ShowModal() == wx.ID_CANCEL:
+                return
+            with open(filedialog.GetPath(), 'r') as jsonfile:
+                data = json.load(jsonfile)
+
+            self.config['devices'][0]['PLC data types'] = data
+            # self.config['devices'][0] = 
             self.tree.DeleteChildren(self.root_item)
             self.populate_config(self.config)
 
