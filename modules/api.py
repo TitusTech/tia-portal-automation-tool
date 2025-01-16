@@ -487,6 +487,7 @@ def extract_globaldb_from_xml(imports: Imports,
 
     exported_db = {'type': "SW.Blocks.GlobalDB",
                    'name': db.Name,
+                   'number': db.Number,
                    'folder': folder,
                    'data': [],
                    'attributes': {}
