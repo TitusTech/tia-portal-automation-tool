@@ -487,26 +487,34 @@ def extract_globaldb_from_xml(imports: Imports,
 
     exported_db = {'type': "SW.Blocks.GlobalDB",
                    'name': db.Name,
+                   'number': db.Number,
                    'folder': folder,
                    'data': [],
                    'attributes': {}
                    }
     
     root = ET.fromstring(xml_data)
-    section = root.find(".//ns:Section", {"ns": XMLNS.SECTIONS.value})
-    if section is None: return {}
+    sections = root.findall(".//ns:Section", {"ns": XMLNS.SECTIONS.value})
+    for section in sections:
+        if section is None: continue
+        section_data = {
+            'name': section.attrib.get('Name'),
+            'data': [],
+        }
 
-    for member in section:
-        attribs = member.attrib
-        attribs['datatype'] = attribs['Datatype'].replace('"', r'\"')
-        for elements in member:
-            if elements.tag == "AttributeList":
-                for el in elements:
-                    attribs["attributes"] = {el.attrib['name']: el.text}
-        StartValue = member.find(".//ns:StartValue", {"ns": "http://www.siemens.com/automation/Openness/SW/Interface/v5"})
-        if StartValue is not None:
-            attribs["StartValue"] = StartValue.text or ""
-        exported_db['data'].append(attribs)
+        for member in section:
+            attribs = member.attrib
+            attribs['datatype'] = attribs.pop('Datatype', "").replace('"', r'\"')
+            for elements in member:
+                if elements.tag == "AttributeList":
+                    for el in elements:
+                        attribs["attributes"] = {el.attrib['name']: el.text}
+            StartValue = member.find(".//ns:StartValue", {"ns": "http://www.siemens.com/automation/Openness/SW/Interface/v5"})
+            if StartValue is not None:
+                attribs["StartValue"] = StartValue.text or ""
+            attribs['name'] = attribs.pop('Name')
+            section_data['data'].append(attribs)
+        exported_db['data'].append(section_data)
 
     MemoryLayout = root.find(".//MemoryLayout")
     if MemoryLayout is not None:
