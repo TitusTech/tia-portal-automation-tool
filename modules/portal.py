@@ -111,7 +111,7 @@ def clean_program_block_data(data: dict, template: list[InstanceParameterTemplat
                             Name=data['name'],
                             Number=data.get('number', 1),
                             Folder=data.get('folder', []),
-                            Structs=clean_variable_structs(data['data']),
+                            Structs=clean_variable_sections(data['data']),
                             Attributes=data.get('attributes', {}),
                             )
     if data['type'] == DatabaseType.InstanceDB:

@@ -145,7 +145,7 @@ class DatabaseData:
 
 @dataclass
 class GlobalDBData(DatabaseData):
-    Structs: list[VariableStruct]
+    Structs: list[VariableSection]
     Attributes: dict
 
 
