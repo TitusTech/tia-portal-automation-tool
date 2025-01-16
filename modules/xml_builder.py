@@ -348,10 +348,18 @@ class SWBlocksCompileUnit:
 class GlobalDB(SWBlock):
     def __init__(self, data: GlobalDBData) -> None:
         data.Number = max(1, min(data.Number, 599999))
-        section_struct = VariableSection("Static", data.Structs)
-        super().__init__(DatabaseType.GlobalDB, data.Name, data.Number, "DB", [section_struct])
+        super().__init__(DatabaseType.GlobalDB, data.Name, data.Number, "DB", data.Structs)
 
-        self._create_static_section()
+        for section in data.Structs:
+            match section.Name:
+                case "Static":
+                    self._create_static_section()
+                case "Input":
+                    self._create_input_section()
+                case "InOut":
+                    self._create_inout_section()
+                case "Output":
+                    self._create_output_section()
 
         self._add_variables()
 
