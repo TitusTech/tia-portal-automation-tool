@@ -26,7 +26,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
     project_data = ProjectData(config['name'], config['directory'], config['overwrite'])
     library_data = clean_libraries_data(config.get('libraries', []))
     dev_create_data = [DeviceCreationData(dev.get('p_typeIdentifier', 'PLC_1'), dev.get('p_name', 'NewPLCDevice'), dev.get('p_deviceName', '')) for dev in config.get('devices', [])]
-    subnetsdata = [SubnetData(net.get('address'), net.get('subnet_name'), net.get('io_controller')) for net in config.get('networks', [])]
+    subnetsdata = [SubnetData(net.get('subnet_name'), net.get('address'), net.get('io_controller')) for net in config.get('networks', [])]
 
 
     project: Siemens.Engineering.Project = api.create_project(imports, project_data, TIA)
@@ -49,8 +49,10 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         api.generate_mastercopies_to_device(TIA, plc_software, requiredlibsdata)
         api.generate_modules(modules_container, device)
         itf: Siemens.Engineering.HW.Features.NetworkInterface = api.create_device_network_service(imports, device_data, device)
-        # interfaces.append(itf)
-        interfaces = itf
+
+        for network_interface in itf:
+            interfaces.append(network_interface)
+        # interfaces = itf
 
         api.generate_tag_tables(tagtabledata, plc_software)
         for tag_table in device_data.get('PLC tags', []):
@@ -73,37 +75,19 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
 
     subnet: Siemens.Engineering.HW.Subnet = None
     io_system: Siemens.Engineering.HW.IoSystem = None
-    for i, network in enumerate(subnetsdata):
-        for itf in interfaces:
-            if itf.Nodes[0].GetAttribute('Address') != network.Address: continue
-            if i == 0:
-
-                # logging.info(f"Creating ({network.Name} subnet, {network.IoController} IO Controller)")
-
-                subnet: Siemens.Engineering.HW.Subnet = itf.Nodes[0].CreateAndConnectToSubnet(network.Name)
-                io_system: Siemens.Engineering.HW.IoSystem = itf.IoControllers[0].CreateIoSystem(network.IoController)
-            #
-            #     logging.info(f"Successfully created ({network.get('subnet_name')} subnet, {network.get('io_controller')} IO Controller)")
-            #     logging.debug(f"""Subnet: {subnet.Name}
-            #     NetType: {subnet.NetType}
-            #     TypeIdentifier: {subnet.TypeIdentifier}
-            # IO System: {io_system.Name}
-            #     Number: {io_system.Number}
-                # Subnet: {io_system.Subnet.Name}""")
-
+    for network_interface in interfaces:
+        for network in subnetsdata:
+            if network_interface.Nodes[0].GetAttribute('Address') != network.Address:
                 continue
+            if interfaces.index(network_interface) == 0:
+                subnet: Siemens.Engineering.HW.Subnet = network_interface.Nodes[0].CreateAndConnectToSubnet(network.Name)
+                io_system: Siemens.Engineering.HW.IoSystem = network_interface.IoControllers[0].CreateIoSystem(network.IoController)
+            else:
+                network_interface.Nodes[0].ConnectToSubnet(subnet)
+                if network_interface.IoConnectors.Count > 0:
+                    network_interface.IoConnectors[0].ConnectToIoSystem(io_system)
 
-            # logging.info(f"Connecting Subnet {subnet.Name} to IoSystem {io_system.Name}")
-
-            itf.Nodes[0].ConnectToSubnet(subnet)
-
-            # logging.debug(f"Subnet {subnet.Name} connected to NetworkInterface Subnets")
-
-            if itf.IoConnectors.Count > 0:
-                itf.IoConnectors[0].ConnectToIoSystem(io_system)
-
-                # logging.info(f"IoSystem {io_system.Name} connected to NetworkInterface IoConnectors")
-
+            
 
 def clean_program_block_data(data: dict, template: list[InstanceParameterTemplate] = []) -> PlcBlockData | DatabaseData:
     if data['type'] == DatabaseType.GlobalDB:
