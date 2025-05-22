@@ -218,6 +218,7 @@ schema_network_interface = Schema({
 })
 
 schema_device = {
+    "id": int,
     "p_name": str, # PLC1
     "p_typeIdentifier": str, # OrderNumber:6ES7 510-1DJ01-0AB0/V2.0
     Optional("network_interface", default={}): schema_network_interface,
