@@ -5,7 +5,7 @@ import base64
 import json
 import wx
 
-from modules import config_schema, portal, logger, api
+from modules import api
 from res import dlls
 
 
@@ -187,7 +187,7 @@ class MainWindow(wx.Frame):
         notebook.AddPage(_tab_config, "Config")
         notebook.AddPage(_tab_debug, "Debug")
 
-        logger.setup(self.logs, 10)
+        api.setup(self.logs, 10)
 
         self.SetMinSize((600,480))
         self.Show(True)
@@ -211,7 +211,7 @@ class MainWindow(wx.Frame):
 
         with open(self.json_config) as file:
             config = json.load(file)
-            self.config = config_schema.validate_config(config)
+            self.config = api.validate_config(config)
             self.config['directory'] = Path(self.textctrl_config.Value).parent
             self.config['name'] = Path(self.textctrl_config.Value).stem
             self.populate_config(self.config)
@@ -393,7 +393,7 @@ def import_and_execute(config, dll: Path):
     print()
 
     imports = api.Imports(SE, DirectoryInfo, FileInfo)
-    portal.execute(imports, config, { "enable_ui": True, })
+    api.execute(imports, config, { "enable_ui": True, })
 
 if __name__ == '__main__':
     dll_paths: dict[str, Path] = {}
@@ -412,14 +412,14 @@ if __name__ == '__main__':
         version_dll_path = save_path / f"Siemens.Engineering.dll"
         with version_dll_path.open('wb') as version_dll_file:
             version_dll_file.write(data)
-            logger.logging.debug(f"Written data of {key}")
+            api.logging.debug(f"Written data of {key}")
 
         version_hmi_dll_path = save_path / f"Siemens.Engineering.Hmi.dll"
         with version_hmi_dll_path.open('wb') as version_hmi_dll_file:
             version_hmi_dll_file.write(hmi_data)
-            logger.logging.debug(f"Written data of {key}")
+            api.logging.debug(f"Written data of {key}")
         dll_paths[key] = version_dll_path.absolute()
-    logger.logging.debug(f"DLL Paths: {dll_paths}")
+    api.logging.debug(f"DLL Paths: {dll_paths}")
 
     parser = argparse.ArgumentParser(description="A simple tool for automating TIA Portal projects.")
     parser.add_argument("-c", "--config",
@@ -444,7 +444,7 @@ if __name__ == '__main__':
     if json_config:
         with open(json_config) as file:
             config = json.load(file)
-            validated_config = config_schema.validate_config(config)
+            validated_config = api.validate_config(config)
 
             validated_config['directory'] = json_config.absolute().parent
             validated_config['name'] = json_config.stem

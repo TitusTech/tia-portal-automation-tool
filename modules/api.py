@@ -1,20 +1,201 @@
 from __future__ import annotations
-
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 import json
 import logging
-import tempfile
-import xml.etree.ElementTree as ET
-
-from modules import logger
-from modules.structs import ProjectData
-from modules.structs import InstanceParameterTemplate
-from modules.structs import DeviceCreationData
-from modules.structs import SubnetData
+from typing import Any
+from schema import Schema, And, Or, Optional
+import logging
 
 
+# Previous logger.py
+# FORMAT: str = '%(asctime)s [%(levelname)s] - %(message)s'
+FORMAT: str = '[%(levelname)s] - %(message)s'
+
+class GUIHandler(logging.Handler):
+    def __init__(self, textbox):
+        super().__init__()
+        self.textbox = textbox
+
+    def emit(self, record):
+        try:
+            message = self.format(record)
+            self.textbox.write(f"{message}\n")
+        except Exception:
+            self.handleError(record)
+
+def setup(textbox=None, LEVEL: int=20):
+    debug = logging.NOTSET
+    if LEVEL >= 10:
+        debug = logging.DEBUG
+    if LEVEL >= 20:
+        debug = logging.INFO
+    if LEVEL >= 30:
+        debug = logging.WARNING
+    if LEVEL >= 40:
+        debug = logging.ERROR
+    if LEVEL >= 50:
+        debug = logging.CRITICAL
+
+    logger = logging.getLogger()
+    logger.setLevel(debug)
+
+    for handler in logger.handlers[:]:
+        logger.removeHandler(handler)
+
+    stdio_handler = logging.StreamHandler()
+    stdio_handler.setLevel(debug)
+    stdio_handler.setFormatter(logging.Formatter(FORMAT))
+    logger.addHandler(stdio_handler)
+
+    if textbox:
+        gui_handler = GUIHandler(textbox)
+        gui_handler.setLevel(debug)
+        gui_handler.setFormatter(logging.Formatter(FORMAT))
+        logger.addHandler(gui_handler)
+
+
+# Previous config_schema.py
+schema_network = Schema({
+        "address": str, # 192.168.0.112
+        "subnet_name": str, # Profinet
+        "io_controller": str, # PNIO
+    })
+
+schema_network_interface = Schema({
+    # Optional("Name"): str, # read only
+    Optional("Address"): str,
+    # Optional("NodeId"): str, # read only
+    # Optional("NodeType"): str, # unsupported
+    Optional("UseIsoProtocol"): bool,
+    Optional("MacAddress"): str,
+    Optional("UseIpProtocol"): bool,
+    # Optional("IpProtocolSelection"): str, # unsupported
+    Optional("Address"): str,
+    Optional("SubnetMask"): str,
+    # Optional("UseRouter"): bool, # no need, just set RouterAddress to make this true
+    Optional("RouterAddress"): str,
+    Optional("DhcpClientId"): str,
+    Optional("PnDeviceNameSetDirectly"): bool,
+    Optional("PnDeviceNameAutoGeneration"): bool,
+    Optional("PnDeviceName"): str,
+    # Optional("PnDeviceNameConverted"): str, # read only
+})
+
+schema_device = {
+    "id": int,
+    "p_name": str, # PLC1
+    "p_typeIdentifier": str, # OrderNumber:6ES7 510-1DJ01-0AB0/V2.0
+    Optional("network_interface", default={}): schema_network_interface,
+    Optional("required_libraries", default=[]): list[str],
+}
+
+schema_device_plc = {
+        **schema_device,
+        "p_deviceName": str, # NewPlcDevice
+        Optional("slots_required", default=2): int,
+    }
+
+
+schema = Schema(
+    {
+        Optional("overwrite", default=True): bool,
+        Optional("devices", default=[]): And(list, [Or(schema_device_plc)]),
+        Optional("networks", default=[]): [schema_network],
+    },
+    ignore_extra_keys=True  
+)
+
+def validate_config(data):
+    return schema.validate(data)
+
+
+# Previous portal.py
+def execute(imports: Imports, config: dict[str, Any], settings: dict[str, Any]):
+    SE: Siemens.Engineering = imports.DLL
+
+    TIA: Siemens.Engineering.TiaPortal = connect_portal(imports, config, settings)
+
+    project_data = ProjectData(config['name'], config['directory'], config['overwrite'])
+    dev_create_data = [DeviceCreationData(dev.get('p_typeIdentifier', 'PLC_1'), dev.get('p_name', 'NewPLCDevice'), dev.get('p_deviceName', '')) for dev in config.get('devices', [])]
+    subnetsdata = [SubnetData(net.get('subnet_name'), net.get('address'), net.get('io_controller')) for net in config.get('networks', [])]
+
+    project: Siemens.Engineering.Project = create_project(imports, project_data, TIA)
+    devices: list[Siemens.Engineering.HW.Device] = create_devices(dev_create_data, project)
+    interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
+    for i, device_data in enumerate(config['devices']):
+        device = devices[i]
+        plc_software: Siemens.Engineering.HW.Software = get_plc_software(imports, device)
+
+        localmodule_data = [ModuleData(module['TypeIdentifier'], module['Name'], module['PositionNumber']) for module in device_data.get('Local modules', [])]
+        modules_container = ModulesContainerData(localmodule_data, device_data.get('slots_required', 2))
+
+        create_modules(modules_container, device)
+
+        itf: Siemens.Engineering.HW.Features.NetworkInterface = create_device_network_service(imports, device_data, device)
+
+        for network_interface in itf:
+            interfaces.append(network_interface)
+
+    subnet: Siemens.Engineering.HW.Subnet = None
+    io_system: Siemens.Engineering.HW.IoSystem = None
+    for network_interface in interfaces:
+        for network in subnetsdata:
+            if network_interface.Nodes[0].GetAttribute('Address') != network.Address:
+                continue
+            if interfaces.index(network_interface) == 0:
+                subnet: Siemens.Engineering.HW.Subnet = network_interface.Nodes[0].CreateAndConnectToSubnet(network.Name)
+                io_system: Siemens.Engineering.HW.IoSystem = network_interface.IoControllers[0].CreateIoSystem(network.IoController)
+            else:
+                network_interface.Nodes[0].ConnectToSubnet(subnet)
+                if network_interface.IoConnectors.Count > 0:
+                    network_interface.IoConnectors[0].ConnectToIoSystem(io_system)
+
+
+# Previous structs.py
+@dataclass
+class ProjectData:
+    Name: str
+    Directory: Path
+    Overwrite: bool
+
+@dataclass
+class WireParameter:
+    Name: str
+    Section: str
+    Datatype: str
+    Value: str | list[str]
+    Negated: bool
+
+@dataclass
+class InstanceParameterTemplate:
+    Name: str
+    Parameters: list[WireParameter]
+
+@dataclass
+class DeviceCreationData:
+    TypeIdentifier: str
+    Name: str
+    DeviceName: str
+
+@dataclass
+class SubnetData:
+    Name: str
+    Address: str
+    IoController: str
+
+@dataclass
+class ModuleData:
+    TypeIdentifier: str
+    Name: str
+    PositionNumber: int
+
+@dataclass
+class ModulesContainerData:
+    LocalModules: list[ModuleData]
+   #HmiModules: list[ModuleData]
+    SlotsRequired: int
 
 @dataclass
 class Imports:
@@ -22,7 +203,7 @@ class Imports:
     DirectoryInfo: System.IO.DirectoryInfo
     FileInfo: System.IO.FileInfo
 
-logger.setup(None, 10)
+setup(None, 10)
 log = logging.getLogger(__name__)
 
 def get_tia_portal_process_ids(imports: Imports) -> list[int]:
@@ -59,8 +240,6 @@ def connect_portal(imports: Imports, config: dict[Any, Any], settings: dict[str,
     logging.info(f"Started TIA Portal Openness ({process.Id}) {process.Mode} at {process.AcquisitionTime}")
 
     return TIA
-
-
 
 
 def create_project(imports: Imports, data: ProjectData, TIA: Siemens.Engineering.TiaPortal) -> Siemens.Engineering.Project:
@@ -101,7 +280,6 @@ def create_project(imports: Imports, data: ProjectData, TIA: Siemens.Engineering
     logging.info(f"Created project {data.Name} at {data.Directory}")
 
     return project
-
 
 
 def import_libraries(imports: Imports,
@@ -161,9 +339,31 @@ def get_library(TIA: Siemens.Engineering.TiaPortal, name: str) -> Siemens.Engine
             return glob_lib
 
 
+''' This function uses TIA Portal Openness API to create (plug) local and HMI modules into a given device.
+    It takes a data container with module details and a TIA Portal Hardware Device object as inputs. '''
 
+def create_modules(data: ModulesContainerData, device: Siemens.Engineering.HW.Device):
+    # Get the root hardware object of the device (usually the CPU or main rack)
+    hw_object: Siemens.Engineering.HW.HardwareObject = device.DeviceItems[0]
+    
+    # Loop through each local module defined in the data container
+    for module in data.LocalModules:
+        # Check if the module can be plugged at the specified position (adjusted by SlotsRequired offset)
+        if hw_object.CanPlugNew(module.TypeIdentifier, module.Name, module.PositionNumber + data.SlotsRequired):
+            # Plug the module into the hardware configuration
+            hw_object.PlugNew(module.TypeIdentifier, module.Name, module.PositionNumber + data.SlotsRequired)
+            logging.info(f"{module.TypeIdentifier} PLUGGED on [{module.PositionNumber + data.SlotsRequired}]")
+        else:
+            # Log a message if the module cannot be plugged
+            logging.info(f"{module.TypeIdentifier} Not PLUGGED on {module.PositionNumber + data.SlotsRequired}")
 
-
+    # # Repeat the same process for HMI-related modules
+    # for module in data.HmiModules:
+    #     if hw_object.CanPlugNew(module.TypeIdentifier, module.Name, module.PositionNumber + data.SlotsRequired):
+    #         hw_object.PlugNew(module.TypeIdentifier, module.Name, module.PositionNumber + data.SlotsRequired)
+    #         logging.info(f"{module.TypeIdentifier} PLUGGED on [{module.PositionNumber + data.SlotsRequired}]")
+    #     else:
+    #         logging.info(f"{module.TypeIdentifier} Not PLUGGED on {module.PositionNumber + data.SlotsRequired}")
 
 
 def create_devices(data: list[DeviceCreationData], project: Siemens.Engineering.Project) -> list[Siemens.Engineering.HW.Device]:
@@ -231,7 +431,6 @@ def create_device_network_service(imports: Imports, device_data: dict[str, Any],
     return interfaces
 
 
-
 def get_plc_software(imports:Imports, device: Siemens.Engineering.HW.Device) -> Siemens.Engineering.HW.Software:
     SE: Siemens.Engineering = imports.DLL
 
@@ -252,4 +451,3 @@ def get_plc_software(imports:Imports, device: Siemens.Engineering.HW.Device) -> 
             continue
 
         return plc_software
-
