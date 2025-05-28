@@ -211,7 +211,10 @@ class MainWindow(wx.Frame):
 
         with open(self.json_config) as file:
             config = json.load(file)
-            self.config = api.validate_config(config)
+            # temporary
+            # self.config = api.validate_config(config)
+            self.config = config
+            self.config['overwrite'] = True
             self.config['directory'] = Path(self.textctrl_config.Value).parent
             self.config['name'] = Path(self.textctrl_config.Value).stem
             self.populate_config(self.config)
@@ -390,7 +393,6 @@ def import_and_execute(config, dll: Path):
     import Siemens.Engineering as SE
 
     print("TIA Portal Automation Tool")
-    print()
 
     imports = api.Imports(SE, DirectoryInfo, FileInfo)
     api.execute(imports, config, { "enable_ui": True, })

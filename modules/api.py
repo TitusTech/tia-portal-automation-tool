@@ -7,6 +7,8 @@ import logging
 from typing import Any
 from schema import Schema, And, Or, Optional
 import logging
+import pdb
+from pprint import pprint
 
 
 # Previous logger.py
@@ -107,8 +109,28 @@ schema = Schema(
     ignore_extra_keys=True  
 )
 
+# PROBLEM AROUND HERE HEHE
 def validate_config(data):
     return schema.validate(data)
+
+
+def create_modules(module, device): # This function uses TIA Portal Openness API to create (plug) local and HMI modules into a given device. It takes a data container with module details and a TIA Portal Hardware Device object as inputs.
+    hw_object: Siemens.Engineering.HW.HardwareObject = device.DeviceItems[0] # Get the root hardware object of the device (usually the CPU or main rack)
+    # pdb.set_trace()
+    
+    if hw_object.CanPlugNew(module['TypeIdentifier'], module['Name'], module['PositionNumber']): # Check if the module can be plugged at the specified position (adjusted by SlotsRequired offset)
+        hw_object.PlugNew(module['TypeIdentifier'], module['Name'], module['PositionNumber']) # Plug the module into the hardware configuration
+        logging.info(f"{module['TypeIdentifier']} PLUGGED on [{module['PositionNumber']}]")
+    else:
+        logging.info(f"{module['TypeIdentifier']} Not PLUGGED on {module['PositionNumber']}") # Log a message if the module cannot be plugged
+    
+
+    # for module in data.HmiModules: # Repeat the same process for HMI-related modules
+    #     if hw_object.CanPlugNew(module.TypeIdentifier, module.Name, module.PositionNumber + data.SlotsRequired):
+    #         hw_object.PlugNew(module.TypeIdentifier, module.Name, module.PositionNumber + data.SlotsRequired)
+    #         logging.info(f"{module.TypeIdentifier} PLUGGED on [{module.PositionNumber + data.SlotsRequired}]")
+    #     else:
+    #         logging.info(f"{module.TypeIdentifier} Not PLUGGED on {module.PositionNumber + data.SlotsRequired}")
 
 
 # Previous portal.py
@@ -124,14 +146,17 @@ def execute(imports: Imports, config: dict[str, Any], settings: dict[str, Any]):
     project: Siemens.Engineering.Project = create_project(imports, project_data, TIA)
     devices: list[Siemens.Engineering.HW.Device] = create_devices(dev_create_data, project)
     interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
+
+
     for i, device_data in enumerate(config['devices']):
         device = devices[i]
+
+        for module in config['Local modules']:
+            create_modules(module, device)
+
         plc_software: Siemens.Engineering.HW.Software = get_plc_software(imports, device)
 
         localmodule_data = [ModuleData(module['TypeIdentifier'], module['Name'], module['PositionNumber']) for module in device_data.get('Local modules', [])]
-        modules_container = ModulesContainerData(localmodule_data, device_data.get('slots_required', 2))
-
-        create_modules(modules_container, device)
 
         itf: Siemens.Engineering.HW.Features.NetworkInterface = create_device_network_service(imports, device_data, device)
 
@@ -337,33 +362,6 @@ def get_library(TIA: Siemens.Engineering.TiaPortal, name: str) -> Siemens.Engine
         if glob_lib.Name == name:
             logging.info(f"Found Library {glob_lib.Name}")
             return glob_lib
-
-
-''' This function uses TIA Portal Openness API to create (plug) local and HMI modules into a given device.
-    It takes a data container with module details and a TIA Portal Hardware Device object as inputs. '''
-
-def create_modules(data: ModulesContainerData, device: Siemens.Engineering.HW.Device):
-    # Get the root hardware object of the device (usually the CPU or main rack)
-    hw_object: Siemens.Engineering.HW.HardwareObject = device.DeviceItems[0]
-    
-    # Loop through each local module defined in the data container
-    for module in data.LocalModules:
-        # Check if the module can be plugged at the specified position (adjusted by SlotsRequired offset)
-        if hw_object.CanPlugNew(module.TypeIdentifier, module.Name, module.PositionNumber + data.SlotsRequired):
-            # Plug the module into the hardware configuration
-            hw_object.PlugNew(module.TypeIdentifier, module.Name, module.PositionNumber + data.SlotsRequired)
-            logging.info(f"{module.TypeIdentifier} PLUGGED on [{module.PositionNumber + data.SlotsRequired}]")
-        else:
-            # Log a message if the module cannot be plugged
-            logging.info(f"{module.TypeIdentifier} Not PLUGGED on {module.PositionNumber + data.SlotsRequired}")
-
-    # # Repeat the same process for HMI-related modules
-    # for module in data.HmiModules:
-    #     if hw_object.CanPlugNew(module.TypeIdentifier, module.Name, module.PositionNumber + data.SlotsRequired):
-    #         hw_object.PlugNew(module.TypeIdentifier, module.Name, module.PositionNumber + data.SlotsRequired)
-    #         logging.info(f"{module.TypeIdentifier} PLUGGED on [{module.PositionNumber + data.SlotsRequired}]")
-    #     else:
-    #         logging.info(f"{module.TypeIdentifier} Not PLUGGED on {module.PositionNumber + data.SlotsRequired}")
 
 
 def create_devices(data: list[DeviceCreationData], project: Siemens.Engineering.Project) -> list[Siemens.Engineering.HW.Device]:
