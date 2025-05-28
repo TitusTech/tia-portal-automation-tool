@@ -211,10 +211,9 @@ class MainWindow(wx.Frame):
 
         with open(self.json_config) as file:
             config = json.load(file)
-            # temporary
-            # self.config = api.validate_config(config)
-            self.config = config
-            self.config['overwrite'] = True
+            self.config = api.validate_config(config)
+            # self.config = config
+            # self.config['overwrite'] = True
             self.config['directory'] = Path(self.textctrl_config.Value).parent
             self.config['name'] = Path(self.textctrl_config.Value).stem
             self.populate_config(self.config)

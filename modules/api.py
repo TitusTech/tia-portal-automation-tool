@@ -99,17 +99,23 @@ schema_device_plc = {
         Optional("slots_required", default=2): int,
     }
 
+schema_local_module = Schema({
+        "TypeIdentifier": str,
+        "device_id": int,
+        "PositionNumber": int,
+        "Name": str
+    })
 
 schema = Schema(
     {
         Optional("overwrite", default=True): bool,
         Optional("devices", default=[]): And(list, [Or(schema_device_plc)]),
         Optional("networks", default=[]): [schema_network],
+        Optional("Local modules", default=[]): [schema_local_module],
     },
     ignore_extra_keys=True  
 )
 
-# PROBLEM AROUND HERE HEHE
 def validate_config(data):
     return schema.validate(data)
 
