@@ -145,11 +145,10 @@ def execute(imports: Imports, config: dict[str, Any], settings: dict[str, Any]):
 
     TIA: Siemens.Engineering.TiaPortal = connect_portal(imports, config, settings)
 
-    project_data = ProjectData(config['name'], config['directory'], config['overwrite'])
     dev_create_data = [DeviceCreationData(dev.get('p_typeIdentifier', 'PLC_1'), dev.get('p_name', 'NewPLCDevice'), dev.get('p_deviceName', '')) for dev in config.get('devices', [])]
     subnetsdata = [SubnetData(net.get('subnet_name'), net.get('address'), net.get('io_controller')) for net in config.get('networks', [])]
 
-    project: Siemens.Engineering.Project = create_project(imports, project_data, TIA)
+    project: Siemens.Engineering.Project = create_project(imports, config, TIA)
     devices: list[Siemens.Engineering.HW.Device] = create_devices(dev_create_data, project)
     interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
 
@@ -273,26 +272,26 @@ def connect_portal(imports: Imports, config: dict[Any, Any], settings: dict[str,
     return TIA
 
 
-def create_project(imports: Imports, data: ProjectData, TIA: Siemens.Engineering.TiaPortal) -> Siemens.Engineering.Project:
+def create_project(imports: Imports, config, TIA: Siemens.Engineering.TiaPortal) -> Siemens.Engineering.Project:
     DirectoryInfo: DirectoryInfo = imports.DirectoryInfo
 
-    logging.info(f"Creating project {data.Name} at \"{data.Directory}\"...")
+    logging.info(f"Creating project {config['name']} at \"{config['directory']}\"...")
 
-    existing_project_path: DirectoryInfo = DirectoryInfo(data.Directory.joinpath(data.Name).as_posix())
+    existing_project_path: DirectoryInfo = DirectoryInfo(config['directory'].joinpath(config['name']).as_posix())
 
     logging.info(f"Checking for existing project: {existing_project_path}")
 
     if existing_project_path.Exists:
 
-        logging.info(f"{data.Name} already exists...")
+        logging.info(f"{config['name']} already exists...")
 
-        if data.Overwrite:
+        if config['overwrite']:
 
-            logging.info(f"Deleting project {data.Name}...")
+            logging.info(f"Deleting project {config['name']}...")
 
             existing_project_path.Delete(True)
 
-            logging.info(f"Deleted project {data.Name}")
+            logging.info(f"Deleted project {config['name']}")
 
         else:
             err = f"Failed creating project. Project already exists ({existing_project_path})"
@@ -301,14 +300,14 @@ def create_project(imports: Imports, data: ProjectData, TIA: Siemens.Engineering
 
     logging.info("Creating project...")
 
-    project_path: DirectoryInfo = DirectoryInfo(data.Directory.as_posix())
+    project_path: DirectoryInfo = DirectoryInfo(config['directory'].as_posix())
 
     logging.debug(f"Project Path: {project_path}")
 
     project_composition: Siemens.Engineering.ProjectComposition = TIA.Projects
-    project: Siemens.Engineering.Project = project_composition.Create(project_path, data.Name)
+    project: Siemens.Engineering.Project = project_composition.Create(project_path, config['name'])
 
-    logging.info(f"Created project {data.Name} at {data.Directory}")
+    logging.info(f"Created project {config['name']} at {config['directory']}")
 
     return project
 
