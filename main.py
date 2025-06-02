@@ -1,7 +1,6 @@
-#!/usr/bin/env python3
 # Titus TIA Portal Automation Tool
 # Copyright (c) 2025 Titus Global Tech Inc. <titus @ www.titusgt.com>
-
+# Author: Wineff Gulane
 import wx
 import json
 import base64
