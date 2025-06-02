@@ -1,12 +1,15 @@
+#!/usr/bin/env python3
+# Titus TIA Portal Automation Tool
+# Copyright (c) 2025 Titus Global Tech Inc. <titus @ www.titusgt.com>
+
+import wx
+import json
+import base64
+import argparse
+from res import dlls
+from modules import api
 from pathlib import Path
 from threading import Thread
-import argparse
-import base64
-import json
-import wx
-
-from modules import api
-from res import dlls
 
 
 EVT_RESULT_ID = wx.NewIdRef()
@@ -392,7 +395,7 @@ def import_and_execute(config, dll: Path):
     print("TIA Portal Automation Tool")
 
     imports = api.Imports(SE, DirectoryInfo, FileInfo)
-    api.execute(imports, config, { "enable_ui": True, })
+    api.execute(imports, config, {"enable_ui": True})
 
 if __name__ == '__main__':
     dll_paths: dict[str, Path] = {}
