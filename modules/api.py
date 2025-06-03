@@ -122,8 +122,7 @@ def validate_config(data):
 
 def create_modules(module, device): # This function uses TIA Portal Openness API to create (plug) local and HMI modules into a given device. It takes a data container with module details and a TIA Portal Hardware Device object as inputs.
     hw_object: Siemens.Engineering.HW.HardwareObject = device.DeviceItems[0] # Get the root hardware object of the device (usually the CPU or main rack)
-    # pdb.set_trace()
-    
+ 
     if hw_object.CanPlugNew(module['TypeIdentifier'], module['Name'], module['PositionNumber']): # Check if the module can be plugged at the specified position (adjusted by SlotsRequired offset)
         hw_object.PlugNew(module['TypeIdentifier'], module['Name'], module['PositionNumber']) # Plug the module into the hardware configuration
         logging.info(f"{module['TypeIdentifier']} PLUGGED on [{module['PositionNumber']}]")
@@ -145,19 +144,23 @@ def execute(imports: Imports, config: dict[str, Any], settings: dict[str, Any]):
 
     TIA: Siemens.Engineering.TiaPortal = connect_portal(imports, config, settings)
 
-    dev_create_data = [DeviceCreationData(dev.get('p_typeIdentifier', 'PLC_1'), dev.get('p_name', 'NewPLCDevice'), dev.get('p_deviceName', '')) for dev in config.get('devices', [])]
+    dev_create_data = [DeviceCreationData(dev.get('p_typeIdentifier', 'PLC_1'), dev.get('p_name', 'NewPLCDevice'), dev.get('p_deviceName', ''), dev.get('id', '')) for dev in config.get('devices', [])]
     subnetsdata = [SubnetData(net.get('subnet_name'), net.get('address'), net.get('io_controller')) for net in config.get('networks', [])]
 
     project: Siemens.Engineering.Project = create_project(imports, config, TIA)
     devices: list[Siemens.Engineering.HW.Device] = create_devices(dev_create_data, project)
     interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
 
-
     for i, device_data in enumerate(config['devices']):
         device = devices[i]
 
+        matched_id_modules = []
         for module in config['Local modules']:
-            create_modules(module, device)
+            if device_data['id'] == module['device_id']:
+                matched_id_modules.append(module)
+            
+        for m in matched_id_modules:
+            create_modules(m, device)
 
         plc_software: Siemens.Engineering.HW.Software = get_plc_software(imports, device)
 
@@ -208,6 +211,7 @@ class DeviceCreationData:
     TypeIdentifier: str
     Name: str
     DeviceName: str
+    id: int
 
 @dataclass
 class SubnetData:
