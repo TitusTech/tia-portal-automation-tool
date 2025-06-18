@@ -35,12 +35,24 @@ def create_network_service(imports: Imports, device_data: Devices.Device, device
 
         if type(network_service) is SE.HW.Features.NetworkInterface:
             node: Siemens.Engineeering.HW.Node = network_service.Nodes[0]
-            data: dict = device_data.NetworkInterface
-            for key, value in data.items():
-                if key == "RouterAddress" and value:
-                    node.SetAttribute("UseRouter", True)
-                    
-                node.SetAttribute(key, value)
+
+            if device_data.NetworkInterface.Name: node.SetAttribute("Name", device_data.NetworkInterface.Name)
+            if device_data.NetworkInterface.Address: node.SetAttribute("Address", device_data.NetworkInterface.Address)
+            if device_data.NetworkInterface.NodeId: node.SetAttribute("NodeId", device_data.NetworkInterface.NodeId)
+            if device_data.NetworkInterface.NodeType: node.SetAttribute("NodeType", device_data.NetworkInterface.NodeType)
+            if device_data.NetworkInterface.UseIsoProtocol: node.SetAttribute("UseIsoProtocol", device_data.NetworkInterface.UseIsoProtocol)
+            if device_data.NetworkInterface.MacAddress: node.SetAttribute("MacAddress", device_data.NetworkInterface.MacAddress)
+            if device_data.NetworkInterface.UseIpProtocol: node.SetAttribute("UseIpProtocol", device_data.NetworkInterface.UseIpProtocol)
+            if device_data.NetworkInterface.IpProtocolSelection: node.SetAttribute("IpProtocolSelection", device_data.NetworkInterface.IpProtocolSelection)
+            if device_data.NetworkInterface.Address: node.SetAttribute("Address", device_data.NetworkInterface.Address)
+            if device_data.NetworkInterface.SubnetMask: node.SetAttribute("SubnetMask", device_data.NetworkInterface.SubnetMask)
+            if device_data.NetworkInterface.UseRouter: node.SetAttribute("UseRouter", device_data.NetworkInterface.UseRouter)
+            if device_data.NetworkInterface.RouterAddress: node.SetAttribute("RouterAddress", device_data.NetworkInterface.RouterAddress)
+            if device_data.NetworkInterface.DhcpClientId: node.SetAttribute("DhcpClientId", device_data.NetworkInterface.DhcpClientId)
+            if device_data.NetworkInterface.PnDeviceNameSetDirectly: node.SetAttribute("PnDeviceNameSetDirectly", device_data.NetworkInterface.PnDeviceNameSetDirectly)
+            if device_data.NetworkInterface.PnDeviceNameAutoGeneration: node.SetAttribute("PnDeviceNameAutoGeneration", device_data.NetworkInterface.PnDeviceNameAutoGeneration)
+            if device_data.NetworkInterface.PnDeviceName: node.SetAttribute("PnDeviceName", device_data.NetworkInterface.PnDeviceName)
+            if device_data.NetworkInterface.PnDeviceNameConverted: node.SetAttribute("PnDeviceNameConverted", device_data.NetworkInterface.PnDeviceNameConverted)
 
                 # logging.info(f"Device {device.Name}'s {key} Attribute set to '{value}'")
 
