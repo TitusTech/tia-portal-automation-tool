@@ -4,13 +4,14 @@ from typing import Optional
 
 import modules.Networks as Networks
 
+@dataclass
 class Device:
     p_typeIdentifier: str
     p_name: str
     p_deviceName: str
     ID: int
     SlotsRequired: int
-    NetworkInterface: Optional[NetworkInterface]
+    NetworkInterface: Optional[NetworkInterface] = None
 
 
 def create(data: list[Device], project: Siemens.Engineering.Project) -> list[Siemens.Engineering.HW.Device]:
@@ -18,7 +19,7 @@ def create(data: list[Device], project: Siemens.Engineering.Project) -> list[Sie
 
     for device_data in data:
         device_composition: Siemens.Engineering.HW.DeviceComposition = project.Devices
-        device: Siemens.Engineering.HW.Device = device_composition.CreateWithItem(device_data.TypeIdentifier, device_data.Name, device_data.DeviceName)
+        device: Siemens.Engineering.HW.Device = device_composition.CreateWithItem(device_data.p_typeIdentifier, device_data.p_name, device_data.p_deviceName)
 
         # logging.info(f"Created device: ({device_data.DeviceName}, {device_data.TypeIdentifier}) on {device.Name}")
 

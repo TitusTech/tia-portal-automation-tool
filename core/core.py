@@ -43,11 +43,19 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
     TIA: Siemens.Engineering.TiaPortal = Portals.connect(imports, config, settings)
 
     project_data = Projects.Project(config['name'], config['directory'], config['overwrite'])
-    devices_data = [Devices.Device(dev.get('p_typeIdentifier', 'PLC_1'), dev.get('p_name', 'NewPLCDevice'), dev.get('p_deviceName', '')) for dev in config.get('devices', [])]
+    devices_data = [Devices.Device(
+                            dev.get('p_typeIdentifier', 'PLC_1'),
+                            dev.get('p_name', 'NewPLCDevice'),
+                            dev.get('p_deviceName', ''),
+                            dev.get('id', 1),
+                            dev.get('slots_required', 2),
+                        )
+                        for dev in config.get('devices', [])
+                    ]
     # subnetsdata = [SubnetData(net.get('subnet_name'), net.get('address'), net.get('io_controller')) for net in config.get('networks', [])]
 
     se_project: Siemens.Engineering.Project = Projects.create(imports, project_data, TIA)
-    se_devices: list[Siemens.Engineering.HW.Device] = Devices.create(devices_data, project)
+    se_devices: list[Siemens.Engineering.HW.Device] = Devices.create(devices_data, se_project)
     se_interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
     
     for i in range(devices_data):
