@@ -1,0 +1,54 @@
+{
+  "devices": [
+    {
+      "id": 1,
+      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6", 
+      "slots_required": 1, 
+      "network_interface": {
+        "Address": "192.168.88.211", 
+        "RouterAddress": "192.168.88.1"
+      }, 
+      "p_deviceName": "PLC_12", 
+      "p_name": "PLC_12"
+    },
+    {
+      "id": 2,
+      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6", 
+      "slots_required": 1, 
+      "network_interface": {
+        "Address": "192.168.88.212", 
+        "RouterAddress": "192.168.88.1"
+      }, 
+      "p_deviceName": "PLC_1", 
+      "p_name": "PLC_1"
+    },
+    {
+      "id": 3,
+      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6", 
+      "slots_required": 1, 
+      "network_interface": {
+        "Address": "192.168.88.213", 
+        "RouterAddress": "192.168.88.1"
+      }, 
+      "p_deviceName": "PLC_2", 
+      "p_name": "PLC_2"
+    }
+  ],
+  "networks": [
+      {
+        "address": "192.168.88.211", 
+        "io_controller": "PNIO", 
+        "subnet_name": "PN/IE_1"
+      }, 
+      {
+        "address": "192.168.88.212", 
+        "io_controller": "PNIO", 
+        "subnet_name": "PN/IE_1"
+      },
+      {
+        "address": "192.168.88.213", 
+        "io_controller": "PNIO", 
+        "subnet_name": "PN/IE_1"
+      }
+    ]
+}
