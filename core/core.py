@@ -49,6 +49,10 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
                             dev.get('p_deviceName', ''),
                             dev.get('id', 1),
                             dev.get('slots_required', 2),
+                            Networks.NetworkInterface(
+                                Address=dev.get('network_interface', {}).get('Address'),
+                                RouterAddress=dev.get('network_interface' {}).get('RouterAddress'),
+                            )
                         )
                         for dev in config.get('devices', [])
                     ]

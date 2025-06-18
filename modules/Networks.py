@@ -5,23 +5,23 @@ import modules.Devices as Devices
 
 @dataclass
 class NetworkInterface:
-    Name: Optional[str]
-    Address: Optional[str]
-    NodeId: Optional[str] # read only
-    NodeType: Optional[str] # unsupported
-    UseIsoProtocol: Optional[bool]
-    MacAddress: Optional[str]
-    UseIpProtocol: Optional[bool]
-    IpProtocolSelection: Optional[str] # unsupported
-    Address: Optional[str]
-    SubnetMask: Optional[str]
-    UseRouter: Optional[bool] # no need, just set RouterAddress to make this true
-    RouterAddress: Optional[str]
-    DhcpClientId: Optional[str]
-    PnDeviceNameSetDirectly: Optional[bool]
-    PnDeviceNameAutoGeneration: Optional[bool]
-    PnDeviceName: Optional[str]
-    PnDeviceNameConverted: Optional[str] # read only
+    Name: Optional[str] = None
+    Address: Optional[str] = None
+    NodeId: Optional[str] = None # read only
+    NodeType: Optional[str] = None # unsupported
+    UseIsoProtocol: Optional[bool] = None
+    MacAddress: Optional[str] = None
+    UseIpProtocol: Optional[bool] = None
+    IpProtocolSelection: Optional[str] = None # unsupported
+    Address: Optional[str] = None
+    SubnetMask: Optional[str] = None
+    UseRouter: Optional[bool] = None # no need, just set RouterAddress to make this true
+    RouterAddress: Optional[str] = None
+    DhcpClientId: Optional[str] = None
+    PnDeviceNameSetDirectly: Optional[bool] = None
+    PnDeviceNameAutoGeneration: Optional[bool] = None
+    PnDeviceName: Optional[str] = None
+    PnDeviceNameConverted: Optional[str] = None # read only
 
 
 def create_network_service(imports: Imports, device_data: Devices.Device, device: Siemens.Engineering.HW.Device) -> list[Siemens.Engineering.HW.Features.NetworkInterface]:
