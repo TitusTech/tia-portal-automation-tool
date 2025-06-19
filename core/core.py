@@ -8,6 +8,7 @@ import modules.Portals as Portals
 import modules.Projects as Projects
 import modules.Devices as Devices
 import modules.Networks as Networks
+import modules.DeviceItems as DeviceItems
 import resources.dlls
 
 def generate_dlls() -> list[Path]:
@@ -37,12 +38,14 @@ def generate_dlls() -> list[Path]:
 
     return dll_paths
 
-def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, Any]) -> Siemens.Engineering.Project:
+def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, Any]) -> Siemens.Engineering.TiaPortal:
     SE: Siemens.Engineering = imports.DLL
 
     TIA: Siemens.Engineering.TiaPortal = Portals.connect(imports, config, settings)
 
     project_data = Projects.Project(config['name'], config['directory'], config['overwrite'])
+    se_project: Siemens.Engineering.Project = Projects.create(imports, project_data, TIA)
+
     devices_data = [Devices.Device(
                             dev.get('p_typeIdentifier', 'PLC_1'),
                             dev.get('p_name', 'NewPLCDevice'),
@@ -59,18 +62,26 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
                         )
                         for dev in config.get('devices', [])
                     ]
-
-    se_project: Siemens.Engineering.Project = Projects.create(imports, project_data, TIA)
+    local_modules_data = [DeviceItems.DeviceItem(
+                            DeviceID=module.get("DeviceID", 1),
+                            name=module.get("name", "Server module_1"),
+                            typeIdentifier=module.get("typeIdentifier", "OrderNumber:6ES7 193-6PA00-0AA0/V1.1"),
+                            positionNumber=module.get("positionNumber", 2),
+                        )
+                        for module in config.get('Local modules', [])
+                    ]
+    
     se_devices: list[Siemens.Engineering.HW.Device] = Devices.create(devices_data, se_project)
     se_interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
-    
     for i in range(len(devices_data)):
         se_device: Siemens.Engineering.HW.Device = se_devices[i]
         device_data: Devices.Device = devices_data[i]
 
+        # Devices:
         se_plc_software: Siemens.Engineering.HW.Software = Devices.get_plc_software(imports, se_device)
-        se_net_itfs: list[Siemens.Engineering.HW.Features.NetworkInterface] = Networks.create_network_service(imports, device_data, se_device)
 
+        # Networks:
+        se_net_itfs: list[Siemens.Engineering.HW.Features.NetworkInterface] = Networks.create_network_service(imports, device_data, se_device)
         network: Networks.NetworkInterface = device_data.NetworkInterface
         for index, se_net_itf in enumerate(se_net_itfs):
             # WARNING:
@@ -82,7 +93,12 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
             else:
                 se_net_itf.Nodes[0].ConnectToSubnet(subnet)
                 if se_net_itf.IoConnectors.Count > 0:
-                   se_net_itf.IoConnectors[0].ConnectToIoSystem(io_system)
+                    se_net_itf.IoConnectors[0].ConnectToIoSystem(io_system)
+
+        # DeviceItems:
+        for local_module in local_modules_data:
+            if local_module.DeviceID != device_data.ID: continue
+            DeviceItems.plug_new(local_module, se_device, device_data.SlotsRequired)
 
 
-    return se_project
+    return TIA
