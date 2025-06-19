@@ -6,7 +6,9 @@
       "slots_required": 1, 
       "network_interface": {
         "Address": "192.168.88.211", 
-        "RouterAddress": "192.168.88.1"
+        "RouterAddress": "192.168.88.1",
+        "UseRouter": true
+
       }, 
       "p_deviceName": "PLC_12", 
       "p_name": "PLC_12"

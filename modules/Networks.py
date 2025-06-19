@@ -36,6 +36,9 @@ def create_network_service(imports: Imports, device_data: Devices.Device, device
         if type(network_service) is SE.HW.Features.NetworkInterface:
             node: Siemens.Engineeering.HW.Node = network_service.Nodes[0]
 
+            if device_data.NetworkInterface.UseRouter: node.SetAttribute("UseRouter", device_data.NetworkInterface.UseRouter)
+            if node.GetAttribute("UseRouter"):
+                if device_data.NetworkInterface.RouterAddress: node.SetAttribute("RouterAddress", device_data.NetworkInterface.RouterAddress)
             if device_data.NetworkInterface.Name: node.SetAttribute("Name", device_data.NetworkInterface.Name)
             if device_data.NetworkInterface.Address: node.SetAttribute("Address", device_data.NetworkInterface.Address)
             if device_data.NetworkInterface.NodeId: node.SetAttribute("NodeId", device_data.NetworkInterface.NodeId)
@@ -46,8 +49,6 @@ def create_network_service(imports: Imports, device_data: Devices.Device, device
             if device_data.NetworkInterface.IpProtocolSelection: node.SetAttribute("IpProtocolSelection", device_data.NetworkInterface.IpProtocolSelection)
             if device_data.NetworkInterface.Address: node.SetAttribute("Address", device_data.NetworkInterface.Address)
             if device_data.NetworkInterface.SubnetMask: node.SetAttribute("SubnetMask", device_data.NetworkInterface.SubnetMask)
-            if device_data.NetworkInterface.UseRouter: node.SetAttribute("UseRouter", device_data.NetworkInterface.UseRouter)
-            if device_data.NetworkInterface.RouterAddress: node.SetAttribute("RouterAddress", device_data.NetworkInterface.RouterAddress)
             if device_data.NetworkInterface.DhcpClientId: node.SetAttribute("DhcpClientId", device_data.NetworkInterface.DhcpClientId)
             if device_data.NetworkInterface.PnDeviceNameSetDirectly: node.SetAttribute("PnDeviceNameSetDirectly", device_data.NetworkInterface.PnDeviceNameSetDirectly)
             if device_data.NetworkInterface.PnDeviceNameAutoGeneration: node.SetAttribute("PnDeviceNameAutoGeneration", device_data.NetworkInterface.PnDeviceNameAutoGeneration)

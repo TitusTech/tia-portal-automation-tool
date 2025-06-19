@@ -23,7 +23,7 @@ def test_core():
     config = None
     with open(devices_with_networks) as file:
        config = configuration.validate(json.load(file))
-    config['directory'] = BASE_DIR
+    config['directory'] = BASE_DIR.parent.parent
     config['name'] = f"test_core.{devices_with_networks.stem}"
 
     core.execute(imports, config, { "enable_ui": True, })

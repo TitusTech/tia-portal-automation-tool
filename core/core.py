@@ -51,7 +51,8 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
                             dev.get('slots_required', 2),
                             Networks.NetworkInterface(
                                 Address=dev.get('network_interface', {}).get('Address'),
-                                RouterAddress=dev.get('network_interface' {}).get('RouterAddress'),
+                                RouterAddress=dev.get('network_interface', {}).get('RouterAddress'),
+                                UseRouter=dev.get('network_interface', {}).get('UseRouter', False),
                             )
                         )
                         for dev in config.get('devices', [])
@@ -62,8 +63,8 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
     se_devices: list[Siemens.Engineering.HW.Device] = Devices.create(devices_data, se_project)
     se_interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
     
-    for i in range(devices_data):
-        se_device: Siemens.Engineering.HW.Device = devices[i]
+    for i in range(len(devices_data)):
+        se_device: Siemens.Engineering.HW.Device = se_devices[i]
         device_data: Devices.Device = devices_data[i]
 
         se_plc_software: Siemens.Engineering.HW.Software = Devices.get_plc_software(imports, se_device)
