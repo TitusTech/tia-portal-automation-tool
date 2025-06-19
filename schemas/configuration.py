@@ -3,11 +3,13 @@ from pathlib import Path
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
 from schemas.Devices import PLC
+from schemas.DeviceItems import DeviceItem
 
 root = Schema(
     {
         Optional("overwrite", default=True): bool,
         Optional("devices", default=[]): And(list, [Or(PLC)]),
+        Optional("Local modules", default=[]): And(list, [DeviceItem]),
     },
     ignore_extra_keys=True  
 )
