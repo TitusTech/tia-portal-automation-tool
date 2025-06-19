@@ -5,6 +5,8 @@ import modules.Devices as Devices
 
 @dataclass
 class NetworkInterface:
+    subnet_name: Optional[str] = None
+    io_controller: Optional[str] = None
     Name: Optional[str] = None
     Address: Optional[str] = None
     NodeId: Optional[str] = None # read only
@@ -15,7 +17,7 @@ class NetworkInterface:
     IpProtocolSelection: Optional[str] = None # unsupported
     Address: Optional[str] = None
     SubnetMask: Optional[str] = None
-    UseRouter: Optional[bool] = None # no need, just set RouterAddress to make this true
+    UseRouter: Optional[bool] = None
     RouterAddress: Optional[str] = None
     DhcpClientId: Optional[str] = None
     PnDeviceNameSetDirectly: Optional[bool] = None

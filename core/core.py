@@ -37,7 +37,7 @@ def generate_dlls() -> list[Path]:
 
     return dll_paths
 
-def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, Any]):
+def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, Any]) -> Siemens.Engineering.Project:
     SE: Siemens.Engineering = imports.DLL
 
     TIA: Siemens.Engineering.TiaPortal = Portals.connect(imports, config, settings)
@@ -52,12 +52,13 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
                             Networks.NetworkInterface(
                                 Address=dev.get('network_interface', {}).get('Address'),
                                 RouterAddress=dev.get('network_interface', {}).get('RouterAddress'),
-                                UseRouter=dev.get('network_interface', {}).get('UseRouter', False),
+                                UseRouter=dev.get('network_interface', {}).get('UseRouter'),
+                                subnet_name=dev.get('network_interface', {}).get('subnet_name'),
+                                io_controller=dev.get('network_interface', {}).get('io_controller'),
                             )
                         )
                         for dev in config.get('devices', [])
                     ]
-    # subnetsdata = [SubnetData(net.get('subnet_name'), net.get('address'), net.get('io_controller')) for net in config.get('networks', [])]
 
     se_project: Siemens.Engineering.Project = Projects.create(imports, project_data, TIA)
     se_devices: list[Siemens.Engineering.HW.Device] = Devices.create(devices_data, se_project)
@@ -68,7 +69,20 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         device_data: Devices.Device = devices_data[i]
 
         se_plc_software: Siemens.Engineering.HW.Software = Devices.get_plc_software(imports, se_device)
-        se_net_itf: Siemens.Engineering.HW.Features.NetworkInterface = Networks.create_network_service(imports, device_data, se_device)
+        se_net_itfs: list[Siemens.Engineering.HW.Features.NetworkInterface] = Networks.create_network_service(imports, device_data, se_device)
 
-    #     for network_interface in itf:
-    #         interfaces.append(network_interface)
+        network: Networks.NetworkInterface = device_data.NetworkInterface
+        for index, se_net_itf in enumerate(se_net_itfs):
+            # WARNING:
+            # Subnet Name must be UNIQUE!
+            # Otherwise, Siemens Engineering will cause an error.
+            if index == 0:
+                subnet: Siemens.Engineering.HW.Subnet = se_net_itf.Nodes[0].CreateAndConnectToSubnet(network.subnet_name)
+                io_system: Siemens.Engineering.HW.IoSystem = se_net_itf.IoControllers[0].CreateIoSystem(network.io_controller)
+            else:
+                se_net_itf.Nodes[0].ConnectToSubnet(subnet)
+                if se_net_itf.IoConnectors.Count > 0:
+                   se_net_itf.IoConnectors[0].ConnectToIoSystem(io_system)
+
+
+    return se_project

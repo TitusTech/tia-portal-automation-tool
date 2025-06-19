@@ -1,12 +1,8 @@
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
-Network = Schema({
-    "address": str, # 192.168.0.112
-    "subnet_name": str, # Profinet
-    "io_controller": str, # PNIO
-})
-
 NetworkInterface = Schema({
+    Optional("subnet_name"): str,
+    Optional("io_controller"): str,
     Optional("Name"): str, # read only
     Optional("Address"): str,
     Optional("NodeId"): str, # read only

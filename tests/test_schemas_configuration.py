@@ -8,7 +8,6 @@ BASE_DIR = Path(__file__).parent
 
 one_device = BASE_DIR / "configs" / "one_device.json"
 multiple_devices = BASE_DIR / "configs" / "multiple_devices.json"
-devices_with_networks = BASE_DIR / "configs" / "devices_with_networks.json"
 
 def test_json_config():
     with open(one_device) as file:

@@ -7,7 +7,9 @@
       "network_interface": {
         "Address": "192.168.88.211", 
         "RouterAddress": "192.168.88.1",
-        "UseRouter": true
+        "UseRouter": true,
+        "io_controller": "PNIO", 
+        "subnet_name": "PN/IE_1"
 
       }, 
       "p_deviceName": "PLC_12", 
@@ -20,8 +22,9 @@
       "network_interface": {
         "Address": "192.168.88.212", 
         "RouterAddress": "192.168.88.1",
-        "UseRouter": true
-
+        "UseRouter": true,
+        "io_controller": "PNIO", 
+        "subnet_name": "PN/IE_2"
       }, 
       "p_deviceName": "PLC_1", 
       "p_name": "PLC_1"
@@ -33,7 +36,9 @@
       "network_interface": {
         "Address": "192.168.88.213", 
         "RouterAddress": "192.168.88.1",
-        "UseRouter": true
+        "UseRouter": true,
+        "io_controller": "PNIO", 
+        "subnet_name": "Profinet"
 
       }, 
       "p_deviceName": "PLC_2", 

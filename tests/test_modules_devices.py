@@ -23,11 +23,14 @@ def test_device():
                             Networks.NetworkInterface(
                                 Address=dev.get('network_interface', {}).get('Address'),
                                 RouterAddress=dev.get('network_interface', {}).get('RouterAddress'),
+                                UseRouter=dev.get('network_interface', {}).get('UseRouter'),
+                                subnet_name=dev.get('network_interface', {}).get('subnet_name'),
+                                io_controller=dev.get('network_interface', {}).get('io_controller'),
                             )
                         )
                         for dev in config.get('devices', [])
                     ]
-    d = Devices.Device("OrderNumber:6ES7 512-1DK01-0AB0/V2.6", "PLC_12", "PLC_12", 1, 1, Networks.NetworkInterface(Address="192.168.88.211", RouterAddress="192.168.88.1"))
+    d = Devices.Device("OrderNumber:6ES7 512-1DK01-0AB0/V2.6", "PLC_12", "PLC_12", 1, 1, Networks.NetworkInterface(subnet_name="PN/IE_1", io_controller="PNIO", Address="192.168.88.211", RouterAddress="192.168.88.1", UseRouter=True))
     assert d == devices_data[0]
     
     del config['devices'][0]['network_interface']
@@ -40,6 +43,9 @@ def test_device():
                             Networks.NetworkInterface(
                                 Address=dev.get('network_interface', {}).get('Address'),
                                 RouterAddress=dev.get('network_interface', {}).get('RouterAddress'),
+                                UseRouter=dev.get('network_interface', {}).get('UseRouter'),
+                                subnet_name=dev.get('network_interface', {}).get('subnet_name'),
+                                io_controller=dev.get('network_interface', {}).get('io_controller'),
                             )
                         )
                         for dev in config.get('devices', [])
