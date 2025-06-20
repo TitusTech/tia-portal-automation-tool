@@ -1,6 +1,6 @@
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
-from schemas.Networks import NetworkInterface
+from src.schemas.Networks import NetworkInterface
 
 Device = Schema({
     "id": int,

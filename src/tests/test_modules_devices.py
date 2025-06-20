@@ -2,9 +2,9 @@ from pathlib import Path
 import json
 import pytest
 
-from schemas import configuration
-import modules.Devices as Devices
-import modules.Networks as Networks
+from src.schemas import configuration
+import src.modules.Devices as Devices
+import src.modules.Networks as Networks
 
 BASE_DIR = Path(__file__).parent
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-import modules.Networks as Networks
+import src.modules.Networks as Networks
 
 @dataclass
 class Device:

@@ -2,8 +2,8 @@ from __future__ import annotations
 from pathlib import Path
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
-from schemas.Devices import PLC
-from schemas.DeviceItems import DeviceItem
+from src.schemas.Devices import PLC
+from src.schemas.DeviceItems import DeviceItem
 
 root = Schema(
     {

@@ -2,7 +2,7 @@ from pathlib import Path
 import json
 import pytest
 
-from schemas import configuration
+from src.schemas import configuration
 
 BASE_DIR = Path(__file__).parent
 

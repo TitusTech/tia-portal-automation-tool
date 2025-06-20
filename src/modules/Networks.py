@@ -1,7 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
-import modules.Devices as Devices
+import src.modules.Devices as Devices
 
 @dataclass
 class NetworkInterface:

@@ -2,9 +2,9 @@ from pathlib import Path
 import json
 import pytest
 
-from core import core
-from schemas import configuration
-import modules.Portals as Portals
+from src.core import core
+from src.schemas import configuration
+import src.modules.Portals as Portals
 
 BASE_DIR = Path(__file__).parent
 

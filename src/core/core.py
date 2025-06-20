@@ -4,22 +4,22 @@ from pathlib import Path
 from typing import Any
 import base64
 
-import modules.Portals as Portals
-import modules.Projects as Projects
-import modules.Devices as Devices
-import modules.Networks as Networks
-import modules.DeviceItems as DeviceItems
-import resources.dlls
+from src.resources import dlls
+import src.modules.Portals as Portals
+import src.modules.Projects as Projects
+import src.modules.Devices as Devices
+import src.modules.Networks as Networks
+import src.modules.DeviceItems as DeviceItems
 
 def generate_dlls() -> list[Path]:
     dll_paths: dict[str, Path] = {}
-    for key in resources.dlls.b64_dlls:
+    for key in dlls.b64_dlls:
         if key == "Siemens.Engineering.Contract":
             continue
         if "Hmi" in key:
             continue
-        data = base64.b64decode(resources.dlls.b64_dlls[key])
-        hmi_data = base64.b64decode(resources.dlls.b64_dlls[f"{key}.Hmi"])
+        data = base64.b64decode(dlls.b64_dlls[key])
+        hmi_data = base64.b64decode(dlls.b64_dlls[f"{key}.Hmi"])
         dlls_dir = Path("./DLLs")
         dlls_dir.mkdir(exist_ok=True)
 
