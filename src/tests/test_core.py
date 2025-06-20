@@ -25,7 +25,7 @@ def test_core():
     config = None
     with open(multiple_devices) as file:
         config = configuration.validate(json.load(file))
-    config['directory'] = BASE_DIR.parent.parent
+    config['directory'] = BASE_DIR.parent.parent.parent
     config['name'] = f"test_core.{multiple_devices.stem}"
 
     TIA = core.execute(imports, config, { "enable_ui": True, })
@@ -34,7 +34,7 @@ def test_core_local_modules():
     config = None
     with open(multiple_devices_with_local_modules) as file:
         config = configuration.validate(json.load(file))
-    config['directory'] = BASE_DIR.parent.parent
+    config['directory'] = BASE_DIR.parent.parent.parent
     config['name'] = f"test_core.{multiple_devices_with_local_modules.stem}"
 
     TIA = core.execute(imports, config, { "enable_ui": True, })
