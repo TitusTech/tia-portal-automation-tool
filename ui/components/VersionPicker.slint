@@ -1,0 +1,23 @@
+import { ComboBox } from "std-widgets.slint";
+
+export component VersionPicker {
+    HorizontalLayout {
+        alignment: LayoutAlignment.start;
+        spacing: 8px;
+        Rectangle {
+            height: 30px;
+            Text {
+                text: "TIA Portal Version:";
+                color: #666;
+                vertical-alignment: TextVerticalAlignment.center;
+            }
+        }
+        
+        ComboBox {
+            width: 100px;
+            model: [];
+            // current-value: "V18";
+        }
+
+    }
+}
