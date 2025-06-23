@@ -1,0 +1,29 @@
+import { Button } from "std-widgets.slint";
+
+export component FilePicker {
+    callback select_file();
+
+    in-out property<string> selected_file: "None";
+    in-out property<string> button_text: "Select File";
+
+    HorizontalLayout {
+        alignment: LayoutAlignment.start;
+        spacing: 8px;
+
+        Button {
+            width: 140px; 
+            height: 30px;
+            text: root.button_text;
+            clicked => { root.select_file(); }
+        }
+
+        Rectangle {
+            height: 30px;
+            Text {
+                text: root.selected_file;
+                color: #666;
+                vertical-alignment: TextVerticalAlignment.center;
+            }
+        }
+    }
+}

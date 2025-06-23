@@ -1,0 +1,13 @@
+[project]
+name = "tia-portal-automation-tool"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pytest>=8.4.1",
+    "pythonnet>=3.0.5",
+    "schema>=0.7.7",
+    "slint>=1.12.0a4",
+    "wxpython>=4.2.3",
+]
