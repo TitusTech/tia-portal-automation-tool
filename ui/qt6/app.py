@@ -19,7 +19,7 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QHBoxLayout,
     QLabel, QMainWindow, QMenu, QMenuBar,
     QPushButton, QSizePolicy, QSpacerItem, QStatusBar,
-    QTextBrowser, QVBoxLayout, QWidget)
+    QTextBrowser, QTextEdit, QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -136,6 +136,7 @@ class Ui_MainWindow(object):
         self.textbrowser_logs = QTextBrowser(self.centralwidget)
         self.textbrowser_logs.setObjectName(u"textbrowser_logs")
         self.textbrowser_logs.setAutoFillBackground(False)
+        self.textbrowser_logs.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
 
         self.verticalLayout.addWidget(self.textbrowser_logs)
 

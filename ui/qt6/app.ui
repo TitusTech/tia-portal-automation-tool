@@ -205,6 +205,9 @@
       <property name="autoFillBackground">
        <bool>false</bool>
       </property>
+      <property name="lineWrapMode">
+       <enum>QTextEdit::LineWrapMode::NoWrap</enum>
+      </property>
       <property name="placeholderText">
        <string>Welcome to TIA Portal Automation Tool by Titus Global Tech</string>
       </property>
