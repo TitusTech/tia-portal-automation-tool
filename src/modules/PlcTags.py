@@ -11,20 +11,20 @@ class PlcTag:
 class PlcTagTable:
     DeviceID: int
     Name: str
-    Tags: Optional[PlcTag] = None
+    Tags: list[PlcTag]
 
 
-def new(data: list[PlcTagTable], plc_software: Siemens.Engineering.HW.Software) -> list[Siemens.Engineering.SW.Tags.PlcTagTable]:
-    tables: list[Siemens.Engineering.SW.Tags.PlcTagTable] = []
-    for table_data in data:
-        if table_data.Name == "Default tag table": continue
-        tag_table: Siemens.Engineering.SW.Tags.PlcTagTable = plc_software.TagTableGroup.TagTables.Create(name)
+def new(data: PlcTagTable, plc_software: Siemens.Engineering.HW.Software) -> Optional[Siemens.Engineering.SW.Tags.PlcTagTable]:
+    if data.Name == "Default tag table": return
+    table: Siemens.Engineering.SW.Tags.PlcTagTable = plc_software.TagTableGroup.TagTables.Create(data.Name)
 
-        # logging.info(f"Created Tag Table: {name} ({plc_software.Name} Software)")
-        # logging.debug(f"PLC Tag Table: {tag_table.Name}")
-        tables.append(tag_table)
+    for tag in data.Tags:
+        add_tag(table, tag)
 
-    return tables
+    # logging.info(f"Created Tag Table: {name} ({plc_software.Name} Software)")
+    # logging.debug(f"PLC Tag Table: {tag_table.Name}")
+
+    return table
 
 def enumerate_tags(table: Siemens.Engineering.SW.Tags.PlcTagTable) -> list[PlcTag]:
     tags: list[PlcTag] = []

@@ -9,6 +9,7 @@ import src.modules.Networks as Networks
 BASE_DIR = Path(__file__).parent
 
 one_device = BASE_DIR / "configs" / "one_device.json"
+plc_tags = BASE_DIR / "configs" / "plc_tags.json"
 
 def test_device():
     config = None

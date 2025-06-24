@@ -10,6 +10,7 @@ import src.modules.Projects as Projects
 import src.modules.Devices as Devices
 import src.modules.Networks as Networks
 import src.modules.DeviceItems as DeviceItems
+import src.modules.PlcTags as PlcTags
 
 def generate_dlls() -> dict[str, Path]:
     dll_paths: dict[str, Path] = {}
@@ -70,6 +71,20 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
                         )
                         for module in config.get('Local modules', [])
                     ]
+
+    plc_tags_data = [PlcTags.PlcTagTable(
+                            DeviceID=table.get("DeviceID", 1),
+                            Name=table.get("Name", "Default tag table"),
+                            Tags=[PlcTags.PlcTag(
+                                    Name=tag.get('Name'),
+                                    DataTypeName=tag.get('DataTypeName'),
+                                    LogicalAddress=tag.get('LogicalAddress')
+                                )
+                                for tag in table.get('Tags')
+                            ],
+                        )
+                        for table in config.get('PLC tags', [])
+                    ]
     
     se_devices: list[Siemens.Engineering.HW.Device] = Devices.create(devices_data, se_project)
     se_interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
@@ -99,6 +114,11 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         for local_module in local_modules_data:
             if local_module.DeviceID != device_data.ID: continue
             DeviceItems.plug_new(local_module, se_device, device_data.SlotsRequired)
+
+        # PLC Tags:
+        for plc_tag_table in plc_tags_data:
+            if plc_tag_table.DeviceID != device_data.ID: continue
+            PlcTags.new(plc_tag_table, se_plc_software)
 
 
     return TIA

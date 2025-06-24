@@ -10,6 +10,7 @@ BASE_DIR = Path(__file__).parent
 
 multiple_devices = BASE_DIR / "configs" / "multiple_devices.json"
 multiple_devices_with_local_modules = BASE_DIR / "configs" / "multiple_devices_with_local_modules.json"
+plc_tags = BASE_DIR / "configs" / "plc_tags.json"
 
 dlls = core.generate_dlls()
 dll = dlls['V18']
@@ -36,5 +37,14 @@ def test_core_local_modules():
         config = configuration.validate(json.load(file))
     config['directory'] = BASE_DIR.parent.parent.parent
     config['name'] = f"test_core.{multiple_devices_with_local_modules.stem}"
+
+    TIA = core.execute(imports, config, { "enable_ui": True, })
+
+def test_core_plc_tags():
+    config = None
+    with open(plc_tags) as file:
+        config = configuration.validate(json.load(file))
+    config['directory'] = BASE_DIR.parent.parent.parent
+    config['name'] = f"test_core.{plc_tags.stem}"
 
     TIA = core.execute(imports, config, { "enable_ui": True, })
