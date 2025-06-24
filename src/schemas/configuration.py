@@ -4,12 +4,14 @@ from schema import Schema, And, Or, Use, Optional, SchemaError
 
 from src.schemas.Devices import PLC
 from src.schemas.DeviceItems import DeviceItem
+from src.schemas.PlcTags import PlcTagTable
 
 root = Schema(
     {
         Optional("overwrite", default=True): bool,
         Optional("devices", default=[]): And(list, [Or(PLC)]),
         Optional("Local modules", default=[]): And(list, [DeviceItem]),
+        Optional("PLC tags", default=[]): And(list, [PlcTagTable]),
     },
     ignore_extra_keys=True  
 )
