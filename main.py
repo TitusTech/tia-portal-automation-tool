@@ -1,19 +1,25 @@
 from pathlib import Path
-import slint
+import argparse
 
 
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Internal tooling for Siemens PLC Engineers by Titus Global Tech.")
+    parser.add_argument("-j", "--json",
+                        type=Path,
+                        help="JSON config file path"
+                        )
+    args = parser.parse_args()
 
-class MainWindow(slint.loader.ui.app_window.AppWindow):
-    @slint.callback
-    def request_increase_value(self):
-        self.counter = self.counter + 1
+    json_config = args.json
 
-    @slint.callback
-    def select_json(self):
-        print('wtf')
-    
+    if not json_config:
+        import sys
 
+        from ui.graphical import MainWindow, app
 
-main_window = MainWindow()
-main_window.show()
-main_window.run()
+        window = MainWindow()
+        window.show()
+        sys.exit(app.exec())
+
+    else:
+        import ui.terminal

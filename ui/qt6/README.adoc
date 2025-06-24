@@ -1,0 +1,44 @@
+= Graphical User Interface
+
+== Compiling
+
+To compile a new Python UI, simply run the following
+
+
+----
+pyside6-uic app.ui -o app.py
+----
+
+== Designing
+
+Run ``pyside6-designer`` in your terminal to start designing and select the ``.ui`` file.
+
+== Usage
+
+Import the class ``Ui_MainWindow`` from ``ui.qt6.app`` into your Python file.
+
+A boilerplate code is shown below
+
+[,python]
+----
+import sys
+
+from PySide6.QtWidgets import QApplication, QMainWindow
+from ui.qt6.app import Ui_MainWindow
+
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+
+
+    def do_something(self):
+        print("Button clicked!")
+
+app = QApplication()
+window = MainWindow()
+window.show()
+sys.exit(app.exec())
+----

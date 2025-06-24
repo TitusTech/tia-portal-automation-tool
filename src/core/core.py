@@ -11,7 +11,7 @@ import src.modules.Devices as Devices
 import src.modules.Networks as Networks
 import src.modules.DeviceItems as DeviceItems
 
-def generate_dlls() -> list[Path]:
+def generate_dlls() -> dict[str, Path]:
     dll_paths: dict[str, Path] = {}
     for key in dlls.b64_dlls:
         if key == "Siemens.Engineering.Contract":

@@ -1,13 +1,12 @@
 [project]
 name = "tia-portal-automation-tool"
 version = "0.1.0"
-description = "Add your description here"
+description = "An internal automation tooling for Titus Global Tech PLC engineers."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "pyside6>=6.9.1",
     "pytest>=8.4.1",
     "pythonnet>=3.0.5",
     "schema>=0.7.7",
-    "slint>=1.12.0a4",
-    "wxpython>=4.2.3",
 ]
