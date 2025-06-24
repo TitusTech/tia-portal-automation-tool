@@ -80,7 +80,7 @@ class MainWindow(QMainWindow):
         if file_path:
             self.library_filepath = Path(file_path)
             self.ui.label_library_path.setText(self.library_filepath.name)
-            self.update_logs(f"[ERROR] Selected Global Library: {self.library_filepath}")
+            self.update_logs(f"[!] Selected Global Library: {self.library_filepath}")
 
     def toggle_enable_ui(self, checked: bool):
         self.settings['enable_ui'] = checked
@@ -105,7 +105,7 @@ class MainWindow(QMainWindow):
     def _generate_dlls(self):
         for dll_name in self.dlls:
             self.ui.combobox_dll_versions.addItem(dll_name)
-            self.update_logs(f"[ERROR] Finished compiling API: {self.dlls[dll_name]}")
+            self.update_logs(f"[!] Finished compiling API: {self.dlls[dll_name]}")
 
 
 app = QApplication()

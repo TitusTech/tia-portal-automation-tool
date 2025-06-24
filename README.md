@@ -20,7 +20,7 @@ cd tia-portal-automation-tool
 ### Compile (Optional)
 
 ```
-pyinstaller --noconfirm --onefile --windowed --name "tia-portal-automation-tool" "main.py"
+uv run pyinstaller --noconfirm --onefile --windowed --name "tia-portal-automation-tool" "main.py"
 ```
 
 And done.

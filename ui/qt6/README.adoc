@@ -6,12 +6,12 @@ To compile a new Python UI, simply run the following
 
 
 ----
-pyside6-uic app.ui -o app.py
+uv run pyside6-uic app.ui -o app.py
 ----
 
 == Designing
 
-Run ``pyside6-designer`` in your terminal to start designing and select the ``.ui`` file.
+Run ``uv run pyside6-designer`` in your terminal to start designing and select the ``.ui`` file.
 
 == Usage
 
