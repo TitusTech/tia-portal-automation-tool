@@ -1,0 +1,462 @@
+{
+  "devices": [
+    {
+      "id": 1,
+      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6",
+      "slots_required": 1,
+      "network_interface": {
+        "Address": "192.168.88.211",
+        "RouterAddress": "192.168.88.1",
+        "UseRouter": true,
+        "io_controller": "PNIO",
+        "subnet_name": "PN/IE_1"
+      },
+      "p_deviceName": "PLC_12",
+      "p_name": "PLC_12"
+    },
+    {
+      "id": 2,
+      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6",
+      "slots_required": 1,
+      "network_interface": {
+        "Address": "192.168.88.212",
+        "RouterAddress": "192.168.88.1",
+        "UseRouter": true,
+        "io_controller": "PNIO",
+        "subnet_name": "PN/IE_2"
+      },
+      "p_deviceName": "PLC_1",
+      "p_name": "PLC_1"
+    },
+    {
+      "id": 3,
+      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6",
+      "slots_required": 1,
+      "network_interface": {
+        "Address": "192.168.88.213",
+        "RouterAddress": "192.168.88.1",
+        "UseRouter": true,
+        "io_controller": "PNIO",
+        "subnet_name": "Profinet"
+      },
+      "p_deviceName": "PLC_2",
+      "p_name": "PLC_2"
+    }
+  ],
+  "PLC data types": [
+    {
+      "Name": "A_Drives",
+      "types": [
+        {
+          "Name": "Selected",
+          "Datatype": "Bool"
+        },
+        {
+          "Name": "Icons",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Status",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Warning",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Fault",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Cmd_Bits",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "General_Flag",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Slot_ID",
+          "Datatype": "Array[0..5] of Int"
+        },
+        {
+          "Name": "Attribute_1",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Attribute_2",
+          "Datatype": "Int"
+        }
+      ]
+    },
+    {
+      "Name": "A_Path_Drive_Control",
+      "types": [
+        {
+          "Name": "Drive_Control",
+          "Datatype": "Array[0..50] of \"path_drive_control\""
+        }
+      ]
+    },
+    {
+      "Name": "A_Path_Drive_Control_1",
+      "types": [
+        {
+          "Name": "Drive_Control",
+          "Datatype": "Array[0..50] of \"path_drive_control\""
+        }
+      ]
+    },
+    {
+      "Name": "Bins",
+      "types": [
+        {
+          "Name": "Src_Selected",
+          "Datatype": "Bool"
+        },
+        {
+          "Name": "Des_Selected",
+          "Datatype": "Bool"
+        },
+        {
+          "Name": "Icons",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Status",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Warning",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Fault",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Cmd_Bits",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "General_Flags",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Stock_Value",
+          "Datatype": "Real"
+        },
+        {
+          "Name": "Src_Slot_ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Des_Slot_ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Grade",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "CommoditySeason",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Commodity",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Fum_Status",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Fum_For_x_Days",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Fum_Next_Treat",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Fum_Treat_overd",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Sample_Mass",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Aer_Hours_PV",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Aer_Hours_SP",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Aer_WB_Temp",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Aer_Moisture_SP",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Aer_Temper_SP",
+          "Datatype": "Int"
+        }
+      ]
+    },
+    {
+      "Name": "Drive_Stat",
+      "types": [
+        {
+          "Name": "Warning",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Fault",
+          "Datatype": "Word"
+        }
+      ]
+    },
+    {
+      "Name": "Event_Pool",
+      "types": [
+        {
+          "Name": "Offset",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Counter",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Type",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Subtype",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Time1",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Time2",
+          "Datatype": "DWord"
+        },
+        {
+          "Name": "Data1",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Data2",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Data3",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Data4",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Data5",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Data6",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Data7",
+          "Datatype": "Word"
+        }
+      ]
+    },
+    {
+      "Name": "Feed",
+      "types": [
+        {
+          "Name": "ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "TPH_Rate",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Blend",
+          "Datatype": "Real"
+        },
+        {
+          "Name": "CC",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Time",
+          "Datatype": "Time"
+        },
+        {
+          "Name": "Open",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Blend_At_Belt",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Error",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "General",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "SO_Weight",
+          "Datatype": "Real"
+        },
+        {
+          "Name": "Status",
+          "Datatype": "Word"
+        }
+      ]
+    },
+    {
+      "Name": "Grain_Bits",
+      "types": [
+        {
+          "Name": "Total_Capacity",
+          "Datatype": "DInt"
+        },
+        {
+          "Name": "Kg_per_minute",
+          "Datatype": "DInt"
+        },
+        {
+          "Name": "Segment_Time",
+          "Datatype": "DInt"
+        }
+      ]
+    },
+    {
+      "Name": "Network",
+      "types": [
+        {
+          "Name": "NETWORK_PROFINET",
+          "Datatype": "Array[0..8] of Bool"
+        },
+        {
+          "Name": "NETWORK_PROFIBUS",
+          "Datatype": "Array[0..32] of Bool"
+        }
+      ]
+    },
+    {
+      "Name": "path_drive_control",
+      "types": [
+        {
+          "Name": "ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Type",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Att",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Sys_Crash",
+          "Datatype": "Bool"
+        },
+        {
+          "Name": "Upstream_Run",
+          "Datatype": "Bool"
+        }
+      ]
+    },
+    {
+      "Name": "Slots",
+      "types": [
+        {
+          "Name": "Slot_ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Drive_Control",
+          "Datatype": "Array[0..50] of \"path_drive_control\""
+        },
+        {
+          "Name": "GUI_Command",
+          "Datatype": "Int",
+          "attributes": {
+            "SetPoint": "true"
+          }
+        },
+        {
+          "Name": "Internal_Command",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Path_Length",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Current_Path_ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Path_Status",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "General_Flags_2",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "General_Flags_1",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Active_Time",
+          "Datatype": "Time"
+        },
+        {
+          "Name": "Reset_All_Drive",
+          "Datatype": "Bool"
+        },
+        {
+          "Name": "Active",
+          "Datatype": "Bool"
+        },
+        {
+          "Name": "Sources",
+          "Datatype": "Array[0..10] of Int"
+        },
+        {
+          "Name": "Destination",
+          "Datatype": "Array[0..15] of Int"
+        },
+        {
+          "Name": "Feed",
+          "Datatype": "Array[1..6] of \"Feed\""
+        },
+        {
+          "Name": "New_Path_ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Paths",
+          "Datatype": "Array[0..15] of Int"
+        }
+      ]
+    }
+  ]
+}
