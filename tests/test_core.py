@@ -9,6 +9,7 @@ import src.modules.Portals as Portals
 BASE_DIR = Path(__file__).parent
 
 multiple_devices = BASE_DIR / "configs" / "multiple_devices.json"
+multiple_devices_with_libraries = BASE_DIR / "configs" / "multiple_devices_with_libraries.json"
 multiple_devices_with_local_modules = BASE_DIR / "configs" / "multiple_devices_with_local_modules.json"
 plc_tags = BASE_DIR / "configs" / "plc_tags.json"
 
@@ -46,5 +47,14 @@ def test_core_plc_tags():
         config = configuration.validate(json.load(file))
     config['directory'] = BASE_DIR.parent.parent.parent
     config['name'] = f"test_core.{plc_tags.stem}"
+
+    TIA = core.execute(imports, config, { "enable_ui": True, })
+
+def test_core_libraries():
+    config = None
+    with open(multiple_devices_with_libraries) as file:
+        config = configuration.validate(json.load(file))
+    config['directory'] = BASE_DIR.parent.parent.parent
+    config['name'] = f"test_core.{multiple_devices_with_libraries.stem}"
 
     TIA = core.execute(imports, config, { "enable_ui": True, })

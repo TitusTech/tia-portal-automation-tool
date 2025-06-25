@@ -11,6 +11,7 @@ import src.modules.Devices as Devices
 import src.modules.Networks as Networks
 import src.modules.DeviceItems as DeviceItems
 import src.modules.PlcTags as PlcTags
+import src.modules.Libraries as Libraries
 
 def generate_dlls() -> dict[str, Path]:
     dll_paths: dict[str, Path] = {}
@@ -85,6 +86,15 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
                         )
                         for table in config.get('PLC tags', [])
                     ]
+    libraries_data = [Libraries.GlobalLibrary(
+                            FilePath=library.get('path'),
+                            ReadOnly=library.get('read_only'),
+                        )
+                        for library in config.get('libraries', [])
+                    ]
+
+    for library in libraries_data:
+        Libraries.import_library(imports, library, TIA)
     
     se_devices: list[Siemens.Engineering.HW.Device] = Devices.create(devices_data, se_project)
     se_interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
