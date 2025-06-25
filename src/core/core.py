@@ -95,7 +95,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
 
     for library in libraries_data:
         Libraries.import_library(imports, library, TIA)
-    
+
     se_devices: list[Siemens.Engineering.HW.Device] = Devices.create(devices_data, se_project)
     se_interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
     for i in range(len(devices_data)):
@@ -104,6 +104,11 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
 
         # Devices:
         se_plc_software: Siemens.Engineering.HW.Software = Devices.get_plc_software(imports, se_device)
+
+        # Add Mastercopies from Libraries
+        for library in libraries_data:
+            name = library.FilePath.stem
+            Libraries.generate_mastercopies(name, se_plc_software, TIA)
 
         # Networks:
         se_net_itfs: list[Siemens.Engineering.HW.Features.NetworkInterface] = Networks.create_network_service(imports, device_data, se_device)

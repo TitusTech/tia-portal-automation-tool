@@ -79,7 +79,10 @@ class MainWindow(QMainWindow):
         file_path, _ = QFileDialog.getOpenFileName(self, "Select Library", "", "Global library (*.al*)|*.al*")
         if file_path:
             self.library_filepath = Path(file_path)
-            self.ui.label_library_path.setText(self.library_filepath.name)
+
+            if not self.project_json: return
+            self.ui.label_library_path.setText(self.library_filepath.stem)
+            self.project_json['libraries'] = [{"path": self.library_filepath}]
             self.update_logs(f"[!] Selected Global Library: {self.library_filepath}")
 
     def toggle_enable_ui(self, checked: bool):
