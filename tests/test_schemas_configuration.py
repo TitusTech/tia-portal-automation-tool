@@ -25,6 +25,10 @@ def test_json_config():
         config = json.load(file)
         assert configuration.validate(config) is not None
 
+    with open(multiple_devices_with_libraries) as file:
+        config = json.load(file)
+        assert configuration.validate(config) is not None
+
     with open(multiple_devices_with_plc_data_types) as file:
         config = json.load(file)
         assert configuration.validate(config) is not None
