@@ -1,6 +1,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
+from pathlib import Path
 import tempfile
 import xml.etree.ElementTree as ET
 
@@ -31,7 +32,7 @@ class Base:
     def xml(self) -> str:
         return self.export(self.root)
 
-    def write() -> Path:
+    def write(self) -> Path:
         with tempfile.NamedTemporaryFile(suffix='.xml', delete=False) as temp:
             filename = Path(temp.name)
             temp.write(self.xml().encode('utf-8'))

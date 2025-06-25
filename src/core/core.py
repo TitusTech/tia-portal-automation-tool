@@ -12,6 +12,8 @@ import src.modules.Networks as Networks
 import src.modules.DeviceItems as DeviceItems
 import src.modules.PlcTags as PlcTags
 import src.modules.Libraries as Libraries
+import src.modules.PlcDataTypes as PlcDataTypes
+import src.modules.XML.Documents as Documents
 
 def generate_dlls() -> dict[str, Path]:
     dll_paths: dict[str, Path] = {}
@@ -92,9 +94,22 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
                         )
                         for library in config.get('libraries', [])
                     ]
+    plc_data_types_data = [PlcDataTypes.PlcDataType(
+                            Name=datatype.get("Name"),
+                            Types=[Documents.PlcStruct(
+                                    Name=struct.get('Name'),
+                                    Datatype=struct.get('Datatype'),
+                                    attributes=struct.get('attributes'),
+                                )
+                                for struct in datatype.get('types', [])
+                            ],
+                        )
+                        for datatype in config.get('PLC data types', [])
+                    ]
 
     for library in libraries_data:
         Libraries.import_library(imports, library, TIA)
+
 
     se_devices: list[Siemens.Engineering.HW.Device] = Devices.create(devices_data, se_project)
     se_interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
@@ -135,5 +150,8 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
             if plc_tag_table.DeviceID != device_data.ID: continue
             PlcTags.new(plc_tag_table, se_plc_software)
 
+        # PLC Data Types:
+        for plc_data_type in plc_data_types_data:
+            PlcDataTypes.create(imports, se_plc_software, plc_data_type)
 
     return TIA
