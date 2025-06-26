@@ -27,7 +27,7 @@ def new(data: PlcTagTable, plc_software: Siemens.Engineering.HW.Software) -> Opt
     for tag in data.Tags:
         add_tag(table, tag)
 
-    logger.info(f"Created Tag Table: {name} ({plc_software.Name} Software)")
+    logger.info(f"Created Tag Table: {table.Name} ({plc_software.Name} Software)")
 
     return table
 
@@ -54,14 +54,12 @@ def find_table(imports: Imports, name: str, plc_software: Siemens.Engineering.HW
     if not isinstance(tag_table, SE.SW.Tags.PlcTagTable):
         return
 
-    logger.info(f"Found Tag Table {name} in {plc_software.Name} Software")
+    logger.info(f"Found Tag Table {tag_table.Name} in {plc_software.Name} Software")
 
     return tag_table
 
 
 def add_tag(tag_table: Siemens.Engineering.SW.Tags.PlcTagTable, data: PlcTag) -> Siemens.Engineering.SW.Tags.PlcTag:
-    logger.info(f"Creating of Tag {data.Name} on Table {tag_table.Name} @ {data.LogicalAddress} Address started")
-
     tag: Siemens.Engineering.SW.Tags.PlcTag = tag_table.Tags.Create(data.Name, data.DataTypeName, data.LogicalAddress)
 
     logger.info(f"Created Tag {tag.Name} on Table {tag_table.Name} @ {tag.LogicalAddress})")

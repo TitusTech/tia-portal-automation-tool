@@ -21,7 +21,7 @@ def import_library(imports: Imports, data: GlobalLibrary, TIA: Siemens.Engineeri
 
     library_path: FileInfo = FileInfo(data.FilePath.as_posix())
 
-    logger.info(f"Opening Global Library: {library_path} (ReadOnly: {library_data.ReadOnly})")
+    logger.info(f"Opening Global Library: {library_path} (ReadOnly: {data.ReadOnly})")
 
     library: Siemens.Engineering.Library.GlobalLibrary = SE.Library.GlobalLibrary
     if data.ReadOnly:
@@ -74,5 +74,5 @@ def find(TIA: Siemens.Engineering.TiaPortal, name: str) -> Siemens.Engineering.G
 
     for global_library in TIA.GlobalLibraries:
         if global_library.Name == name:
-            logger.info(f"Found Library {glob_lib.Name}")
+            logger.info(f"Found Library {global_library.Name}")
             return global_library
