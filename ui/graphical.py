@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        logs.setup(logging.DEBUG, textbox=self.ui.textbrowser_logs)
+        logs.setup(logging.INFO, textbox=self.ui.textbrowser_logs)
 
         self.logger = logging.getLogger(__name__)
         self.logger.info("Application started.")
