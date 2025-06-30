@@ -18,7 +18,7 @@ class PlcDataType:
 
 
 class XML(Software):
-    NAME = "SW.Types.PlcStruct"
+    DOCUMENT = "SW.Types.PlcStruct"
     def __init__(self, data: PlcDataType):
         super().__init__(data.Name)
 
