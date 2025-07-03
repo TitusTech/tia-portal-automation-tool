@@ -46,6 +46,44 @@ class OrganizationBlock(ProgramBlock):
 class FunctionBlock(ProgramBlock):
     NetworkSources: list[NetworkSource]
 
+@dataclass
+class WireParameter:
+    Name: str
+    Section: str
+    Datatype: str
+    Value: str | list[str]
+    Negated: bool
+
+class DocumentSWType(Enum):
+    TypesPlcStruct = "SW.Types.PlcStruct"
+    BlocksOB = "SW.Blocks.OB"
+    BlocksFB = "SW.Blocks.FB"
+    BlocksFC = "SW.Blocks.FC"
+    PlcWatchTable = "SW.WatchAndForceTables.PlcWatchTable"
+    PlcForceTable = "SW.WatchAndForceTables.PlcForceTable"
+    PlcWatchTableEntry = "SW.WatchAndForceTables.PlcWatchTableEntry"
+    PlcForceTableEntry = "SW.WatchAndForceTables.PlcForceTableEntry"
+
+@dataclass
+class DatabaseType(Enum):
+    InstanceDB = "SW.Blocks.InstanceDB"
+    GlobalDB = "SW.Blocks.GlobalDB"
+    ArrayDB = "SW.Blocks.ArrayDB"
+    MultiInstance = "MultiInstance"
+
+class DatabaseData:
+    Type: DatabaseType
+    Name: str
+    Folder: list[str]
+    Number: int
+
+@dataclass
+class InstanceContainer:
+    Name: str
+    Type: DocumentSWType
+    Database: DatabaseData
+    Parameters: list[WireParameter]
+
 
 class Base(Document):
     def __init__(self, name: str, number: int, programming_language: str,
@@ -216,7 +254,7 @@ class FC(Base):
 
 
 class BlockCompileUnit:
-    def __init__(self, programming_language: str, network_source: NetworkSourceContainer, id) -> None:
+    def __init__(self, programming_language: str, network_source: NetworkSource, id) -> None:
         self.root: ET.Element = ET.Element("SW.Blocks.CompileUnit", attrib={
             'ID': format(id, 'X'),
             'CompositionName': "CompileUnits",
