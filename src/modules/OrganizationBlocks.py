@@ -7,14 +7,14 @@ import xml.etree.ElementTree as ET
 from src.modules.XML.Documents import Document
 from src.modules.ProgramBlocks import Base, ProgramBlock, NetworkSource, BlockCompileUnit
 
-class OrganizationBlockEventClass(Enum):
+class EventClassEnum(Enum):
     ProgramCycle = "ProgramCycle"
     Startup = "Startup"
 
 @dataclass
 class OrganizationBlock(ProgramBlock):
     NetworkSources: list[NetworkSource]
-    EventClass: OrganizationBlockEventClass
+    EventClass: EventClassEnum
 
 
 class OB(Base):

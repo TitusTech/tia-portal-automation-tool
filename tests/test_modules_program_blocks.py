@@ -4,14 +4,14 @@ import pytest
 import xml.etree.ElementTree as ET
 
 from src.modules.ProgramBlocks import NetworkSource
-from src.modules.OrganizationBlocks import OB, OrganizationBlock, OrganizationBlockEventClass
+from src.modules.OrganizationBlocks import OB, OrganizationBlock, EventClassEnum
 from src.modules.FunctionBlocks import FB, FunctionBlock
 
 def test_organization_block():
     ob_data = OrganizationBlock(Name="Main",
                                 Number=1,
                                 ProgrammingLanguage="FBD",
-                                EventClass=OrganizationBlockEventClass.ProgramCycle,
+                                EventClass=EventClassEnum.ProgramCycle,
                                 NetworkSources=[NetworkSource(Title="First Scan",
                                                               Comment="",
                                                               Instances=[],
