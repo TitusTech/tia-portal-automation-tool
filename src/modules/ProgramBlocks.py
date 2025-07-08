@@ -299,3 +299,12 @@ def wrap_wire_data(elements: tuple[ET.Element, ET.Element], uid: int) -> ET.Elem
     for el in elements:
         Wire.append(el)
     return Wire
+def generate_boolean_attributes(struct: VariableStruct) -> ET.Element:
+    AttributeList = ET.Element("AttributeList")
+    for attrib in struct.Attributes:
+        ET.SubElement(AttributeList, "BooleanAttribute", attrib={
+            'Name': attrib,
+            'SystemDefined': "true"
+        }).text = str(struct.Attributes[attrib]).lower()
+
+    return AttributeList

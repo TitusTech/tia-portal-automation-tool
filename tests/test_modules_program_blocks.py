@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 
 from src.modules.ProgramBlocks import NetworkSource
 from src.modules.OrganizationBlocks import OB, OrganizationBlock, OrganizationBlockEventClass
-from src.modules.ProgramBlocks import FB, FunctionBlock
+from src.modules.FunctionBlocks import FB, FunctionBlock
 
 def test_organization_block():
     ob_data = OrganizationBlock(Name="Main",
