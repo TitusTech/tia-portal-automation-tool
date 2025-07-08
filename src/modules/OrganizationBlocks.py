@@ -5,7 +5,7 @@ from typing import Optional
 import xml.etree.ElementTree as ET
 
 from src.modules.XML.Documents import Document
-from src.modules.ProgramBlocks import Base, ProgramBlock, NetworkSource, BlockCompileUnit
+from src.modules.XML.ProgramBlocks import Base, ProgramBlock, NetworkSource, BlockCompileUnit
 
 class EventClassEnum(Enum):
     ProgramCycle = "ProgramCycle"

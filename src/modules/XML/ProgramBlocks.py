@@ -41,15 +41,15 @@ class WireParameter:
     Value: str | list[str]
     Negated: bool
 
-class DocumentSWType(Enum):
-    TypesPlcStruct = "SW.Types.PlcStruct"
-    BlocksOB = "SW.Blocks.OB"
-    BlocksFB = "SW.Blocks.FB"
-    BlocksFC = "SW.Blocks.FC"
-    PlcWatchTable = "SW.WatchAndForceTables.PlcWatchTable"
-    PlcForceTable = "SW.WatchAndForceTables.PlcForceTable"
-    PlcWatchTableEntry = "SW.WatchAndForceTables.PlcWatchTableEntry"
-    PlcForceTableEntry = "SW.WatchAndForceTables.PlcForceTableEntry"
+class PlcEnum(Enum):
+    PlcStruct = "SW.Types.PlcStruct"
+    OB = "SW.Blocks.OB"
+    FB = "SW.Blocks.FB"
+    FC = "SW.Blocks.FC"
+    WatchTable = "SW.WatchAndForceTables.PlcWatchTable"
+    ForceTable = "SW.WatchAndForceTables.PlcForceTable"
+    WatchTableEntry = "SW.WatchAndForceTables.PlcWatchTableEntry"
+    ForceTableEntry = "SW.WatchAndForceTables.PlcForceTableEntry"
 
 @dataclass
 class DatabaseType(Enum):
@@ -67,7 +67,7 @@ class DatabaseData:
 @dataclass
 class InstanceContainer:
     Name: str
-    Type: DocumentSWType
+    Type: PlcEnum
     Database: DatabaseData
     Parameters: list[WireParameter]
 
@@ -157,19 +157,6 @@ class Base(Document):
 
         return
 
-class FC(Base):
-    DOCUMENT = "SW.Blocks.FC"
-    def __init__(self, data: ProgramBlock) -> None:
-        super().__init__(data.Name, data.Number, data.ProgrammingLanguage)
-
-        self._create_input_section()
-        self._create_output_section()
-        self._create_inout_section()
-        self._create_temp_section()
-        self._create_constant_section()
-        self._create_return_section()
-
-
 class BlockCompileUnit:
     def __init__(self, programming_language: str, network_source: NetworkSource, id) -> None:
         self.root: ET.Element = ET.Element("SW.Blocks.CompileUnit", attrib={
@@ -226,7 +213,7 @@ class BlockCompileUnit:
 
         Call = ET.SubElement(self.Parts, "Call", attrib={'UId': str(uid)})
         CallInfo = ET.SubElement(Call, "CallInfo", attrib={'Name': instance.Name, 'BlockType': instance.Type.value.split('.')[-1]})
-        if instance.Type != DocumentSWType.BlocksFC:
+        if instance.Type != PlcEnum.FC:
             scope = "GlobalVariable"
             if instance.Database.Type == DatabaseType.MultiInstance:
                 scope = "LocalVariable"

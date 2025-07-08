@@ -5,7 +5,7 @@ from typing import Optional
 import xml.etree.ElementTree as ET
 
 from src.modules.XML.Documents import Document
-from src.modules.ProgramBlocks import Base, ProgramBlock, NetworkSource, BlockCompileUnit, VariableStruct, generate_boolean_attributes
+from src.modules.XML.ProgramBlocks import Base, ProgramBlock, NetworkSource, BlockCompileUnit, VariableStruct, generate_boolean_attributes
 
 @dataclass
 class FunctionBlock(ProgramBlock):

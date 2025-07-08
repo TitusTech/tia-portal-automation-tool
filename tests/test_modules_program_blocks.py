@@ -3,9 +3,9 @@ import json
 import pytest
 import xml.etree.ElementTree as ET
 
-from src.modules.ProgramBlocks import NetworkSource
-from src.modules.OrganizationBlocks import OB, OrganizationBlock, EventClassEnum
 from src.modules.FunctionBlocks import FB, FunctionBlock
+from src.modules.OrganizationBlocks import OB, OrganizationBlock, EventClassEnum
+from src.modules.XML.ProgramBlocks import NetworkSource
 
 def test_organization_block():
     ob_data = OrganizationBlock(Name="Main",
