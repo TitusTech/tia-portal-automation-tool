@@ -2,13 +2,14 @@ from __future__ import annotations
 from pathlib import Path
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
-from src.schemas.Devices import PLC
 from src.schemas.DeviceItems import DeviceItem
-from src.schemas.PlcTags import PlcTagTable
-from src.schemas.PlcDataTypes import PlcDataType
+from src.schemas.Devices import PLC
 from src.schemas.Libraries import GlobalLibrary
-from src.schemas.PlcOB import OrganizationBlock
+from src.schemas.NetworkSources import NetworkSource, Instance
+from src.schemas.PlcDataTypes import PlcDataType
 from src.schemas.PlcFB import FunctionBlock
+from src.schemas.PlcOB import OrganizationBlock
+from src.schemas.PlcTags import PlcTagTable
 
 root = Schema(
     {
@@ -19,6 +20,8 @@ root = Schema(
         Optional("PLC data types", default=[]): And(list, [PlcDataType]),
         Optional("libraries", default=[]): And(list, [GlobalLibrary]),
         Optional("Program blocks", default=[]): And(list, [Or(OrganizationBlock, FunctionBlock)]),
+        Optional("Network sources", default=[]): And(list, [NetworkSource]),
+        Optional("Instances", default=[]): And(list, [Instance]),
     },
     ignore_extra_keys=True  
 )

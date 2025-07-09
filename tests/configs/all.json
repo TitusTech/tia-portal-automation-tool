@@ -2305,5 +2305,13 @@
       "programming_language": "FBD",
       "number": 1
     }
+  ],
+  "Network sources": [
+    {
+      "plc_block_id": 1,
+      "id": 1,
+      "title": "First Scan",
+      "comment": "USUALLY EMPTY"
+    }
   ]
 }
