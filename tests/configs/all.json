@@ -1,0 +1,2309 @@
+{
+  "devices": [
+    {
+      "id": 1,
+      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6", 
+      "slots_required": 1, 
+      "network_interface": {
+        "Address": "192.168.88.211", 
+        "RouterAddress": "192.168.88.1",
+        "UseRouter": true,
+        "io_controller": "PNIO", 
+        "subnet_name": "PN/IE_1"
+
+      }, 
+      "p_deviceName": "PLC_12", 
+      "p_name": "PLC_12"
+    },
+    {
+      "id": 2,
+      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6", 
+      "slots_required": 1, 
+      "network_interface": {
+        "Address": "192.168.88.212", 
+        "RouterAddress": "192.168.88.1",
+        "UseRouter": true,
+        "io_controller": "PNIO", 
+        "subnet_name": "PN/IE_2"
+      }, 
+      "p_deviceName": "PLC_1", 
+      "p_name": "PLC_1"
+    },
+    {
+      "id": 3,
+      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6", 
+      "slots_required": 1, 
+      "network_interface": {
+        "Address": "192.168.88.213", 
+        "RouterAddress": "192.168.88.1",
+        "UseRouter": true,
+        "io_controller": "PNIO", 
+        "subnet_name": "Profinet"
+
+      }, 
+      "p_deviceName": "PLC_2", 
+      "p_name": "PLC_2"
+    }
+  ],
+  "Local modules": [
+    {
+      "typeIdentifier": "OrderNumber:6ES7 193-6PA00-0AA0/V1.1", 
+      "DeviceID": 1, 
+      "positionNumber": 2, 
+      "name": "Server module_1"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 3, 
+      "name": "DI 16x24VDC ST_1"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 4, 
+      "name": "DI 16x24VDC ST_2"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 5, 
+      "name": "DI 16x24VDC ST_3"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 6, 
+      "name": "DI 16x24VDC ST_4"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 7, 
+      "name": "DI 16x24VDC ST_5"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 8, 
+      "name": "DI 16x24VDC ST_6"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 9, 
+      "name": "DI 16x24VDC ST_7"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 10, 
+      "name": "DI 16x24VDC ST_8"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 11, 
+      "name": "DI 16x24VDC ST_9"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 12, 
+      "name": "DI 16x24VDC ST_10"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 13, 
+      "name": "DI 16x24VDC ST_11"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 14, 
+      "name": "DI 16x24VDC ST_12"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 15, 
+      "name": "DI 16x24VDC ST_13"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 16, 
+      "name": "DI 16x24VDC ST_14"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 1, 
+      "positionNumber": 27, 
+      "name": "DI 16x24VDC ST_157"
+    },
+    {
+      "typeIdentifier": "OrderNumber:6ES7 193-6PA00-0AA0/V1.1", 
+      "DeviceID": 2, 
+      "positionNumber": 2, 
+      "name": "Server module_1"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 2, 
+      "positionNumber": 3, 
+      "name": "DI 16x24VDC ST_1"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 2, 
+      "positionNumber": 4, 
+      "name": "DI 16x24VDC ST_2"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 2, 
+      "positionNumber": 5, 
+      "name": "DI 16x24VDC ST_3"
+    }, {
+      "typeIdentifier": "OrderNumber:6ES7 193-6PA00-0AA0/V1.1", 
+      "DeviceID": 3, 
+      "positionNumber": 2, 
+      "name": "Server module_1"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 3, 
+      "positionNumber": 3, 
+      "name": "DI 16x24VDC ST_1"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 3, 
+      "positionNumber": 4, 
+      "name": "DI 16x24VDC ST_2"
+    }, 
+    {
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
+      "DeviceID": 3, 
+      "positionNumber": 25, 
+      "name": "DI 16x24VDC ST_325"
+    }
+  ],
+  "PLC tags": [
+    {
+      "DeviceID": 1,
+      "Name": "Global",
+      "Tags": [
+        {
+          "Name": "Global_Event_Counters",
+          "DataTypeName": "Word",
+          "LogicalAddress": "%MW110"
+        },
+        {
+          "Name": "Global_PLC_Queue_Cnt",
+          "DataTypeName": "Int",
+          "LogicalAddress": "%MW102"
+        },
+        {
+          "Name": "Global_Time2",
+          "DataTypeName": "DWord",
+          "LogicalAddress": "%MD112"
+        },
+        {
+          "Name": "Global_Time1",
+          "DataTypeName": "Word",
+          "LogicalAddress": "%MW116"
+        }
+      ]
+    },
+    {
+      "DeviceID": 1,
+      "Name": "SMC",
+      "Tags": [
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD1_%I0.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I0.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD1_%I0.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I0.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD1_%I0.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I0.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD1_%I0.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I0.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD1_%I0.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I0.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD1_%I0.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I0.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD1_%I0.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I0.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD1_%I0.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I0.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD1_%I1.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I1.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD1_%I1.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I1.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD1_%I1.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I1.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD1_%I1.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I1.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD1_%I1.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I1.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD1_%I1.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I1.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD1_%I1.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I1.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD1_%I1.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I1.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD2_%I2.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I2.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD2_%I2.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I2.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD2_%I2.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I2.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD2_%I2.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I2.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD2_%I2.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I2.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD2_%I2.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I2.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD2_%I2.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I2.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD2_%I2.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I2.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD2_%I3.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I3.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD2_%I3.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I3.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD2_%I3.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I3.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD2_%I3.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I3.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD2_%I3.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I3.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD2_%I3.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I3.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD2_%I3.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I3.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD2_%I3.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I3.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD3_%I4.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I4.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD3_%I4.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I4.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD3_%I4.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I4.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD3_%I4.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I4.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD3_%I4.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I4.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD3_%I4.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I4.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD3_%I4.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I4.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD3_%I4.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I4.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD3_%I5.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I5.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD3_%I5.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I5.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD3_%I5.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I5.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD3_%I5.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I5.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD3_%I5.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I5.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD3_%I5.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I5.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD3_%I5.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I5.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD3_%I5.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I5.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD4_%I6.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I6.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD4_%I6.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I6.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD4_%I6.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I6.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD4_%I6.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I6.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD4_%I6.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I6.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD4_%I6.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I6.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD4_%I6.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I6.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD4_%I6.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I6.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD4_%I7.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I7.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD4_%I7.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I7.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD4_%I7.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I7.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD4_%I7.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I7.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD4_%I7.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I7.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD4_%I7.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I7.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD4_%I7.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I7.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD4_%I7.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I7.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD5_%I8.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I8.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD5_%I8.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I8.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD5_%I8.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I8.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD5_%I8.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I8.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD5_%I8.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I8.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD5_%I8.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I8.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD5_%I8.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I8.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD5_%I8.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I8.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD5_%I9.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I9.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD5_%I9.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I9.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD5_%I9.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I9.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD5_%I9.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I9.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD5_%I9.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I9.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD5_%I9.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I9.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD5_%I9.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I9.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD5_%I9.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I9.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD6_%I10.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I10.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD6_%I10.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I10.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD6_%I10.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I10.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD6_%I10.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I10.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD6_%I10.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I10.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD6_%I10.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I10.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD6_%I10.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I10.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD6_%I10.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I10.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD6_%I11.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I11.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD6_%I11.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I11.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD6_%I11.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I11.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD6_%I11.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I11.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD6_%I11.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I11.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD6_%I11.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I11.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD6_%I11.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I11.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD6_%I11.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I11.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD7_%I12.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I12.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD7_%I12.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I12.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD7_%I12.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I12.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD7_%I12.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I12.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD7_%I12.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I12.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD7_%I12.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I12.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD7_%I12.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I12.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD7_%I12.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I12.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD7_%I13.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I13.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD7_%I13.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I13.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD7_%I13.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I13.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD7_%I13.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I13.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD7_%I13.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I13.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD7_%I13.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I13.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD7_%I13.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I13.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD7_%I13.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I13.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD8_%I14.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I14.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD8_%I14.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I14.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD8_%I14.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I14.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD8_%I14.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I14.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD8_%I14.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I14.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD8_%I14.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I14.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD8_%I14.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I14.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD8_%I14.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I14.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD8_%I15.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I15.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD8_%I15.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I15.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD8_%I15.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I15.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD8_%I15.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I15.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD8_%I15.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I15.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD8_%I15.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I15.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD8_%I15.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I15.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD8_%I15.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I15.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD9_%I16.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I16.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD9_%I16.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I16.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD9_%I16.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I16.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD9_%I16.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I16.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD9_%I16.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I16.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD9_%I16.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I16.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD9_%I16.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I16.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD9_%I16.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I16.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD9_%I17.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I17.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD9_%I17.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I17.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD9_%I17.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I17.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD9_%I17.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I17.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD9_%I17.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I17.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD9_%I17.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I17.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD9_%I17.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I17.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD9_%I17.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I17.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD10_%I18.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I18.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD10_%I18.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I18.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD10_%I18.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I18.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD10_%I18.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I18.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD10_%I18.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I18.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD10_%I18.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I18.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD10_%I18.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I18.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD10_%I18.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I18.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD10_%I19.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I19.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD10_%I19.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I19.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD10_%I19.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I19.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD10_%I19.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I19.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD10_%I19.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I19.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD10_%I19.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I19.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD10_%I19.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I19.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD10_%I19.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I19.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD11_%I20.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I20.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD11_%I20.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I20.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD11_%I20.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I20.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD11_%I20.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I20.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD11_%I20.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I20.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD11_%I20.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I20.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD11_%I20.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I20.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD11_%I20.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I20.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD11_%I21.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I21.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD11_%I21.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I21.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD11_%I21.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I21.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD11_%I21.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I21.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD11_%I21.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I21.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD11_%I21.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I21.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD11_%I21.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I21.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD11_%I21.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I21.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD12_%I22.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I22.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD12_%I22.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I22.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD12_%I22.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I22.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD12_%I22.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I22.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD12_%I22.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I22.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD12_%I22.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I22.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD12_%I22.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I22.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD12_%I22.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I22.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD12_%I23.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I23.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD12_%I23.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I23.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD12_%I23.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I23.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD12_%I23.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I23.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD12_%I23.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I23.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD12_%I23.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I23.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD12_%I23.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I23.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD12_%I23.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I23.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD13_%I24.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I24.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD13_%I24.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I24.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD13_%I24.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I24.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD13_%I24.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I24.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD13_%I24.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I24.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD13_%I24.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I24.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD13_%I24.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I24.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD13_%I24.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I24.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD13_%I25.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I25.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD13_%I25.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I25.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD13_%I25.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I25.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD13_%I25.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I25.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD13_%I25.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I25.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD13_%I25.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I25.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD13_%I25.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I25.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD13_%I25.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I25.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD14_%I26.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I26.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD14_%I26.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I26.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD14_%I26.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I26.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD14_%I26.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I26.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD14_%I26.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I26.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD14_%I26.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I26.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD14_%I26.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I26.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD14_%I26.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I26.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD14_%I27.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I27.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD14_%I27.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I27.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD14_%I27.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I27.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD14_%I27.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I27.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD14_%I27.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I27.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD14_%I27.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I27.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD14_%I27.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I27.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD14_%I27.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I27.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD15_%I28.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I28.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD15_%I28.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I28.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD15_%I28.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I28.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD15_%I28.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I28.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD15_%I28.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I28.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD15_%I28.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I28.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD15_%I28.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I28.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD15_%I28.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I28.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD15_%I29.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I29.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD15_%I29.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I29.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD15_%I29.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I29.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD15_%I29.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I29.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD15_%I29.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I29.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD15_%I29.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I29.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD15_%I29.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I29.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD15_%I29.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I29.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD16_%I30.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I30.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD16_%I30.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I30.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD16_%I30.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I30.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD16_%I30.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I30.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD16_%I30.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I30.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD16_%I30.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I30.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD16_%I30.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I30.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD16_%I30.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I30.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD16_%I31.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I31.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD16_%I31.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I31.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD16_%I31.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I31.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD16_%I31.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I31.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD16_%I31.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I31.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD16_%I31.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I31.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD16_%I31.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I31.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD16_%I31.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%I31.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD17_%Q0.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q0.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD17_%Q0.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q0.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD17_%Q0.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q0.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD17_%Q0.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q0.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD17_%Q0.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q0.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD17_%Q0.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q0.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD17_%Q0.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q0.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD17_%Q0.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q0.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD17_%Q1.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q1.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD17_%Q1.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q1.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD17_%Q1.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q1.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD17_%Q1.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q1.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD17_%Q1.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q1.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD17_%Q1.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q1.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD17_%Q1.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q1.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD17_%Q1.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q1.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD18_%Q2.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q2.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD18_%Q2.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q2.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD18_%Q2.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q2.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD18_%Q2.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q2.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD18_%Q2.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q2.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD18_%Q2.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q2.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD18_%Q2.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q2.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD18_%Q2.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q2.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD18_%Q3.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q3.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD18_%Q3.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q3.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD18_%Q3.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q3.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD18_%Q3.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q3.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD18_%Q3.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q3.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD18_%Q3.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q3.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD18_%Q3.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q3.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD18_%Q3.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q3.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD19_%Q4.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q4.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD19_%Q4.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q4.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD19_%Q4.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q4.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD19_%Q4.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q4.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD19_%Q4.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q4.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD19_%Q4.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q4.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD19_%Q4.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q4.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD19_%Q4.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q4.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD19_%Q5.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q5.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD19_%Q5.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q5.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD19_%Q5.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q5.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD19_%Q5.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q5.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD19_%Q5.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q5.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD19_%Q5.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q5.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD19_%Q5.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q5.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD19_%Q5.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q5.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.0_CARD20_%Q6.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q6.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.1_CARD20_%Q6.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q6.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.2_CARD20_%Q6.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q6.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.3_CARD20_%Q6.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q6.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.4_CARD20_%Q6.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q6.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.5_CARD20_%Q6.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q6.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.6_CARD20_%Q6.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q6.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIA.7_CARD20_%Q6.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q6.7"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.0_CARD20_%Q7.0",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q7.0"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.1_CARD20_%Q7.1",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q7.1"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.2_CARD20_%Q7.2",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q7.2"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.3_CARD20_%Q7.3",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q7.3"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.4_CARD20_%Q7.4",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q7.4"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.5_CARD20_%Q7.5",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q7.5"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.6_CARD20_%Q7.6",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q7.6"
+        },
+        {
+          "Name": "MCC1_RACK1_DIB.7_CARD20_%Q7.7",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%Q7.7"
+        }
+      ]
+    },
+    {
+      "DeviceID": 1,
+      "Name": "Default tag table",
+      "Tags": [
+        {
+          "Name": "Clock_Byte",
+          "DataTypeName": "Byte",
+          "LogicalAddress": "%MB0"
+        },
+        {
+          "Name": "Clock_10Hz",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%M0.0"
+        },
+        {
+          "Name": "Clock_5Hz",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%M0.1"
+        },
+        {
+          "Name": "Clock_2.5Hz",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%M0.2"
+        },
+        {
+          "Name": "Clock_2Hz",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%M0.3"
+        },
+        {
+          "Name": "Clock_1.25Hz",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%M0.4"
+        },
+        {
+          "Name": "Clock_1Hz",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%M0.5"
+        },
+        {
+          "Name": "Clock_0.625Hz",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%M0.6"
+        },
+        {
+          "Name": "Clock_0.5Hz",
+          "DataTypeName": "Bool",
+          "LogicalAddress": "%M0.7"
+        }
+      ]
+    }
+  ],
+  "PLC data types": [
+    {
+      "Name": "A_Drives",
+      "types": [
+        {
+          "Name": "Selected",
+          "Datatype": "Bool"
+        },
+        {
+          "Name": "Icons",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Status",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Warning",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Fault",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Cmd_Bits",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "General_Flag",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Slot_ID",
+          "Datatype": "Array[0..5] of Int"
+        },
+        {
+          "Name": "Attribute_1",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Attribute_2",
+          "Datatype": "Int"
+        }
+      ]
+    },
+    {
+      "Name": "A_Path_Drive_Control",
+      "types": [
+        {
+          "Name": "Drive_Control",
+          "Datatype": "Array[0..50] of \"path_drive_control\""
+        }
+      ]
+    },
+    {
+      "Name": "A_Path_Drive_Control_1",
+      "types": [
+        {
+          "Name": "Drive_Control",
+          "Datatype": "Array[0..50] of \"path_drive_control\""
+        }
+      ]
+    },
+    {
+      "Name": "Bins",
+      "types": [
+        {
+          "Name": "Src_Selected",
+          "Datatype": "Bool"
+        },
+        {
+          "Name": "Des_Selected",
+          "Datatype": "Bool"
+        },
+        {
+          "Name": "Icons",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Status",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Warning",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Fault",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Cmd_Bits",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "General_Flags",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Stock_Value",
+          "Datatype": "Real"
+        },
+        {
+          "Name": "Src_Slot_ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Des_Slot_ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Grade",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "CommoditySeason",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Commodity",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Fum_Status",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Fum_For_x_Days",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Fum_Next_Treat",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Fum_Treat_overd",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Sample_Mass",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Aer_Hours_PV",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Aer_Hours_SP",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Aer_WB_Temp",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Aer_Moisture_SP",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Aer_Temper_SP",
+          "Datatype": "Int"
+        }
+      ]
+    },
+    {
+      "Name": "Drive_Stat",
+      "types": [
+        {
+          "Name": "Warning",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Fault",
+          "Datatype": "Word"
+        }
+      ]
+    },
+    {
+      "Name": "Event_Pool",
+      "types": [
+        {
+          "Name": "Offset",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Counter",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Type",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Subtype",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Time1",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Time2",
+          "Datatype": "DWord"
+        },
+        {
+          "Name": "Data1",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Data2",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Data3",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Data4",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Data5",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Data6",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Data7",
+          "Datatype": "Word"
+        }
+      ]
+    },
+    {
+      "Name": "Feed",
+      "types": [
+        {
+          "Name": "ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "TPH_Rate",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Blend",
+          "Datatype": "Real"
+        },
+        {
+          "Name": "CC",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Time",
+          "Datatype": "Time"
+        },
+        {
+          "Name": "Open",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Blend_At_Belt",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Error",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "General",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "SO_Weight",
+          "Datatype": "Real"
+        },
+        {
+          "Name": "Status",
+          "Datatype": "Word"
+        }
+      ]
+    },
+    {
+      "Name": "Grain_Bits",
+      "types": [
+        {
+          "Name": "Total_Capacity",
+          "Datatype": "DInt"
+        },
+        {
+          "Name": "Kg_per_minute",
+          "Datatype": "DInt"
+        },
+        {
+          "Name": "Segment_Time",
+          "Datatype": "DInt"
+        }
+      ]
+    },
+    {
+      "Name": "Network",
+      "types": [
+        {
+          "Name": "NETWORK_PROFINET",
+          "Datatype": "Array[0..8] of Bool"
+        },
+        {
+          "Name": "NETWORK_PROFIBUS",
+          "Datatype": "Array[0..32] of Bool"
+        }
+      ]
+    },
+    {
+      "Name": "path_drive_control",
+      "types": [
+        {
+          "Name": "ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Type",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Att",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Sys_Crash",
+          "Datatype": "Bool"
+        },
+        {
+          "Name": "Upstream_Run",
+          "Datatype": "Bool"
+        }
+      ]
+    },
+    {
+      "Name": "Slots",
+      "types": [
+        {
+          "Name": "Slot_ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Drive_Control",
+          "Datatype": "Array[0..50] of \"path_drive_control\""
+        },
+        {
+          "Name": "GUI_Command",
+          "Datatype": "Int",
+          "attributes": {
+            "SetPoint": "true"
+          }
+        },
+        {
+          "Name": "Internal_Command",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Path_Length",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Current_Path_ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Path_Status",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "General_Flags_2",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "General_Flags_1",
+          "Datatype": "Word"
+        },
+        {
+          "Name": "Active_Time",
+          "Datatype": "Time"
+        },
+        {
+          "Name": "Reset_All_Drive",
+          "Datatype": "Bool"
+        },
+        {
+          "Name": "Active",
+          "Datatype": "Bool"
+        },
+        {
+          "Name": "Sources",
+          "Datatype": "Array[0..10] of Int"
+        },
+        {
+          "Name": "Destination",
+          "Datatype": "Array[0..15] of Int"
+        },
+        {
+          "Name": "Feed",
+          "Datatype": "Array[1..6] of \"Feed\""
+        },
+        {
+          "Name": "New_Path_ID",
+          "Datatype": "Int"
+        },
+        {
+          "Name": "Paths",
+          "Datatype": "Array[0..15] of Int"
+        }
+      ]
+    }
+  ],
+  "libraries": [
+    {
+      "path": "C:/Users/USER/Documents/Automation/TGTLibrary/TGTLibrary.al18"
+    }
+  ],
+  "Program blocks": [
+    {
+      "DeviceID": 1,
+      "id": 1,
+      "type": "SW.Blocks.OB",
+      "name": "Main",
+      "programming_language": "FBD",
+      "number": 1
+    }
+  ]
+}

@@ -7,6 +7,8 @@ from src.schemas.DeviceItems import DeviceItem
 from src.schemas.PlcTags import PlcTagTable
 from src.schemas.PlcDataTypes import PlcDataType
 from src.schemas.Libraries import GlobalLibrary
+from src.schemas.PlcOB import OrganizationBlock
+from src.schemas.PlcFB import FunctionBlock
 
 root = Schema(
     {
@@ -16,6 +18,7 @@ root = Schema(
         Optional("PLC tags", default=[]): And(list, [PlcTagTable]),
         Optional("PLC data types", default=[]): And(list, [PlcDataType]),
         Optional("libraries", default=[]): And(list, [GlobalLibrary]),
+        Optional("Program blocks", default=[]): And(list, [Or(OrganizationBlock, FunctionBlock)]),
     },
     ignore_extra_keys=True  
 )
