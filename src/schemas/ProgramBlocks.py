@@ -1,6 +1,6 @@
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
-from src.modules.XML.ProgramBlocks import PlcEnum, VariableSection, VariableStruct
+from src.modules.XML.ProgramBlocks import PlcEnum, DatabaseEnum, VariableSection, VariableStruct
 
 VariableStruct = Schema({
     "name": str,
@@ -20,7 +20,7 @@ PlcBlock = Schema({
     "id": int,
     "type": And(str, Use(PlcEnum)),
     "name": str,
-    Optional("folder", default=[]): [str],
+    Optional("folder", default=[]): And(list, [str]),
     Optional("number", default=1): int,
 })
 
@@ -34,3 +34,15 @@ Parameter = Schema({
     "parameters": dict,
 })
 
+Database = Schema({
+    "DeviceID": int,
+    "id": int,
+    "type": And(str, Use(DatabaseEnum)),
+    "name": str,
+})
+
+InstanceDB = Schema({
+    **Database._schema,
+    Optional("blockgroup_path", default="/"): str,
+    Optional("number", default=1): int,
+})

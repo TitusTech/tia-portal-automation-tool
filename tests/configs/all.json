@@ -2,191 +2,190 @@
   "devices": [
     {
       "id": 1,
-      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6", 
-      "slots_required": 1, 
+      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6",
+      "slots_required": 1,
       "network_interface": {
-        "Address": "192.168.88.211", 
+        "Address": "192.168.88.211",
         "RouterAddress": "192.168.88.1",
         "UseRouter": true,
-        "io_controller": "PNIO", 
+        "io_controller": "PNIO",
         "subnet_name": "PN/IE_1"
-
-      }, 
-      "p_deviceName": "PLC_12", 
+      },
+      "p_deviceName": "PLC_12",
       "p_name": "PLC_12"
     },
     {
       "id": 2,
-      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6", 
-      "slots_required": 1, 
+      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6",
+      "slots_required": 1,
       "network_interface": {
-        "Address": "192.168.88.212", 
+        "Address": "192.168.88.212",
         "RouterAddress": "192.168.88.1",
         "UseRouter": true,
-        "io_controller": "PNIO", 
+        "io_controller": "PNIO",
         "subnet_name": "PN/IE_2"
-      }, 
-      "p_deviceName": "PLC_1", 
+      },
+      "p_deviceName": "PLC_1",
       "p_name": "PLC_1"
     },
     {
       "id": 3,
-      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6", 
-      "slots_required": 1, 
+      "p_typeIdentifier": "OrderNumber:6ES7 512-1DK01-0AB0/V2.6",
+      "slots_required": 1,
       "network_interface": {
-        "Address": "192.168.88.213", 
+        "Address": "192.168.88.213",
         "RouterAddress": "192.168.88.1",
         "UseRouter": true,
-        "io_controller": "PNIO", 
+        "io_controller": "PNIO",
         "subnet_name": "Profinet"
-
-      }, 
-      "p_deviceName": "PLC_2", 
+      },
+      "p_deviceName": "PLC_2",
       "p_name": "PLC_2"
     }
   ],
   "Local modules": [
     {
-      "typeIdentifier": "OrderNumber:6ES7 193-6PA00-0AA0/V1.1", 
-      "DeviceID": 1, 
-      "positionNumber": 2, 
+      "typeIdentifier": "OrderNumber:6ES7 193-6PA00-0AA0/V1.1",
+      "DeviceID": 1,
+      "positionNumber": 2,
       "name": "Server module_1"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 3, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 3,
       "name": "DI 16x24VDC ST_1"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 4, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 4,
       "name": "DI 16x24VDC ST_2"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 5, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 5,
       "name": "DI 16x24VDC ST_3"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 6, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 6,
       "name": "DI 16x24VDC ST_4"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 7, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 7,
       "name": "DI 16x24VDC ST_5"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 8, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 8,
       "name": "DI 16x24VDC ST_6"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 9, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 9,
       "name": "DI 16x24VDC ST_7"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 10, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 10,
       "name": "DI 16x24VDC ST_8"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 11, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 11,
       "name": "DI 16x24VDC ST_9"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 12, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 12,
       "name": "DI 16x24VDC ST_10"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 13, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 13,
       "name": "DI 16x24VDC ST_11"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 14, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 14,
       "name": "DI 16x24VDC ST_12"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 15, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 15,
       "name": "DI 16x24VDC ST_13"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 16, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 16,
       "name": "DI 16x24VDC ST_14"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 1, 
-      "positionNumber": 27, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 1,
+      "positionNumber": 27,
       "name": "DI 16x24VDC ST_157"
     },
     {
-      "typeIdentifier": "OrderNumber:6ES7 193-6PA00-0AA0/V1.1", 
-      "DeviceID": 2, 
-      "positionNumber": 2, 
+      "typeIdentifier": "OrderNumber:6ES7 193-6PA00-0AA0/V1.1",
+      "DeviceID": 2,
+      "positionNumber": 2,
       "name": "Server module_1"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 2, 
-      "positionNumber": 3, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 2,
+      "positionNumber": 3,
       "name": "DI 16x24VDC ST_1"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 2, 
-      "positionNumber": 4, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 2,
+      "positionNumber": 4,
       "name": "DI 16x24VDC ST_2"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 2, 
-      "positionNumber": 5, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 2,
+      "positionNumber": 5,
       "name": "DI 16x24VDC ST_3"
-    }, {
-      "typeIdentifier": "OrderNumber:6ES7 193-6PA00-0AA0/V1.1", 
-      "DeviceID": 3, 
-      "positionNumber": 2, 
+    },
+    {
+      "typeIdentifier": "OrderNumber:6ES7 193-6PA00-0AA0/V1.1",
+      "DeviceID": 3,
+      "positionNumber": 2,
       "name": "Server module_1"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 3, 
-      "positionNumber": 3, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 3,
+      "positionNumber": 3,
       "name": "DI 16x24VDC ST_1"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 3, 
-      "positionNumber": 4, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 3,
+      "positionNumber": 4,
       "name": "DI 16x24VDC ST_2"
-    }, 
+    },
     {
-      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0", 
-      "DeviceID": 3, 
-      "positionNumber": 25, 
+      "typeIdentifier": "OrderNumber:6ES7 131-6BH01-0BA0/V0.0",
+      "DeviceID": 3,
+      "positionNumber": 25,
       "name": "DI 16x24VDC ST_325"
     }
   ],
@@ -2304,6 +2303,1444 @@
       "name": "Main",
       "programming_language": "FBD",
       "number": 1
+    },
+    {
+      "DeviceID": 1,
+      "id": 2,
+      "type": "SW.Blocks.GlobalDB",
+      "name": "DB_Event_Queue",
+      "blockgroup_path": "/DB",
+      "structs": [
+        {
+          "name": "Event_Pool",
+          "datatype": "Array[0..999] of \"Event_Pool\""
+        }
+      ],
+      "attributes": {
+        "MemoryLayout": "Optimized"
+      }
+    },
+    {
+      "DeviceID": 1,
+      "id": 3,
+      "type": "SW.Blocks.GlobalDB",
+      "name": "DB_General_Utils",
+      "blockgroup_path": "/DB",
+      "structs": [
+        {
+          "name": "Third_Scan",
+          "datatype": "Bool",
+          "start_value": "true"
+        },
+        {
+          "name": "First_Scan",
+          "datatype": "Bool",
+          "start_value": "true"
+        },
+        {
+          "name": "Network_Status",
+          "datatype": "\"Network\""
+        }
+      ],
+      "attributes": {
+        "MemoryLayout": "Optimized"
+      }
+    },
+    {
+      "DeviceID": 1,
+      "id": 4,
+      "type": "SW.Blocks.GlobalDB",
+      "name": "DB_GeneralInputs",
+      "blockgroup_path": "/DB",
+      "structs": [
+        {
+          "name": "T_Run",
+          "datatype": "Time",
+          "start_value": "T#5s"
+        },
+        {
+          "name": "Inhibit_Hooter",
+          "datatype": "Bool",
+          "start_value": "true"
+        },
+        {
+          "name": "Water_Tank_HL",
+          "datatype": "Bool",
+          "start_value": "true"
+        },
+        {
+          "name": "Water_Tank_LL",
+          "datatype": "Bool",
+          "start_value": "true"
+        },
+        {
+          "name": "Screening_Running",
+          "datatype": "Bool"
+        },
+        {
+          "name": "Estop",
+          "datatype": "Bool"
+        },
+        {
+          "name": "First_CL_Pump_Fault",
+          "datatype": "Bool"
+        },
+        {
+          "name": "Second_Damp_Pump_Fault",
+          "datatype": "Bool"
+        }
+      ],
+      "attributes": {
+        "MemoryLayout": "Optimized"
+      }
+    },
+    {
+      "DeviceID": 1,
+      "id": 5,
+      "type": "SW.Blocks.GlobalDB",
+      "name": "DB_Master",
+      "blockgroup_path": "/DB",
+      "structs": [
+        {
+          "name": "All_Slots",
+          "datatype": "Array[0..30] of \"Slots\""
+        },
+        {
+          "name": "All_Drives",
+          "datatype": "Array[0..910] of \"A_Drives\""
+        },
+        {
+          "name": "All_Bins",
+          "datatype": "Array[0..65] of \"Bins\""
+        }
+      ],
+      "attributes": {
+        "MemoryLayout": "Standard"
+      }
+    },
+    {
+      "DeviceID": 1,
+      "id": 6,
+      "type": "SW.Blocks.GlobalDB",
+      "name": "DB_Stat",
+      "blockgroup_path": "/DB",
+      "structs": [
+        {
+          "name": "Drive_ID",
+          "datatype": "Array[0..910] of \"Drive_Stat\""
+        }
+      ],
+      "attributes": {
+        "MemoryLayout": "Standard"
+      }
+    },
+    {
+      "DeviceID": 1,
+      "id": 7,
+      "type": "SW.Blocks.GlobalDB",
+      "name": "IO",
+      "blockgroup_path": "/DB",
+      "structs": [
+        {
+          "name": "CC1_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC1_BLOCKED_CHUTE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC1_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC1_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC1_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC1_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC1_RUNNING",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC1_SLACK_CHAIN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC1_UNDERSPEED",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC2_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC2_BLOCKED_CHUTE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC2_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC2_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC2_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC2_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC2_RUNNING",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC2_SLACK_CHAIN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC2_UNDERSPEED",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC3_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC3_BLOCKED_CHUTE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC3_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC3_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC3_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC3_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC3_RUNNING",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC3_SLACK_CHAIN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC3_UNDERSPEED",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC4_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC4_BLOCKED_CHUTE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC4_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC4_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC4_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC4_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC4_RUNNING",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC4_SLACK_CHAIN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC4_UNDERSPEED",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC5_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC5_BLOCKED_CHUTE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC5_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC5_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC5_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC5_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC5_RUNNING",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC5_SLACK_CHAIN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC5_UNDERSPEED",
+          "datatype": "Bool"
+        },
+        {
+          "name": "BE1_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "BE1_BELT_DRIFT_BOTTOM_LEFT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "BE1_BELT_DRIFT_BOTTOM_RIGHT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "BE1_BELT_DRIFT_TOP_LEFT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "BE1_BELT_DRIFT_TOP_RIGHT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "BE1_BLOCKED_CHUTE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "BE1_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "BE1_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "BE1_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "BE1_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "BE1_RUNNING",
+          "datatype": "Bool"
+        },
+        {
+          "name": "BE1_UNDERSPEED",
+          "datatype": "Bool"
+        },
+        {
+          "name": "FV1_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "FV1_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "FV1_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "FV1_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "FV1_POSITION_1",
+          "datatype": "Bool"
+        },
+        {
+          "name": "FV1_POSITION_2",
+          "datatype": "Bool"
+        },
+        {
+          "name": "FV1_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2A_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2A_FULLY_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2A_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2A_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2A_FULLY_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2A_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2A_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2B_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2B_FULLY_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2B_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2B_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2B_FULLY_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2B_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2B_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG3A_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG3A_FULLY_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG3A_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG3A_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG3A_FULLY_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG3A_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG3A_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG4A_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG4A_FULLY_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG4A_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG4A_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG4A_FULLY_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG4A_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG4A_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG5A_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG5A_FULLY_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG5A_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG5A_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG5A_FULLY_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG5A_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG5A_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1A_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1A_FULLY_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1A_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1A_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1A_FULLY_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1A_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1A_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1B_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1B_FULLY_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1B_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1B_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1B_FULLY_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1B_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1B_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1C_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1C_FULLY_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1C_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1C_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1C_FULLY_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1C_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1C_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1D_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1D_FULLY_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1D_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1D_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1D_FULLY_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1D_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1D_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2A_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2A_FULLY_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2A_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2A_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2A_FULLY_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2A_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2A_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2B_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2B_FULLY_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2B_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2B_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2B_FULLY_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2B_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2B_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2C_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2C_FULLY_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2C_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2C_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2C_FULLY_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2C_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2C_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2D_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2D_FULLY_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2D_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2D_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2D_FULLY_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2D_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2D_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1A_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1A_BLOCKED_CHUTE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1A_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1A_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1A_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1A_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1A_RUNNING",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1A_UNDERSPEED",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1B_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1B_BLOCKED_CHUTE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1B_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1B_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1B_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1B_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1B_RUNNING",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1B_UNDERSPEED",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2A_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2A_BLOCKED_CHUTE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2A_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2A_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2A_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2A_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2A_RUNNING",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2A_UNDERSPEED",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2B_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2B_BLOCKED_CHUTE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2B_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2B_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2B_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2B_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2B_RUNNING",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2B_UNDERSPEED",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA1_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA1_BLOCKED_CHUTE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA1_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA1_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA1_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA1_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA1_RUNNING",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA1_UNDERSPEED",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA2_AUTO",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA2_BLOCKED_CHUTE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA2_EMERGENCY_STOP",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA2_HAND",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA2_OVERLOAD_FAULT",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA2_POWER_OK",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA2_RUNNING",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA2_UNDERSPEED",
+          "datatype": "Bool"
+        },
+        {
+          "name": "HL_S1",
+          "datatype": "Bool"
+        },
+        {
+          "name": "HL_S2",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I25.5",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I25.6",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I25.7",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I26.0",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I26.1",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I26.2",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I26.3",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I26.4",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I26.5",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I26.6",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I26.7",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I27.0",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I27.1",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I27.2",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I27.3",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I27.4",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I27.5",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I27.6",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I27.7",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I28.0",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I28.1",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I28.2",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I28.3",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I28.4",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I28.5",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I28.6",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I28.7",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I29.0",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I29.1",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I29.2",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I29.3",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I29.4",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I29.5",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I29.6",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I29.7",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I30.0",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I30.1",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I30.2",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I30.3",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I30.4",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I30.5",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I30.6",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I30.7",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I31.0",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I31.1",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I31.2",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I31.3",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I31.4",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I31.5",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I31.6",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DI_%I31.7",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC1_START",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC2_START",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC3_START",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC4_START",
+          "datatype": "Bool"
+        },
+        {
+          "name": "CC5_START",
+          "datatype": "Bool"
+        },
+        {
+          "name": "BE1_START",
+          "datatype": "Bool"
+        },
+        {
+          "name": "FV1_START_POSITION_1",
+          "datatype": "Bool"
+        },
+        {
+          "name": "FV1_START_POSITION_2",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2A_START_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2A_START_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2B_START_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG2B_START_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG3A_START_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG3A_START_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG4A_START_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG4A_START_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG5A_START_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "IG5A_START_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1A_START_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1A_START_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1B_START_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1B_START_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1C_START_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1C_START_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1D_START_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS1D_START_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2A_START_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2A_START_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2B_START_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2B_START_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2C_START_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2C_START_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2D_START_OPEN",
+          "datatype": "Bool"
+        },
+        {
+          "name": "EGS2D_START_CLOSE",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1A_START",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS1B_START",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2A_START",
+          "datatype": "Bool"
+        },
+        {
+          "name": "AFS2B_START",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA1_START",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SA2_START",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q5.0",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q5.1",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q5.2",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q5.3",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q5.4",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q5.5",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q5.6",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q5.7",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q6.0",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q6.1",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q6.2",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q6.3",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q6.4",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q6.5",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q6.6",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q6.7",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q7.0",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q7.1",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q7.2",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q7.3",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q7.4",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q7.5",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q7.6",
+          "datatype": "Bool"
+        },
+        {
+          "name": "SPARE_DO_%Q7.7",
+          "datatype": "Bool"
+        }
+      ],
+      "attributes": {
+        "MemoryLayout": "Optimized"
+      }
+    },
+    {
+      "DeviceID": 1,
+      "id": 8,
+      "type": "SW.Blocks.GlobalDB",
+      "name": "Kg_in_Flight",
+      "blockgroup_path": "/DB",
+      "structs": [
+        {
+          "name": "Grain_Bits",
+          "datatype": "Array[0..910] of \"Grain_Bits\""
+        }
+      ],
+      "attributes": {
+        "MemoryLayout": "Optimized"
+      }
     }
   ],
   "Network sources": [
@@ -2312,6 +3749,12 @@
       "id": 1,
       "title": "First Scan",
       "comment": "USUALLY EMPTY"
+    },
+    {
+      "plc_block_id": 1,
+      "id": 2,
+      "title": "Simulation - DELETE BEFORE DEPLOYMENT"
     }
-  ]
+  ],
+  "Instances": []
 }

@@ -52,23 +52,23 @@ class PlcEnum(Enum):
     ForceTableEntry = "SW.WatchAndForceTables.PlcForceTableEntry"
 
 @dataclass
-class DatabaseType(Enum):
+class DatabaseEnum(Enum):
     InstanceDB = "SW.Blocks.InstanceDB"
     GlobalDB = "SW.Blocks.GlobalDB"
     ArrayDB = "SW.Blocks.ArrayDB"
     MultiInstance = "MultiInstance"
 
-class DatabaseData:
-    Type: DatabaseType
+class Database:
+    Type: DatabaseEnum
     Name: str
-    Folder: list[str]
     Number: int
+    BlockGroupPath: str
 
 @dataclass
 class InstanceContainer:
     Name: str
     Type: PlcEnum
-    Database: DatabaseData
+    Database: Database
     Parameters: list[WireParameter]
 
 
