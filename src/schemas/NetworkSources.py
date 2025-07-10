@@ -4,7 +4,7 @@ from src.schemas.BlocksOB import OrganizationBlock
 from src.schemas.BlocksFB import FunctionBlock
 
 NetworkSource = Schema({
-    "plc_block_id": int,
+    "parent_id": int,
     "id": int,
     Optional("title", default=""): str,
     Optional("comment", default=""): str,
