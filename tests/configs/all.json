@@ -3745,68 +3745,67 @@
   ],
   "Network sources": [
     {
-      "parent_id": 1,
+      "plc_block_id": 1,
       "id": 1,
       "title": "First Scan",
       "comment": "USUALLY EMPTY"
     },
     {
-      "parent_id": 1,
+      "plc_block_id": 1,
       "id": 2,
       "title": "Simulation - DELETE BEFORE DEPLOYMENT"
     },
     {
-      "parent_id": 1,
+      "plc_block_id": 1,
       "id": 3,
       "title": "Input Mapping"
     },
     {
-      "parent_id": 1,
+      "plc_block_id": 1,
       "id": 4,
       "title": "Control Monitor",
       "comment": "must vbe parsted"
     },
     {
-      "parent_id": 1,
+      "plc_block_id": 1,
       "id": 5,
       "title": "Bins"
     },
     {
-      "parent_id": 1,
+      "plc_block_id": 1,
       "id": 6,
       "title": "Conveyors"
     },
     {
-      "parent_id": 1,
+      "plc_block_id": 1,
       "id": 7,
       "title": "Elevators"
     },
     {
-      "parent_id": 1,
+      "plc_block_id": 1,
       "id": 8,
       "title": "Valves"
     },
     {
-      "parent_id": 1,
+      "plc_block_id": 1,
       "id": 9,
       "title": "Aeration Fan"
     },
     {
-      "parent_id": 1,
+      "plc_block_id": 1,
       "id": 10,
       "title": "Sweeper Auger"
     },
     {
-      "parent_id": 1,
+      "plc_block_id": 1,
       "id": 11,
       "title": "Output Mapping"
     },
     {
-      "parent_id": 1,
+      "plc_block_id": 1,
       "id": 12,
       "title": "Last Scan",
       "comment": "usually empty"
     }
-  ],
-  "Instances": []
+  ]
 }
