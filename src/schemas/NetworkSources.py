@@ -1,7 +1,7 @@
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
-from src.schemas.PlcOB import OrganizationBlock
-from src.schemas.PlcFB import FunctionBlock
+from src.schemas.BlocksOB import OrganizationBlock
+from src.schemas.BlocksFB import FunctionBlock
 
 NetworkSource = Schema({
     "plc_block_id": int,

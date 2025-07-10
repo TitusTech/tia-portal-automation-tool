@@ -8,8 +8,8 @@ from src.schemas.Devices import PLC
 from src.schemas.Libraries import GlobalLibrary
 from src.schemas.NetworkSources import NetworkSource, Instance
 from src.schemas.PlcDataTypes import PlcDataType
-from src.schemas.PlcFB import FunctionBlock
-from src.schemas.PlcOB import OrganizationBlock
+from src.schemas.BlocksFB import FunctionBlock
+from src.schemas.BlocksOB import OrganizationBlock
 from src.schemas.PlcTags import PlcTagTable
 
 root = Schema(
