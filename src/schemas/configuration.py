@@ -11,6 +11,7 @@ from src.schemas.PlcDataTypes import PlcDataType
 from src.schemas.BlocksFB import FunctionBlock
 from src.schemas.BlocksOB import OrganizationBlock
 from src.schemas.PlcTags import PlcTagTable
+from src.schemas.ProgramBlocks import VariableSection
 
 root = Schema(
     {
@@ -22,7 +23,7 @@ root = Schema(
         Optional("libraries", default=[]): And(list, [GlobalLibrary]),
         Optional("Program blocks", default=[]): And(list, [Or(OrganizationBlock, FunctionBlock, GlobalDB)]),
         Optional("Network sources", default=[]): And(list, [NetworkSource]),
-        Optional("Instances", default=[]): And(list, [Instance]),
+        Optional("Variable sections", default=[]): And(list, [VariableSection]),
     },
     ignore_extra_keys=True  
 )

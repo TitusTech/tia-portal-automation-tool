@@ -3741,6 +3741,15 @@
       "attributes": {
         "MemoryLayout": "Optimized"
       }
+    },
+    {
+      "DeviceID": 1,
+      "id": 9,
+      "network_source_id": 4,
+      "type": "SW.Blocks.FB",
+      "name": "Common_Control Monitor",
+      "programming_language": "FBD",
+      "blockgroup_path": "/FB"
     }
   ],
   "Network sources": [
@@ -3806,6 +3815,175 @@
       "id": 12,
       "title": "Last Scan",
       "comment": "usually empty"
+    }
+  ],
+  "Variable sections": [
+    {
+      "plc_block_id": 9,
+      "name": "Static",
+      "data": [
+        {
+          "name": "Slot 11",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Slot 12",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Slot 10",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Control_Monitor_1_DB",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Control_Monitor_1_Instance",
+          "datatype": "\"TGT_LD_ControlMonitor_1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Control_Monitor_1_Instance_1",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Control_Monitor_1_Instance_2",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Control_Monitor_1_Instance_3",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Control_Monitor_1_Instance_4",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Control_Monitor_1_Instance_5",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Control_Monitor_1_Instance_6",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Control_Monitor_1_Instance_7",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Control_Monitor_1_Instance_8",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Control_Monitor_1_Instance_9",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Slot_13",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Slot_14",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Slot_15",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Slot_16",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Slot_17",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Slot_18",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Slot_19",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Slot_20",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Slot21",
+          "datatype": "\"TGT_LD_ControlMonitor\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        }
+      ]
     }
   ]
 }

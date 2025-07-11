@@ -11,6 +11,7 @@ VariableStruct = Schema({
 })
 
 VariableSection = Schema({
+    "plc_block_id": int,
     "name": str,
     "data": And(list, [VariableStruct]),
 })
@@ -18,15 +19,11 @@ VariableSection = Schema({
 PlcBlock = Schema({
     "DeviceID": int,
     "id": int,
+    Optional("network_source_id"): int,
     "type": And(str, Use(PlcEnum)),
     "name": str,
-    Optional("folder", default=[]): And(list, [str]),
+    Optional("blockgroup_path", default="/"): str,
     Optional("number", default=1): int,
-})
-
-Variable = Schema({
-    "plc_block_id": int,
-    "variables": And(list, [VariableSection]),
 })
 
 Parameter = Schema({
