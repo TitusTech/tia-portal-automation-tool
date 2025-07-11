@@ -1,9 +1,9 @@
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
-from src.schemas.ProgramBlocks import InstanceDB, VariableStruct
+from src.schemas.ProgramBlocks import Database, VariableStruct
 
 GlobalDB = Schema({
-    **InstanceDB._schema,
+    **Database._schema,
     Optional("structs", default=[]): And(list, [VariableStruct]),
     Optional("attributes", default={}): dict,
 })

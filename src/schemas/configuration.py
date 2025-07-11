@@ -2,14 +2,15 @@ from __future__ import annotations
 from pathlib import Path
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
+from src.schemas.BlocksDBInstances import SingleInstance, MultiInstance
+from src.schemas.BlocksFB import FunctionBlock
 from src.schemas.BlocksGlobalDB import GlobalDB
+from src.schemas.BlocksOB import OrganizationBlock
 from src.schemas.DeviceItems import DeviceItem
 from src.schemas.Devices import PLC
 from src.schemas.Libraries import GlobalLibrary
 from src.schemas.NetworkSources import NetworkSource, Instance
 from src.schemas.PlcDataTypes import PlcDataType
-from src.schemas.BlocksFB import FunctionBlock
-from src.schemas.BlocksOB import OrganizationBlock
 from src.schemas.PlcTags import PlcTagTable
 from src.schemas.ProgramBlocks import VariableSection
 
@@ -24,6 +25,7 @@ root = Schema(
         Optional("Program blocks", default=[]): And(list, [Or(OrganizationBlock, FunctionBlock, GlobalDB)]),
         Optional("Network sources", default=[]): And(list, [NetworkSource]),
         Optional("Variable sections", default=[]): And(list, [VariableSection]),
+        Optional("Instances", default=[]): And(list, [SingleInstance, MultiInstance]),
     },
     ignore_extra_keys=True  
 )

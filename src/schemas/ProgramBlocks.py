@@ -1,6 +1,6 @@
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
-from src.modules.XML.ProgramBlocks import PlcEnum, DatabaseEnum, VariableSection, VariableStruct
+from src.modules.XML.ProgramBlocks import PlcEnum, VariableSection, VariableStruct
 
 VariableStruct = Schema({
     "name": str,
@@ -34,12 +34,7 @@ Parameter = Schema({
 Database = Schema({
     "DeviceID": int,
     "id": int,
-    "type": And(str, Use(DatabaseEnum)),
     "name": str,
-})
-
-InstanceDB = Schema({
-    **Database._schema,
     Optional("blockgroup_path", default="/"): str,
     Optional("number", default=1): int,
 })

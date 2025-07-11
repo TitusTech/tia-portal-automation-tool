@@ -2307,7 +2307,6 @@
     {
       "DeviceID": 1,
       "id": 2,
-      "type": "SW.Blocks.GlobalDB",
       "name": "DB_Event_Queue",
       "blockgroup_path": "/DB",
       "structs": [
@@ -2323,7 +2322,6 @@
     {
       "DeviceID": 1,
       "id": 3,
-      "type": "SW.Blocks.GlobalDB",
       "name": "DB_General_Utils",
       "blockgroup_path": "/DB",
       "structs": [
@@ -2349,7 +2347,6 @@
     {
       "DeviceID": 1,
       "id": 4,
-      "type": "SW.Blocks.GlobalDB",
       "name": "DB_GeneralInputs",
       "blockgroup_path": "/DB",
       "structs": [
@@ -2397,7 +2394,6 @@
     {
       "DeviceID": 1,
       "id": 5,
-      "type": "SW.Blocks.GlobalDB",
       "name": "DB_Master",
       "blockgroup_path": "/DB",
       "structs": [
@@ -2421,7 +2417,6 @@
     {
       "DeviceID": 1,
       "id": 6,
-      "type": "SW.Blocks.GlobalDB",
       "name": "DB_Stat",
       "blockgroup_path": "/DB",
       "structs": [
@@ -2437,7 +2432,6 @@
     {
       "DeviceID": 1,
       "id": 7,
-      "type": "SW.Blocks.GlobalDB",
       "name": "IO",
       "blockgroup_path": "/DB",
       "structs": [
@@ -3729,7 +3723,6 @@
     {
       "DeviceID": 1,
       "id": 8,
-      "type": "SW.Blocks.GlobalDB",
       "name": "Kg_in_Flight",
       "blockgroup_path": "/DB",
       "structs": [
@@ -3984,6 +3977,15 @@
           }
         }
       ]
+    }
+  ],
+  "Instances": [
+    {
+      "DeviceID": 1,
+      "id": 1,
+      "name": "Control_Monitor_1_Instance",
+      "call_option": "Single",
+      "blockgroup_path": "/DB"
     }
   ]
 }

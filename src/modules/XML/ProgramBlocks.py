@@ -51,15 +51,7 @@ class PlcEnum(Enum):
     WatchTableEntry = "SW.WatchAndForceTables.PlcWatchTableEntry"
     ForceTableEntry = "SW.WatchAndForceTables.PlcForceTableEntry"
 
-@dataclass
-class DatabaseEnum(Enum):
-    InstanceDB = "SW.Blocks.InstanceDB"
-    GlobalDB = "SW.Blocks.GlobalDB"
-    ArrayDB = "SW.Blocks.ArrayDB"
-    MultiInstance = "MultiInstance"
-
 class Database:
-    Type: DatabaseEnum
     Name: str
     Number: int
     BlockGroupPath: str
