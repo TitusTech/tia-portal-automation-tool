@@ -25,7 +25,7 @@ root = Schema(
         Optional("Program blocks", default=[]): And(list, [Or(OrganizationBlock, FunctionBlock, GlobalDB)]),
         Optional("Network sources", default=[]): And(list, [NetworkSource]),
         Optional("Variable sections", default=[]): And(list, [VariableSection]),
-        Optional("Instances", default=[]): And(list, [SingleInstance, MultiInstance]),
+        Optional("Instances", default=[]): And(list, [Or(SingleInstance, MultiInstance)]),
     },
     ignore_extra_keys=True  
 )

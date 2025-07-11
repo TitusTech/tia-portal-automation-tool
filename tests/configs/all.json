@@ -3743,6 +3743,16 @@
       "name": "Common_Control Monitor",
       "programming_language": "FBD",
       "blockgroup_folder": "/FB"
+    },
+    {
+      "DeviceID": 1,
+      "id": 10,
+      "network_source_id": 13,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_ControlMonitor_1",
+      "programming_language": "FBD",
+      "blockgroup_folder": "/TGTLibrary/Drives/ControlMonitor",
+      "is_instance": true
     }
   ],
   "Network sources": [
@@ -3808,6 +3818,11 @@
       "id": 12,
       "title": "Last Scan",
       "comment": "usually empty"
+    },
+    {
+      "plc_block_id": 9,
+      "id": 13,
+      "title": "Slot 0"
     }
   ],
   "Variable sections": [
@@ -3984,9 +3999,16 @@
       "DeviceID": 1,
       "plc_block_id": 9,
       "id": 1,
-      "name": "Control_Monitor_1_Instance",
+      "name": "Common_Control Monitor_DB",
       "call_option": "Single",
       "blockgroup_folder": "/DB"
+    },
+    {
+      "DeviceID": 1,
+      "plc_block_id": 10,
+      "id": 2,
+      "name": "Control_Monitor_1_Instance",
+      "call_option": "Multi"
     }
   ]
 }
