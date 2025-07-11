@@ -6,15 +6,18 @@ from src.schemas.ProgramBlocks import Database
 
 SingleInstance = Schema({
     **Database._schema,
+    "plc_block_id": int,
     "call_option": And(str, Use(CallOptionEnum)),
 })
 
 MultiInstance = Schema({
     **Database._schema,
+    "plc_block_id": int,
     "call_option": And(str, Use(CallOptionEnum)),
 })
 
 ParameterInstance = Schema({
     **Database._schema,
+    "plc_block_id": int,
     "call_option": And(str, Use(CallOptionEnum)),
 })
