@@ -4010,5 +4010,15 @@
       "name": "Control_Monitor_1_Instance",
       "call_option": "Multi"
     }
+  ],
+  "Wire parameters": [
+    {
+      "plc_block_id": 10,
+      "network_source_id": 13,
+      "parameters": {
+        "Slot_ID": "0",
+        "Slots": "DB_Master.All_Slots[0]"
+      }
+    }
   ]
 }

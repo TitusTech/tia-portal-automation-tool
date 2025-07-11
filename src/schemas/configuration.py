@@ -9,7 +9,7 @@ from src.schemas.BlocksOB import OrganizationBlock
 from src.schemas.DeviceItems import DeviceItem
 from src.schemas.Devices import PLC
 from src.schemas.Libraries import GlobalLibrary
-from src.schemas.NetworkSources import NetworkSource, Instance
+from src.schemas.NetworkSources import NetworkSource, Parameter
 from src.schemas.PlcDataTypes import PlcDataType
 from src.schemas.PlcTags import PlcTagTable
 from src.schemas.ProgramBlocks import VariableSection
@@ -26,6 +26,7 @@ root = Schema(
         Optional("Network sources", default=[]): And(list, [NetworkSource]),
         Optional("Variable sections", default=[]): And(list, [VariableSection]),
         Optional("Instances", default=[]): And(list, [Or(SingleInstance, MultiInstance)]),
+        Optional("Wire parameters", default=[]): And(list, [Parameter]),
     },
     ignore_extra_keys=True  
 )
