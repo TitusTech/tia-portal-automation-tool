@@ -2308,7 +2308,7 @@
       "DeviceID": 1,
       "id": 2,
       "name": "DB_Event_Queue",
-      "blockgroup_path": "/DB",
+      "blockgroup_folder": "/DB",
       "structs": [
         {
           "name": "Event_Pool",
@@ -2323,7 +2323,7 @@
       "DeviceID": 1,
       "id": 3,
       "name": "DB_General_Utils",
-      "blockgroup_path": "/DB",
+      "blockgroup_folder": "/DB",
       "structs": [
         {
           "name": "Third_Scan",
@@ -2348,7 +2348,7 @@
       "DeviceID": 1,
       "id": 4,
       "name": "DB_GeneralInputs",
-      "blockgroup_path": "/DB",
+      "blockgroup_folder": "/DB",
       "structs": [
         {
           "name": "T_Run",
@@ -2395,7 +2395,7 @@
       "DeviceID": 1,
       "id": 5,
       "name": "DB_Master",
-      "blockgroup_path": "/DB",
+      "blockgroup_folder": "/DB",
       "structs": [
         {
           "name": "All_Slots",
@@ -2418,7 +2418,7 @@
       "DeviceID": 1,
       "id": 6,
       "name": "DB_Stat",
-      "blockgroup_path": "/DB",
+      "blockgroup_folder": "/DB",
       "structs": [
         {
           "name": "Drive_ID",
@@ -2433,7 +2433,7 @@
       "DeviceID": 1,
       "id": 7,
       "name": "IO",
-      "blockgroup_path": "/DB",
+      "blockgroup_folder": "/DB",
       "structs": [
         {
           "name": "CC1_AUTO",
@@ -3724,7 +3724,7 @@
       "DeviceID": 1,
       "id": 8,
       "name": "Kg_in_Flight",
-      "blockgroup_path": "/DB",
+      "blockgroup_folder": "/DB",
       "structs": [
         {
           "name": "Grain_Bits",
@@ -3742,7 +3742,7 @@
       "type": "SW.Blocks.FB",
       "name": "Common_Control Monitor",
       "programming_language": "FBD",
-      "blockgroup_path": "/FB"
+      "blockgroup_folder": "/FB"
     }
   ],
   "Network sources": [
@@ -3986,7 +3986,7 @@
       "id": 1,
       "name": "Control_Monitor_1_Instance",
       "call_option": "Single",
-      "blockgroup_path": "/DB"
+      "blockgroup_folder": "/DB"
     }
   ]
 }

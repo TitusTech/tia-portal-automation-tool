@@ -22,7 +22,7 @@ PlcBlock = Schema({
     Optional("network_source_id"): int,
     "type": And(str, Use(PlcEnum)),
     "name": str,
-    Optional("blockgroup_path", default="/"): str,
+    Optional("blockgroup_folder", default="/"): str,
     Optional("number", default=1): int,
 })
 
@@ -35,6 +35,6 @@ Database = Schema({
     "DeviceID": int,
     "id": int,
     "name": str,
-    Optional("blockgroup_path", default="/"): str,
+    Optional("blockgroup_folder", default="/"): str,
     Optional("number", default=1): int,
 })
