@@ -1,6 +1,6 @@
 from schema import Schema, And, Or, Use, Optional, SchemaError
 
-from src.modules.XML.ProgramBlocks import PlcEnum, VariableSection, VariableStruct
+from src.modules.XML.ProgramBlocks import PlcEnum
 
 VariableStruct = Schema({
     "name": str,
