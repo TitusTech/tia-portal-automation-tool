@@ -37,7 +37,6 @@ Parameter = Schema({
 })
 
 Database = Schema({
-    "DeviceID": int,
     "id": int,
     "name": str,
     Optional("blockgroup_folder", default="/"): str,

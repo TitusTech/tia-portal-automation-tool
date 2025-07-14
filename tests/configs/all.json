@@ -3760,7 +3760,7 @@
       "network_source_id": 12,
       "type": "SW.Blocks.FB",
       "name": "LastScan",
-      "programming_language": "FBD",
+      "programming_language": "SCL",
       "blockgroup_folder": "/FB",
       "is_instance": true,
       "library_source": {
@@ -3774,8 +3774,33 @@
       "network_source_id": 11,
       "type": "SW.Blocks.FC",
       "name": "outputMapping",
-      "programming_language": "FBD",
       "blockgroup_folder": "/FB",
+      "is_instance": true,
+      "library_source": {
+        "name": "TGTLibrary",
+        "blockgroup_folder": "__"
+      }
+    },
+    {
+      "DeviceID": 1,
+      "id": 13,
+      "network_source_id": 3,
+      "type": "SW.Blocks.FC",
+      "name": "inputMapping",
+      "blockgroup_folder": "/FB",
+      "is_instance": true,
+      "library_source": {
+        "name": "TGTLibrary",
+        "blockgroup_folder": "__"
+      }
+    },
+    {
+      "DeviceID": 1,
+      "id": 14,
+      "network_source_id": 2,
+      "type": "SW.Blocks.FB",
+      "programming_language": "SCL",
+      "name": "Sim",
       "is_instance": true,
       "library_source": {
         "name": "TGTLibrary",
@@ -4024,7 +4049,6 @@
   ],
   "Instances": [
     {
-      "DeviceID": 1,
       "plc_block_id": 9,
       "id": 1,
       "name": "Common_Control Monitor_DB",
@@ -4032,16 +4056,22 @@
       "blockgroup_folder": "/DB"
     },
     {
-      "DeviceID": 1,
       "plc_block_id": 10,
       "id": 2,
       "name": "Control_Monitor_1_Instance",
       "call_option": "Multi"
     },
     {
-      "DeviceID": 1,
       "plc_block_id": 11,
       "id": 3,
+      "name": "",
+      "call_option": "Single",
+      "number": 1,
+      "blockgroup_folder": "/DB"
+    },
+    {
+      "plc_block_id": 14,
+      "id": 4,
       "name": "",
       "call_option": "Single",
       "number": 1,
@@ -4058,6 +4088,12 @@
     },
     {
       "plc_block_id": 12,
+      "parameters": {
+        "en": "true"
+      }
+    },
+    {
+      "plc_block_id": 13,
       "parameters": {
         "en": "true"
       }
