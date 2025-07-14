@@ -13,7 +13,7 @@ from src.schemas.Libraries import GlobalLibrary
 from src.schemas.NetworkSources import NetworkSource, Parameter
 from src.schemas.PlcDataTypes import PlcDataType
 from src.schemas.PlcTags import PlcTagTable
-from src.schemas.ProgramBlocks import VariableSection
+from src.schemas.ProgramBlocks import PlcBlock, VariableSection
 
 root = Schema(
     {
@@ -24,7 +24,9 @@ root = Schema(
         Optional("PLC data types", default=[]): And(list, [PlcDataType]),
         Optional("libraries", default=[]): And(list, [GlobalLibrary]),
         Optional("Program blocks", default=[]): And(list, [Or(
-            OrganizationBlock, FunctionBlock, Function, GlobalDB
+            PlcBlock,  # Used for Instance Blocks
+            OrganizationBlock, FunctionBlock, Function,
+            GlobalDB
         )]),
         Optional("Network sources", default=[]): And(list, [NetworkSource]),
         Optional("Variable sections", default=[]): And(list, [VariableSection]),
@@ -33,6 +35,7 @@ root = Schema(
     },
     ignore_extra_keys=True
 )
+
 
 def validate(data):
     return root.validate(data)

@@ -3760,7 +3760,6 @@
       "network_source_id": 12,
       "type": "SW.Blocks.FB",
       "name": "LastScan",
-      "programming_language": "SCL",
       "blockgroup_folder": "/FB",
       "is_instance": true,
       "library_source": {
@@ -3799,13 +3798,44 @@
       "id": 14,
       "network_source_id": 2,
       "type": "SW.Blocks.FB",
-      "programming_language": "SCL",
       "name": "Sim",
+      "blockgroup_folder": "/FB",
       "is_instance": true,
       "library_source": {
         "name": "TGTLibrary",
         "blockgroup_folder": "__"
       }
+    },
+    {
+      "DeviceID": 1,
+      "id": 15,
+      "network_source_id": 1,
+      "type": "SW.Blocks.FB",
+      "name": "FirstScan",
+      "blockgroup_folder": "/FB",
+      "is_instance": true,
+      "library_source": {
+        "name": "TGTLibrary",
+        "blockgroup_folder": "__"
+      }
+    },
+    {
+      "DeviceID": 1,
+      "id": 16,
+      "network_source_id": 7,
+      "type": "SW.Blocks.FB",
+      "programming_language": "FBD",
+      "name": "Elevator",
+      "blockgroup_folder": "/FB"
+    },
+    {
+      "DeviceID": 1,
+      "id": 17,
+      "network_source_id": 14,
+      "type": "SW.Blocks.FB",
+      "name": "CN_EL_Type_0",
+      "blockgroup_folder": "/TGTLibrary/Drives/Elevators",
+      "is_instance": true
     }
   ],
   "Network sources": [
@@ -3876,6 +3906,11 @@
       "plc_block_id": 9,
       "id": 13,
       "title": "Slot 0"
+    },
+    {
+      "plc_block_id": 16,
+      "id": 14,
+      "title": "BE1"
     }
   ],
   "Variable sections": [
@@ -4045,6 +4080,19 @@
           }
         }
       ]
+    },
+    {
+      "plc_block_id": 16,
+      "name": "Static",
+      "data": [
+         {
+           "name": "BE1",
+           "datatype": "\"CN_EL_Type_0\"",
+           "attributes": {
+             "SetPoint": true
+           }
+         }
+      ]
     }
   ],
   "Instances": [
@@ -4076,6 +4124,27 @@
       "call_option": "Single",
       "number": 1,
       "blockgroup_folder": "/DB"
+    },
+    {
+      "plc_block_id": 15,
+      "id": 5,
+      "name": "",
+      "call_option": "Single",
+      "number": 1,
+      "blockgroup_folder": "/DB"
+    },
+    {
+      "plc_block_id": 16,
+      "id": 6,
+      "name": "Elevator_DB",
+      "call_option": "Single",
+      "blockgroup_folder": "/DB"
+    },
+    {
+      "plc_block_id": 10,
+      "id": 17,
+      "name": "BE1",
+      "call_option": "Multi"
     }
   ],
   "Wire parameters": [
@@ -4096,6 +4165,67 @@
       "plc_block_id": 13,
       "parameters": {
         "en": "true"
+      }
+    },
+    {
+      "plc_block_id": 13,
+      "parameters": {
+        "Offset": "2",
+        "Auto": "IO.BE1_AUTO",
+        "Hand": "IO.BE1_HAND",
+        "Running": "IO.BE1_RUNNING",
+        "BeltDrift_1_Fault": "IO.BE1_BELT_DRIFT_TOP_LEFT",
+        "BeltDrift_1_Warning": "false",
+        "BeltDrift_2_Fault": "IO.BE1_BELT_DRIFT_TOP_RIGHT",
+        "BeltDrift_2_Warning": "false",
+        "BeltDrift_3_Fault": "IO.BE1_BELT_DRIFT_BOTTOM_LEFT",
+        "BeltDrift_3_Warning": "false",
+        "BeltDrift_4_Fault": "IO.BE1_BELT_DRIFT_BOTTOM_RIGHT",
+        "BeltDrift_4_Warning": "false",
+        "Power": "IO.BE1_POWER_OK",
+        "Status1": "false",
+        "Status2": "false",
+        "Status3": "false",
+        "Status4": "false",
+        "Warning1": "false",
+        "Warning2": "false",
+        "Warning3": "false",
+        "Warning4": "false",
+        "NFatal1": "false",
+        "NFatal2": "false",
+        "NFatal3": "false",
+        "NFatal4": "false",
+        "Fatal1": "IO.BE1_OVERLOAD_FAULT",
+        "Fatal2": "false",
+        "Fatal3": "false",
+        "EStop": "IO.BE1_EMERGENCY_STOP",
+        "Fatal4": "false",
+        "T_Run": "T#10S",
+        "UptoSpeed": "IO.BE1_UNDERSPEED",
+        "T_US_Run": "T#1S",
+        "T_Hooter_Period_On": "T#2S",
+        "Hooter_Count": "3",
+        "T_Hooter_Period_Off": "T#1S",
+        "T_UptoSpeed": "T#5s",
+        "Ext_Product": "false",
+        "Inhibit_Hooter": "false",
+        "Inhibit_Start": "false",
+        "HeadBlockedChute": "IO.BE1_BLOCKED_CHUTE",
+        "TailBlockedChute": "false",
+        "T_BlockedChute": "T#5S",
+        "Ext_Gob": "false",
+        "Sec_Pls_Roff": "15",
+        "Total_Kg_Capacity": "0",
+        "BlockedChute_Count": "3",
+        "BlockedChute_Count_Time": "T#5s",
+        "BlockedChute_Continous_Time": "T#5s",
+        "Pulsing": "false",
+        "BeltDrift_Count": "3",
+        "BeltDrift_Count_Time": "T#5s",
+        "BeltDrift_Continous_Time": "T#5s",
+        "Start": "IO.BE1_START",
+        "Hooter": "",
+        "Purging": ""
       }
     }
   ]
