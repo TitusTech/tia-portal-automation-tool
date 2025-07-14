@@ -24,6 +24,11 @@ PlcBlock = Schema({
     "name": str,
     Optional("blockgroup_folder", default="/"): str,
     Optional("number", default=1): int,
+    Optional("is_instance", default=False): bool,
+    Optional("library_source"): Schema({
+        "name": str,
+        "blockgroup_folder": str,
+    }),
 })
 
 Parameter = Schema({
