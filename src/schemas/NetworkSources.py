@@ -10,6 +10,5 @@ NetworkSource = Schema({
 
 Parameter = Schema({
     "plc_block_id": int,
-    "network_source_id": int,
     "parameters": {str: str},
 })
