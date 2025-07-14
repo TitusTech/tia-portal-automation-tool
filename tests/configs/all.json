@@ -3753,6 +3753,34 @@
       "programming_language": "FBD",
       "blockgroup_folder": "/TGTLibrary/Drives/ControlMonitor",
       "is_instance": true
+    },
+    {
+      "DeviceID": 1,
+      "id": 11,
+      "network_source_id": 12,
+      "type": "SW.Blocks.FB",
+      "name": "LastScan",
+      "programming_language": "FBD",
+      "blockgroup_folder": "/FB",
+      "is_instance": true,
+      "library_source": {
+        "name": "TGTLibrary",
+        "blockgroup_folder": "__"
+      }
+    },
+    {
+      "DeviceID": 1,
+      "id": 12,
+      "network_source_id": 11,
+      "type": "SW.Blocks.FC",
+      "name": "outputMapping",
+      "programming_language": "FBD",
+      "blockgroup_folder": "/FB",
+      "is_instance": true,
+      "library_source": {
+        "name": "TGTLibrary",
+        "blockgroup_folder": "__"
+      }
     }
   ],
   "Network sources": [
@@ -4009,6 +4037,15 @@
       "id": 2,
       "name": "Control_Monitor_1_Instance",
       "call_option": "Multi"
+    },
+    {
+      "DeviceID": 1,
+      "plc_block_id": 11,
+      "id": 3,
+      "name": "",
+      "call_option": "Single",
+      "number": 1,
+      "blockgroup_folder": "/DB"
     }
   ],
   "Wire parameters": [
@@ -4017,6 +4054,12 @@
       "parameters": {
         "Slot_ID": "0",
         "Slots": "DB_Master.All_Slots[0]"
+      }
+    },
+    {
+      "plc_block_id": 12,
+      "parameters": {
+        "en": "true"
       }
     }
   ]
