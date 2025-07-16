@@ -3990,8 +3990,9 @@
       "network_source_id": 6,
       "is_instance": false,
       "type": "SW.Blocks.FB",
-      "programming_language": "FBD",
       "name": "Conveyors",
+      "programming_language": "FBD",
+      "number": 11,
       "blockgroup_folder": "/FB"
     },
     {
@@ -4065,7 +4066,144 @@
       "type": "SW.Blocks.FB",
       "name": "TGT_LD_ConveyorType2",
       "blockgroup_folder": "/TGTLibrary/Drives/Conveyor"
-    }
+    },
+    {
+      "id": 42,
+      "DeviceID": 1,
+      "network_source_id": 8,
+      "is_instance": false,
+      "type": "SW.Blocks.FB",
+      "name": "Vavles",
+      "programming_language": "FBD",
+      "number": 23,
+      "blockgroup_folder": "/FB"
+    },
+    {
+      "id": 43,
+      "DeviceID": 1,
+      "network_source_id": 34,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_ValveType1",
+      "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+    },
+      {
+        "id": 44,
+        "DeviceID": 1,
+        "network_source_id": 35,
+        "is_instance": true,
+        "type": "SW.Blocks.FB",
+        "name": "TGT_LD_ValveType1",
+        "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+      },
+      {
+        "id": 45,
+        "DeviceID": 1,
+        "network_source_id": 36,
+        "is_instance": true,
+        "type": "SW.Blocks.FB",
+        "name": "TGT_LD_ValveType1",
+        "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+      },
+      {
+        "id": 46,
+        "DeviceID": 1,
+        "network_source_id": 37,
+        "is_instance": true,
+        "type": "SW.Blocks.FB",
+        "name": "TGT_LD_ValveType1",
+        "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+      },
+      {
+        "id": 47,
+        "DeviceID": 1,
+        "network_source_id": 38,
+        "is_instance": true,
+        "type": "SW.Blocks.FB",
+        "name": "TGT_LD_ValveType1",
+        "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+      },
+      {
+        "id": 48,
+        "DeviceID": 1,
+        "network_source_id": 39,
+        "is_instance": true,
+        "type": "SW.Blocks.FB",
+        "name": "TGT_LD_ValveType1",
+        "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+      },
+      {
+        "id": 49,
+        "DeviceID": 1,
+        "network_source_id": 40,
+        "is_instance": true,
+        "type": "SW.Blocks.FB",
+        "name": "TGT_LD_ValveType1",
+        "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+      },
+      {
+        "id": 50,
+        "DeviceID": 1,
+        "network_source_id": 41,
+        "is_instance": true,
+        "type": "SW.Blocks.FB",
+        "name": "TGT_LD_ValveType1",
+        "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+      },
+      {
+        "id": 51,
+        "DeviceID": 1,
+        "network_source_id": 42,
+        "is_instance": true,
+        "type": "SW.Blocks.FB",
+        "name": "TGT_LD_ValveType1",
+        "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+      },
+      {
+        "id": 52,
+        "DeviceID": 1,
+        "network_source_id": 43,
+        "is_instance": true,
+        "type": "SW.Blocks.FB",
+        "name": "TGT_LD_ValveType1",
+        "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+      },
+      {
+        "id": 53,
+        "DeviceID": 1,
+        "network_source_id": 44,
+        "is_instance": true,
+        "type": "SW.Blocks.FB",
+        "name": "TGT_LD_ValveType1",
+        "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+      },
+      {
+        "id": 54,
+        "DeviceID": 1,
+        "network_source_id": 45,
+        "is_instance": true,
+        "type": "SW.Blocks.FB",
+        "name": "TGT_LD_ValveType1",
+        "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+      },
+      {
+        "id": 55,
+        "DeviceID": 1,
+        "network_source_id": 46,
+        "is_instance": true,
+        "type": "SW.Blocks.FB",
+        "name": "TGT_LD_ValveType1",
+        "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+      },
+      {
+        "id": 56,
+        "DeviceID": 1,
+        "network_source_id": 47,
+        "is_instance": true,
+        "type": "SW.Blocks.FB",
+        "name": "TGT_LD_ValveType1",
+        "blockgroup_folder": "/TGTLibrary/Drives/Positionals"
+      }
   ],
   "Network sources": [
     {
@@ -4235,7 +4373,82 @@
       "id": 33,
       "plc_block_id": 33,
       "title": "CC5"
-    }
+    },
+    {
+      "id": 34,
+      "plc_block_id": 42,
+      "title": "IG2-A",
+      "comment": "ID: 6"
+    },
+      {
+        "id": 35,
+        "plc_block_id": 42,
+        "title": "IG2-B",
+        "comment": "ID: 7"
+      },
+      {
+        "id": 36,
+        "plc_block_id": 42,
+        "title": "IG3-A",
+        "comment": "ID: 8"
+      },
+      {
+        "id": 37,
+        "plc_block_id": 42,
+        "title": "IG4-A",
+        "comment": "ID: 19"
+      },
+      {
+        "id": 38,
+        "plc_block_id": 42,
+        "title": "IG5-A",
+        "comment": "ID: 20"
+      },
+      {
+        "id": 39,
+        "plc_block_id": 42,
+        "title": "FV1"
+      },
+      {
+        "id": 40,
+        "plc_block_id": 42,
+        "title": "EGS1-A"
+      },
+      {
+        "id": 41,
+        "plc_block_id": 42,
+        "title": "EGS1-B"
+      },
+      {
+        "id": 42,
+        "plc_block_id": 42,
+        "title": "EGS1-C"
+      },
+      {
+        "id": 43,
+        "plc_block_id": 42,
+        "title": "EGS1-D"
+      },
+      {
+        "id": 44,
+        "plc_block_id": 42,
+        "title": "EGS2-A"
+      },
+      {
+        "id": 45,
+        "plc_block_id": 42,
+        "title": "EGS2-B"
+      },
+      {
+        "id": 46,
+        "plc_block_id": 42,
+        "title": "EGS2-C"
+      },
+      {
+        "id": 47,
+        "plc_block_id": 42,
+        "title": "EGS2-D"
+      }
   ],
   "Variable sections": [
     {
@@ -4748,6 +4961,110 @@
           }
         }
       ]
+    },
+    {
+      "plc_block_id": 42,
+      "name": "Static",
+      "data": [
+        {
+          "name": "IG2-A",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "IG2-B",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "IG3-A",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "IG4-A",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "IG5-A",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "FV1",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "EGS2-C",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "EGS1-A",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "EGS1-B",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "EGS1-C",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "EGS1-D",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "EGS2-A",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "EGS2-B",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "EGS2-D",
+          "datatype": "\"TGT_LD_ValveType1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        }
+      ]
     }
   ],
   "Instances": [
@@ -4960,7 +5277,99 @@
       "plc_block_id": 41,
       "call_option": "Multi",
       "name": "CC5"
-    }
+    },
+    {
+      "id": 33,
+      "plc_block_id": 42,
+      "call_option": "Single",
+      "name": "Valves_DB",
+      "number": 1,
+      "blockgroup_folder": "/DB"
+    },
+    {
+      "id": 34,
+      "plc_block_id": 43,
+      "call_option": "Multi",
+      "name": "IG2-A"
+    },
+      {
+        "id": 35,
+        "plc_block_id": 44,
+        "call_option": "Multi",
+        "name": "IG2-B"
+      },
+      {
+        "id": 36,
+        "plc_block_id": 45,
+        "call_option": "Multi",
+        "name": "IG3-A"
+      },
+      {
+        "id": 37,
+        "plc_block_id": 46,
+        "call_option": "Multi",
+        "name": "IG4-A"
+      },
+      {
+        "id": 38,
+        "plc_block_id": 47,
+        "call_option": "Multi",
+        "name": "IG5-A"
+      },
+      {
+        "id": 39,
+        "plc_block_id": 48,
+        "call_option": "Multi",
+        "name": "FV1"
+      },
+      {
+        "id": 40,
+        "plc_block_id": 49,
+        "call_option": "Multi",
+        "name": "EGS1-A"
+      },
+      {
+        "id": 41,
+        "plc_block_id": 50,
+        "call_option": "Multi",
+        "name": "EGS1-B"
+      },
+      {
+        "id": 42,
+        "plc_block_id": 51,
+        "call_option": "Multi",
+        "name": "EGS1-C"
+      },
+      {
+        "id": 43,
+        "plc_block_id": 52,
+        "call_option": "Multi",
+        "name": "EGS1-D"
+      },
+      {
+        "id": 44,
+        "plc_block_id": 53,
+        "call_option": "Multi",
+        "name": "EGS2-A"
+      },
+      {
+        "id": 45,
+        "plc_block_id": 54,
+        "call_option": "Multi",
+        "name": "EGS2-B"
+      },
+      {
+        "id": 46,
+        "plc_block_id": 55,
+        "call_option": "Multi",
+        "name": "EGS2-C"
+      },
+      {
+        "id": 47,
+        "plc_block_id": 56,
+        "call_option": "Multi",
+        "name": "EGS2-D"
+      }
   ],
   "Wire parameters": [
     {
@@ -5417,6 +5826,203 @@
         "WarningBit2": "",
         "Start":  "IO.CC5_START" ,
         "Hooter": ""
+      }
+    },
+    {
+      "plc_block_id": 43,
+      "parameters": {
+        "CrashStop":  "IO.IG2A_EMERGENCY_STOP" ,
+        "Power":  "IO.IG2A_POWER_OK" ,
+        "ThermistorFault":  "IO.IG2A_OVERLOAD_FAULT" ,
+        "Fully_Open":  "IO.IG2A_FULLY_OPEN" ,
+        "Fully_Closed":  "IO.IG2A_FULLY_CLOSE" ,
+        "Open":  "IO.IG2A_START_OPEN" ,
+        "Close":  "IO.IG2A_START_CLOSE" ,
+        "Pos_Drive":  "DB_Master.All_Drives[6]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[6]"  
+      }
+    },
+    {
+      "plc_block_id": 44,
+      "parameters": {
+        "CrashStop":  "IO.IG2B_EMERGENCY_STOP" ,
+        "Power":  "IO.IG2B_POWER_OK" ,
+        "ThermistorFault":  "IO.IG2B_OVERLOAD_FAULT" ,
+        "Fully_Open":  "IO.IG2B_FULLY_OPEN" ,
+        "Fully_Closed":  "IO.IG2B_FULLY_CLOSE" ,
+        "Open":  "IO.IG2B_START_OPEN" ,
+        "Close":  "IO.IG2B_START_CLOSE" ,
+        "Pos_Drive":  "DB_Master.All_Drives[7]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[7]"  
+      }
+    },
+    {
+      "plc_block_id": 45,
+      "parameters": {
+        "CrashStop":  "IO.IG3A_EMERGENCY_STOP" ,
+        "Power":  "IO.IG3A_POWER_OK" ,
+        "ThermistorFault":  "IO.IG3A_OVERLOAD_FAULT" ,
+        "Fully_Open":  "IO.IG3A_FULLY_OPEN" ,
+        "Fully_Closed":  "IO.IG3A_FULLY_CLOSE" ,
+        "Open":  "IO.IG3A_START_OPEN" ,
+        "Close":  "IO.IG3A_START_CLOSE" ,
+        "Pos_Drive":  "DB_Master.All_Drives[8]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[8]"  
+      }
+    },
+    {
+      "plc_block_id": 46,
+      "parameters": {
+        "CrashStop":  "IO.IG4A_EMERGENCY_STOP" ,
+        "Power":  "IO.IG4A_POWER_OK" ,
+        "ThermistorFault":  "IO.IG4A_OVERLOAD_FAULT" ,
+        "Fully_Open":  "IO.IG4A_FULLY_OPEN" ,
+        "Fully_Closed":  "IO.IG4A_FULLY_CLOSE" ,
+        "Open":  "IO.IG4A_START_OPEN" ,
+        "Close":  "IO.IG4A_START_CLOSE" ,
+        "Pos_Drive":  "DB_Master.All_Drives[19]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[19]"  
+      }
+    },
+    {
+      "plc_block_id": 47,
+      "parameters": {
+        "CrashStop":  "IO.IG5A_EMERGENCY_STOP" ,
+        "Power":  "IO.IG5A_POWER_OK" ,
+        "ThermistorFault":  "IO.IG5A_OVERLOAD_FAULT" ,
+        "Fully_Open":  "IO.IG5A_FULLY_OPEN" ,
+        "Fully_Closed":  "IO.IG5A_FULLY_CLOSE" ,
+        "Open":  "IO.IG5A_START_OPEN" ,
+        "Close":  "IO.IG5A_START_CLOSE" ,
+        "Pos_Drive":  "DB_Master.All_Drives[20]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[20]"  
+      }
+    },
+    {
+      "plc_block_id": 48,
+      "parameters": {
+        "CrashStop":  "IO.FV1_EMERGENCY_STOP" ,
+        "Power":  "IO.FV1_POWER_OK" ,
+        "ThermistorFault": "false",
+        "Fully_Open":  "IO.FV1_POSITION_1" ,
+        "Fully_Closed":  "IO.FV1_POSITION_2" ,
+        "Open":  "IO.FV1_START_POSITION_1" ,
+        "Close":  "IO.FV1_START_POSITION_2" ,
+        "Pos_Drive":  "DB_Master.All_Drives[3]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[3]"  
+      }
+    },
+    {
+      "plc_block_id": 49,
+      "parameters": {
+        "CrashStop":  "IO.EGS1A_EMERGENCY_STOP" ,
+        "Power":  "IO.EGS1A_POWER_OK" ,
+        "ThermistorFault":  "IO.EGS1A_OVERLOAD_FAULT" ,
+        "Fully_Open":  "IO.EGS1A_FULLY_OPEN" ,
+        "Fully_Closed":  "IO.EGS1A_FULLY_CLOSE" ,
+        "Open":  "IO.EGS1A_START_OPEN" ,
+        "Close":  "IO.EGS1A_START_CLOSE" ,
+        "Pos_Drive":  "DB_Master.All_Drives[11]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[11]"  
+      }
+    },
+    {
+      "plc_block_id": 50,
+      "parameters": {
+        "CrashStop":  "IO.EGS1B_EMERGENCY_STOP" ,
+        "Power":  "IO.EGS1B_POWER_OK" ,
+        "ThermistorFault":  "IO.EGS1B_OVERLOAD_FAULT" ,
+        "Fully_Open":  "IO.EGS1B_FULLY_OPEN" ,
+        "Fully_Closed":  "IO.EGS1B_FULLY_CLOSE" ,
+        "Open":  "IO.EGS1B_START_OPEN" ,
+        "Close":  "IO.EGS1B_START_CLOSE" ,
+        "Pos_Drive":  "DB_Master.All_Drives[12]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[12]"  
+      }
+    },
+    {
+      "plc_block_id": 51,
+      "parameters": {
+        "CrashStop":  "IO.EGS1C_EMERGENCY_STOP" ,
+        "Power":  "IO.EGS1C_POWER_OK" ,
+        "ThermistorFault":  "IO.EGS1C_OVERLOAD_FAULT" ,
+        "Fully_Open":  "IO.EGS1C_FULLY_OPEN" ,
+        "Fully_Closed":  "IO.EGS1C_FULLY_CLOSE" ,
+        "Open":  "IO.EGS1C_START_OPEN" ,
+        "Close":  "IO.EGS1C_START_CLOSE" ,
+        "Pos_Drive":  "DB_MASTER.All_Drives[13]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[13]"  
+      }
+    },
+    {
+      "plc_block_id": 52,
+      "parameters": {
+        "CrashStop":  "IO.EGS1D_EMERGENCY_STOP" ,
+        "Power":  "IO.EGS1D_POWER_OK" ,
+        "ThermistorFault":  "IO.EGS1D_OVERLOAD_FAULT" ,
+        "Fully_Open":  "IO.EGS1D_FULLY_OPEN" ,
+        "Fully_Closed":  "IO.EGS1D_FULLY_CLOSE" ,
+        "Open":  "IO.EGS1D_START_OPEN" ,
+        "Close":  "IO.EGS1D_START_CLOSE" ,
+        "Pos_Drive":  "DB_MASTER.All_Drives[14]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[14]"  
+      }
+    },
+    {
+      "plc_block_id": 53,
+      "parameters": {
+        "CrashStop":  "IO.EGS2A_EMERGENCY_STOP" ,
+        "Power":  "IO.EGS2A_POWER_OK" ,
+        "ThermistorFault":  "IO.EGS2A_OVERLOAD_FAULT" ,
+        "Fully_Open":  "IO.EGS2A_FULLY_OPEN" ,
+        "Fully_Closed":  "IO.EGS2A_FULLY_CLOSE" ,
+        "Open":  "IO.EGS2A_START_OPEN" ,
+        "Close":  "IO.EGS2A_START_CLOSE" ,
+        "Pos_Drive":  "DB_MASTER.All_Drives[15]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[15]"  
+      }
+    },
+    {
+      "plc_block_id": 54,
+      "parameters": {
+        "CrashStop":  "IO.EGS2B_EMERGENCY_STOP" ,
+        "Power":  "IO.EGS2B_POWER_OK" ,
+        "ThermistorFault":  "IO.EGS2B_OVERLOAD_FAULT" ,
+        "Fully_Open":  "IO.EGS2B_FULLY_OPEN" ,
+        "Fully_Closed":  "IO.EGS2B_FULLY_CLOSE" ,
+        "Open":  "IO.EGS2B_START_OPEN" ,
+        "Close":  "IO.EGS2B_START_CLOSE" ,
+        "Pos_Drive":  "DB_MASTER.All_Drives[16]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[16]"  
+      }
+    },
+    {
+      "plc_block_id": 55,
+      "parameters": {
+        "CrashStop":  "IO.EGS2C_EMERGENCY_STOP" ,
+        "Power":  "IO.EGS2C_POWER_OK" ,
+        "ThermistorFault":  "IO.EGS2C_OVERLOAD_FAULT" ,
+        "Fully_Open":  "IO.EGS2C_FULLY_OPEN" ,
+        "Fully_Closed":  "IO.EGS2C_FULLY_CLOSE" ,
+        "Open":  "IO.EGS2C_START_OPEN" ,
+        "Close":  "IO.EGS2C_START_CLOSE" ,
+        "Pos_Drive":  "DB_MASTER.All_Drives[10]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[10]"  
+      }
+    },
+    {
+      "plc_block_id": 56,
+      "parameters": {
+        "CrashStop":  "IO.EGS2D_EMERGENCY_STOP" ,
+        "Power":  "IO.EGS2D_POWER_OK" ,
+        "ThermistorFault":  "IO.EGS2D_OVERLOAD_FAULT" ,
+        "Fully_Open":  "IO.EGS2D_FULLY_OPEN" ,
+        "Fully_Closed":  "IO.EGS2D_FULLY_CLOSE" ,
+        "EN_Cont_Pos": "false",
+        "Open":  "IO.EGS2D_START_OPEN" ,
+        "Close":  "IO.EGS2D_START_CLOSE" ,
+        "Pos_Drive":  "DB_MASTER.All_Drives[18]"  ,
+        "Pos_Stat":  "DB_Stat.Drive_ID[18]"  
       }
     }
   ]
