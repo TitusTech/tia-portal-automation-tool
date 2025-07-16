@@ -4887,16 +4887,16 @@
       "plc_block_id": 25,
       "parameters": {
         "Offset": "28",
-        "Auto": ["IO", "AFS2B_AUTO"],
-        "Hand": ["IO", "AFS2B_HAND"],
-        "Running": ["IO", "AFS2B_RUNNING"],
-        "Power": ["IO", "AFS2B_POWER_OK"],
-        "Fatal1": ["IO", "AFS2B_OVERLOAD_FAULT"],
-        "EStop": ["IO", "AFS2B_EMERGENCY_STOP"],
-        "UptoSpeed": ["IO", "AFS2B_UNDERSPEED"],
+        "Auto": "IO.AFS2B_AUTO",
+        "Hand": "IO.AFS2B_HAND",
+        "Running": "IO.AFS2B_RUNNING",
+        "Power": "IO.AFS2B_POWER_OK",
+        "Fatal1": "IO.AFS2B_OVERLOAD_FAULT",
+        "EStop": "IO.AFS2B_EMERGENCY_STOP",
+        "UptoSpeed": "IO.AFS2B_UNDERSPEED",
         "Pulsing": "false",
-        "HeadBlockedChute": ["IO", "AFS2B_BLOCKED_CHUTE"],
-        "Start": ["IO", "AFS2B_START"]       
+        "HeadBlockedChute": "IO.AFS2B_BLOCKED_CHUTE",
+        "Start": "IO.AFS2B_START"       
       }
     },
     {
