@@ -3983,6 +3983,88 @@
       "type": "SW.Blocks.FB",
       "name": "TGT_LD_ControlMonitor_1",
       "blockgroup_folder": "/TGTLibrary/Drives/ControlMonitor"
+    },
+    {
+      "id": 33,
+      "DeviceID": 1,
+      "network_source_id": 6,
+      "is_instance": false,
+      "type": "SW.Blocks.FB",
+      "programming_language": "FBD",
+      "name": "Conveyors",
+      "blockgroup_folder": "/FB"
+    },
+    {
+      "id": 34,
+      "DeviceID": 1,
+      "network_source_id": 26,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_TripperSilo_1",
+      "blockgroup_folder": "/TGTLibrary/Drives/Tripper"
+    },
+    {
+      "id": 35,
+      "DeviceID": 1,
+      "network_source_id": 27,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_Tripper4V",
+      "blockgroup_folder": "/TGTLibrary/Drives/Tripper"
+    },
+    {
+      "id": 36,
+      "DeviceID": 1,
+      "network_source_id": 28,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_Tripper4V",
+      "blockgroup_folder": "/TGTLibrary/Drives/Tripper"
+    },
+    {
+      "id": 37,
+      "DeviceID": 1,
+      "network_source_id": 29,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_ConveyorType2",
+      "blockgroup_folder": "/TGTLibrary/Drives/Conveyor"
+    },
+    {
+      "id": 38,
+      "DeviceID": 1,
+      "network_source_id": 30,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_ConveyorType2",
+      "blockgroup_folder": "/TGTLibrary/Drives/Conveyor"
+    },
+    {
+      "id": 39,
+      "DeviceID": 1,
+      "network_source_id": 31,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_ConveyorType2",
+      "blockgroup_folder": "/TGTLibrary/Drives/Conveyor"
+    },
+    {
+      "id": 40,
+      "DeviceID": 1,
+      "network_source_id": 32,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_ConveyorType2",
+      "blockgroup_folder": "/TGTLibrary/Drives/Conveyor"
+    },
+    {
+      "id": 41,
+      "DeviceID": 1,
+      "network_source_id": 33,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_ConveyorType2",
+      "blockgroup_folder": "/TGTLibrary/Drives/Conveyor"
     }
   ],
   "Network sources": [
@@ -4113,6 +4195,46 @@
       "id": 25,
       "plc_block_id": 31,
       "title": "Slot 0"
+    },
+    {
+      "id": 26,
+      "plc_block_id": 33,
+      "title": "Tripper"
+    },
+    {
+      "id": 27,
+      "plc_block_id": 33,
+      "title": "SRC_s1"
+    },
+    {
+      "id": 28,
+      "plc_block_id": 33,
+      "title": "SRC_S2"
+    },
+    {
+      "id": 29,
+      "plc_block_id": 33,
+      "title": "CC1"
+    },
+    {
+      "id": 30,
+      "plc_block_id": 33,
+      "title": "CC2"
+    },
+    {
+      "id": 31,
+      "plc_block_id": 33,
+      "title": "CC3"
+    },
+    {
+      "id": 32,
+      "plc_block_id": 33,
+      "title": "CC4"
+    },
+    {
+      "id": 33,
+      "plc_block_id": 33,
+      "title": "CC5"
     }
   ],
   "Variable sections": [
@@ -4564,6 +4686,68 @@
           }
         }
       ]
+    },
+    {
+      "plc_block_id": 28,
+      "name": "Static",
+      "data": [
+        {
+          "name": "CC1",
+          "datatype": "\"TGT_LD_ConveyorType2\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "CC2",
+          "datatype": "\"TGT_LD_ConveyorType2\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "CC3",
+          "datatype": "\"TGT_LD_ConveyorType2\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "CC4",
+          "datatype": "\"TGT_LD_ConveyorType2\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "CC5",
+          "datatype": "\"TGT_LD_ConveyorType2\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "TGT_LD_TripperSilo_Silo",
+          "datatype": "\"TGT_LD_TripperSilo_1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "SRC_S1",
+          "datatype": "\"TGT_LD_Tripper4V\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "SRC_S2",
+          "datatype": "\"TGT_LD_Tripper4V\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        }
+      ]
     }
   ],
   "Instances": [
@@ -4720,6 +4904,62 @@
       "plc_block_id": 32,
       "call_option": "Multi",
       "name": "Control_Monitor_1_Instance"
+    },
+    {
+      "id": 24,
+      "plc_block_id": 33,
+      "call_option": "Single",
+      "name": "Conveyors_DB",
+      "number": 2,
+      "blockgroup_folder": "/DB"
+    },
+    {
+      "id": 25,
+      "plc_block_id": 34,
+      "call_option": "Multi",
+      "name": "TGT_LD_TripperSilo_Silo"
+    },
+    {
+      "id": 26,
+      "plc_block_id": 35,
+      "call_option": "Multi",
+      "name": "SRC_S1"
+    },
+    {
+      "id": 27,
+      "plc_block_id": 36,
+      "call_option": "Multi",
+      "name": "SRC_S2"
+    },
+    {
+      "id": 28,
+      "plc_block_id": 37,
+      "call_option": "Multi",
+      "name": "CC1"
+    },
+    {
+      "id": 29,
+      "plc_block_id": 38,
+      "call_option": "Multi",
+      "name": "CC2"
+    },
+    {
+      "id": 30,
+      "plc_block_id": 39,
+      "call_option": "Multi",
+      "name": "CC3"
+    },
+    {
+      "id": 31,
+      "plc_block_id": 40,
+      "call_option": "Multi",
+      "name": "CC4"
+    },
+    {
+      "id": 32,
+      "plc_block_id": 41,
+      "call_option": "Multi",
+      "name": "CC5"
     }
   ],
   "Wire parameters": [
@@ -4939,7 +5179,7 @@
       }
     },
     {
-      "plc_block_id": 29,
+      "plc_block_id": 30,
       "parameters": {
         "Bin_ID": "1",
         "Destination_Att": "1",
@@ -4949,10 +5189,234 @@
       }
     },
     {
-      "plc_block_id": 30,
+      "plc_block_id": 32,
       "parameters": {
         "Slot_ID": "0",
         "Slots": "DB_Master.All_Slots[0]"
+      }
+    },
+    {
+      "plc_block_id": 34,
+      "parameters": {
+        "Conveyor_1":  "DB_Master.All_Drives.[4]"  ,
+        "Valve_1":  "DB_Master.All_Drives[6]"  ,
+        "Conveyor_2":  "DB_Master.All_Drives[5]"  ,
+        "Valve_2":  "DB_Master.All_Drives[7]"  ,
+        "Valve_3":  "DB_Master.All_Drives[8]"  ,
+        "Diverter":  "DB_Master.All_Drives[3]"  ,
+        "A_Path_Drive":  "DB_Master.All_Drives[25]"  
+      }
+    },
+    {
+      "plc_block_id": 35,
+      "parameters": {
+        "en": "FALSE",
+        "U_PosDrv_1_A":  "DB_Master.All_Drives[11]"  ,
+        "U_PosDrv_2_A":  "DB_Master.All_Drives[12]"  ,
+        "U_PosDrv_3_A":  "DB_Master.All_Drives[13]"  ,
+        "U_PosDrv_4_A":  "DB_Master.All_Drives[14]"  ,
+        "A_Path_Drive":  "DB_Master.All_Drives[21]"  
+      }
+    },
+    {
+      "plc_block_id": 36,
+      "parameters": {
+        "en": "FALSE",
+        "U_PosDrv_1_A":  "DB_Master.All_Drives[15]"  ,
+        "U_PosDrv_2_A":  "DB_Master.All_Drives[16]"  ,
+        "U_PosDrv_3_A":  "DB_Master.All_Drives[10]"  ,
+        "U_PosDrv_4_A":  "DB_Master.All_Drives[18]"  ,
+        "A_Path_Drive":  "DB_Master.All_Drives[22]"  
+      }
+    },
+    {
+      "plc_block_id": 37,
+      "parameters": {
+        "Offset": "1",
+        "Auto":  "IO.CC1_AUTO" ,
+        "Hand":  "IO.CC1_HAND" ,
+        "Running":  "IO.CC1_RUNNING" ,
+        "Power":  "IO.CC1_POWER_OK" ,
+        "Fatal1":  "IO.CC1_OVERLOAD_FAULT" ,
+        "Fatal2":  "IO.CC1_SLACK_CHAIN" ,
+        "Fatal3": "false",
+        "Fatal4": "false",
+        "EStop":  "IO.CC1_EMERGENCY_STOP" ,
+        "T_Run": "t#5s",
+        "UptoSpeed":  "IO.CC1_UNDERSPEED" ,
+        "Pulsing": "false",
+        "T_US_Run": "t#3s",
+        "T_Hooter_Period_On": "t#2s",
+        "Hooter_Count": "3",
+        "T_Hooter_Period_Off": "t#1s",
+        "T_UptoSpeed": "t#5s",
+        "Ext_Product": "false",
+        "Inhibit_Hooter": "false",
+        "Inhibit_Start": "false",
+        "HeadBlockedChute":  "IO.CC1_BLOCKED_CHUTE" ,
+        "TailBlockedChute": "false",
+        "T_BlockedChute": "t#5s",
+        "Ext_Gob": "false",
+        "Sec_Pls_Roff": "15",
+        "Total_Kg_Capacity": "300000",
+        "BlockedChute_Count": "3",
+        "BlockedChute_Count_Time": "T#5s",
+        "BlockedChute_Continous_Time": "T#2s",
+        "WarningBit2": "false",
+        "Start":  "IO.CC1_START" ,
+        "Hooter": ""
+      }
+    },
+    {
+      "plc_block_id": 38,
+      "parameters": {
+        "Offset": "4",
+        "Auto":  "IO.CC2_AUTO" ,
+        "Hand":  "IO.CC2_HAND" ,
+        "Running":  "IO.CC2_RUNNING" ,
+        "Power":  "IO.CC2_POWER_OK" ,
+        "Fatal1":  "IO.CC2_OVERLOAD_FAULT" ,
+        "Fatal2":  "IO.CC2_SLACK_CHAIN" ,
+        "Fatal3": "",
+        "Fatal4": "",
+        "EStop":  "IO.CC2_EMERGENCY_STOP" ,
+        "T_Run": "t#5s",
+        "UptoSpeed":  "IO.CC2_UNDERSPEED" ,
+        "Pulsing": "false",
+        "T_US_Run": "t#1s",
+        "T_Hooter_Period_On": "t#2s",
+        "Hooter_Count": "3",
+        "T_Hooter_Period_Off": "t#1s",
+        "T_UptoSpeed": "t#5s",
+        "Ext_Product": "",
+        "Inhibit_Hooter": "",
+        "Inhibit_Start": "",
+        "HeadBlockedChute":  "IO.CC2_BLOCKED_CHUTE" ,
+        "TailBlockedChute": "",
+        "T_BlockedChute": "t#5s",
+        "Ext_Gob": "",
+        "Sec_Pls_Roff": "15",
+        "Total_Kg_Capacity": "",
+        "BlockedChute_Count": "3",
+        "BlockedChute_Count_Time": "T#5s",
+        "BlockedChute_Continous_Time": "T#5s",
+        "WarningBit2": "",
+        "Start":  "IO.CC2_START" ,
+        "Hooter": ""
+      }
+    },
+    {
+      "plc_block_id": 39,
+      "parameters": {
+        "Offset": "5",
+        "Auto":  "IO.CC3_AUTO" ,
+        "Hand":  "IO.CC3_HAND" ,
+        "Running":  "IO.CC3_RUNNING" ,
+        "Power":  "IO.CC3_POWER_OK" ,
+        "Fatal1":  "IO.CC3_OVERLOAD_FAULT" ,
+        "Fatal2":  "IO.CC3_SLACK_CHAIN" ,
+        "Fatal3": "",
+        "Fatal4": "",
+        "EStop":  "IO.CC3_EMERGENCY_STOP" ,
+        "T_Run": "t#5s",
+        "UptoSpeed":  "IO.CC3_UNDERSPEED" ,
+        "Pulsing": "false",
+        "T_US_Run": "t#1s",
+        "T_Hooter_Period_On": "t#2s",
+        "Hooter_Count": "3",
+        "T_Hooter_Period_Off": "t#1s",
+        "T_UptoSpeed": "T#5s",
+        "Ext_Product": "",
+        "Inhibit_Hooter": "",
+        "Inhibit_Start": "",
+        "HeadBlockedChute":  "IO.CC3_BLOCKED_CHUTE" ,
+        "TailBlockedChute": "",
+        "T_BlockedChute": "t#5s",
+        "Ext_Gob": "",
+        "Sec_Pls_Roff": "15",
+        "Total_Kg_Capacity": "",
+        "BlockedChute_Count": "3",
+        "BlockedChute_Count_Time": "T#5s",
+        "BlockedChute_Continous_Time": "T#5s",
+        "WarningBit2": "",
+        "Start":  "IO.CC3_START" ,
+        "Hooter": ""
+      }
+    },
+    {
+      "plc_block_id": 40,
+      "parameters": {
+        "Offset": "17",
+        "Auto":  "IO.CC4_AUTO" ,
+        "Hand":  "IO.CC4_HAND" ,
+        "Running":  "IO.CC4_RUNNING" ,
+        "Power":  "IO.CC4_POWER_OK" ,
+        "Fatal1":  "IO.CC4_OVERLOAD_FAULT" ,
+        "Fatal2":  "IO.CC4_SLACK_CHAIN" ,
+        "Fatal3": "",
+        "Fatal4": "",
+        "EStop":  "IO.CC4_EMERGENCY_STOP" ,
+        "T_Run": "t#5s",
+        "UptoSpeed":  "IO.CC4_UNDERSPEED" ,
+        "Pulsing": "false",
+        "T_US_Run": "t#1s",
+        "T_Hooter_Period_On": "t#2s",
+        "Hooter_Count": "3",
+        "T_Hooter_Period_Off": "t#1s",
+        "T_UptoSpeed": "T#5s",
+        "Ext_Product": "false",
+        "Inhibit_Hooter": "",
+        "Inhibit_Start": "",
+        "HeadBlockedChute":  "IO.CC4_BLOCKED_CHUTE" ,
+        "TailBlockedChute": "",
+        "T_BlockedChute": "t#5s",
+        "Ext_Gob": "",
+        "Sec_Pls_Roff": "15",
+        "Total_Kg_Capacity": "",
+        "BlockedChute_Count": "3",
+        "BlockedChute_Count_Time": "T#5s",
+        "BlockedChute_Continous_Time": "T#5s",
+        "WarningBit2": "",
+        "Start":  "IO.CC4_START" ,
+        "Hooter": ""
+      }
+    },
+    {
+      "plc_block_id": 41,
+      "parameters": {
+        "Offset": "9",
+        "Auto":  "IO.CC5_AUTO" ,
+        "Hand":  "IO.CC5_HAND" ,
+        "Running":  "IO.CC5_RUNNING" ,
+        "Power":  "IO.CC5_POWER_OK" ,
+        "Fatal1":  "IO.CC5_OVERLOAD_FAULT" ,
+        "Fatal2":  "IO.CC5_SLACK_CHAIN" ,
+        "Fatal3": "",
+        "Fatal4": "",
+        "EStop":  "IO.CC5_EMERGENCY_STOP" ,
+        "T_Run": "t#5s",
+        "UptoSpeed":  "IO.CC5_UNDERSPEED" ,
+        "Pulsing": "false",
+        "T_US_Run": "t#1s",
+        "T_Hooter_Period_On": "t#2s",
+        "Hooter_Count": "3",
+        "T_Hooter_Period_Off": "t#1s",
+        "T_UptoSpeed": "T#5s",
+        "Ext_Product": "",
+        "Inhibit_Hooter": "",
+        "Inhibit_Start": "",
+        "HeadBlockedChute":  "IO.CC5_BLOCKED_CHUTE" ,
+        "TailBlockedChute": "",
+        "T_BlockedChute": "t#5s",
+        "Ext_Gob": "",
+        "Sec_Pls_Roff": "15",
+        "Total_Kg_Capacity": "",
+        "BlockedChute_Count": "3",
+        "BlockedChute_Count_Time": "T#5s",
+        "BlockedChute_Continous_Time": "T#5s",
+        "WarningBit2": "",
+        "Start":  "IO.CC5_START" ,
+        "Hooter": ""
       }
     }
   ]
