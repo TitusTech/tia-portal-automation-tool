@@ -2302,7 +2302,7 @@
       "type": "SW.Blocks.OB",
       "name": "Main",
       "programming_language": "FBD",
-      "number": 1
+      "number": 69
     },
     {
       "id": 2,
@@ -3814,6 +3814,7 @@
       "network_source_id": 1,
       "type": "SW.Blocks.FB",
       "name": "FirstScan",
+      "number": 10,
       "blockgroup_folder": "/FB",
       "is_instance": true,
       "library_source": {
@@ -3857,7 +3858,6 @@
       "network_source_id": 15,
       "type": "SW.Blocks.FB",
       "name": "TGT_LD_ConveyorType2",
-      "programming_language": "SCL",
       "blockgroup_folder": "/TGTLibrary/Drives/Conveyor",
       "is_instance": true
     },
@@ -3867,9 +3867,102 @@
       "network_source_id": 16,
       "type": "SW.Blocks.FB",
       "name": "TGT_LD_ConveyorType2",
-      "programming_language": "SCL",
       "blockgroup_folder": "/TGTLibrary/Drives/Conveyor",
       "is_instance": true
+    },
+    {
+      "id": 21,
+      "DeviceID": 1,
+      "network_source_id": 9,
+      "type": "SW.Blocks.FB",
+      "name": "Aeration_Fan",
+      "number": 13,
+      "programming_language": "FBD",
+      "blockgroup_folder": "/FB",
+      "is_instance": false
+    },
+    {
+      "id": 22,
+      "DeviceID": 1,
+      "network_source_id": 17,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_ConveyorType2",
+      "blockgroup_folder": "/TGTLibrary/Drives/Conveyor"
+    },
+    {
+      "id": 23,
+      "DeviceID": 1,
+      "network_source_id": 18,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_ConveyorType2",
+      "blockgroup_folder": "/TGTLibrary/Drives/Conveyor"
+    },
+    {
+      "id": 24,
+      "DeviceID": 1,
+      "network_source_id": 19,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_ConveyorType2",
+      "blockgroup_folder": "/TGTLibrary/Drives/Conveyor"
+    },
+    {
+      "id": 25,
+      "DeviceID": 1,
+      "network_source_id": 20,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_ConveyorType2",
+      "blockgroup_folder": "/TGTLibrary/Drives/Conveyor"
+    },
+    {
+      "id": 26,
+      "DeviceID": 1,
+      "network_source_id": 5,
+      "is_instance": false,
+      "type": "SW.Blocks.FB",
+      "name": "Common_Bin",
+      "programming_language": "FBD",
+      "number": 67,
+      "blockgroup_folder": "/FB"
+    },
+    {
+      "id": 27,
+      "DeviceID": 1,
+      "network_source_id": 21,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "Bin_Obj_Type_2",
+      "blockgroup_folder": "/TGTLibrary/Drives/Bins"
+    },
+    {
+      "id": 28,
+      "DeviceID": 1,
+      "network_source_id": 22,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "Bin_Obj_Type_2",
+      "blockgroup_folder": "/TGTLibrary/Drives/Bins"
+    },
+    {
+      "id": 29,
+      "DeviceID": 1,
+      "network_source_id": 23,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "Bin_Obj_Type_6",
+      "blockgroup_folder": "/TGTLibrary/Drives/Bins"
+    },
+    {
+      "id": 30,
+      "DeviceID": 1,
+      "network_source_id": 24,
+      "is_instance": true,
+      "type": "SW.Blocks.FB",
+      "name": "Bin_Obj_Type_6",
+      "blockgroup_folder": "/TGTLibrary/Drives/Bins"
     }
   ],
   "Network sources": [
@@ -3955,6 +4048,46 @@
       "id": 16,
       "plc_block_id": 18,
       "title": "SA2"
+    },
+    {
+      "id": 17,
+      "plc_block_id": 21,
+      "title": "AFS1A"
+    },
+    {
+      "id": 18,
+      "plc_block_id": 21,
+      "title": "AFS1B"
+    },
+    {
+      "id": 19,
+      "plc_block_id": 21,
+      "title": "AFS2A"
+    },
+    {
+      "id": 20,
+      "plc_block_id": 21,
+      "title": "AFS2B"
+    },
+    {
+      "id": 21,
+      "plc_block_id": 26,
+      "title": "SL1"
+    },
+    {
+      "id": 22,
+      "plc_block_id": 26,
+      "title": "SL2"
+    },
+    {
+      "id": 23,
+      "plc_block_id": 26,
+      "title": "Truck"
+    },
+    {
+      "id": 24,
+      "plc_block_id": 26,
+      "title": "Des_Truck"
     }
   ],
   "Variable sections": [
@@ -4157,6 +4290,88 @@
           }
         }
       ]
+    },
+    {
+      "plc_block_id": 21,
+      "name": "Static",
+      "data": [
+        {
+          "name": "AFS1A",
+          "datatype": "\"TGT_LD_ConveyorType2\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "AFS1B",
+          "datatype": "\"TGT_LD_ConveyorType2\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "AFS2A",
+          "datatype": "\"TGT_LD_ConveyorType2\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "AFS2B",
+          "datatype": "\"TGT_LD_ConveyorType2\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        }
+      ]
+    },
+    {
+      "plc_block_id": 26,
+      "name": "Static",
+      "data": [
+        {
+          "name": "Silo_1",
+          "datatype": "\"Bin_Obj_Type_2\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Silo_2",
+          "datatype": "\"Bin_Obj_Type_2\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Truck",
+          "datatype": "\"Bin_Obj_Type_6\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Des_Truck",
+          "datatype": "\"Des_Obj_Type_1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Des_S1",
+          "datatype": "\"Des_Obj_Type_1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "Des_S2",
+          "datatype": "\"Des_Obj_Type_1\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        }
+      ]
     }
   ],
   "Instances": [
@@ -4194,7 +4409,7 @@
       "plc_block_id": 15,
       "name": "",
       "call_option": "Single",
-      "number": 1,
+      "number": 15,
       "blockgroup_folder": "/DB"
     },
     {
@@ -4229,7 +4444,78 @@
       "plc_block_id": 20,
       "name": "SA2",
       "call_option": "Multi"
+    },
+    {
+      "id": 11,
+      "plc_block_id": 21,
+      "name": "Aeration_Fan_DB",
+      "number": 3,
+      "call_option": "Single"
+    },
+    {
+      "id": 12,
+      "plc_block_id": 21,
+      "name": "Aeration_Fan_DB",
+      "number": 3,
+      "call_option": "Single"
+    },
+    {
+      "id": 13,
+      "plc_block_id": 22,
+      "name": "AFS1A",
+      "call_option": "Multi"
+    },
+    {
+      "id": 14,
+      "plc_block_id": 23,
+      "name": "AFS1B",
+      "call_option": "Multi"
+    },
+    {
+      "id": 15,
+      "plc_block_id": 24,
+      "name": "AFS2A",
+      "call_option": "Multi"
+    },
+    {
+      "id": 16,
+      "plc_block_id": 25,
+      "name": "AFS2B",
+      "call_option": "Multi"
+    },
+    {
+      "id": 17,
+      "plc_block_id": 26,
+      "call_option": "Single",
+      "name": "Common_Bin_DB",
+      "number": 534,
+      "blockgroup_folder": "/DB"
+    },
+    {
+      "id": 18,
+      "plc_block_id": 27,
+      "call_option": "Multi",
+      "name": "Silo_1"
+    },
+    {
+      "id": 19,
+      "plc_block_id": 28,
+      "call_option": "Multi",
+      "name": "Silo_2"
+    },
+    {
+      "id": 20,
+      "plc_block_id": 29,
+      "call_option": "Multi",
+      "name": "Truck"
+    },
+    {
+      "id": 21,
+      "plc_block_id": 30,
+      "call_option": "Multi",
+      "name": "Des_Truck"
     }
+   
   ],
   "Wire parameters": [
     {
@@ -4342,6 +4628,119 @@
         "Pulsing": "false",
         "HeadBlockedChute": "IO.SA2_BLOCKED_CHUTE",
         "Start": "IO.SA2_START"       
+      }
+    },
+    {
+      "plc_block_id": 22,
+      "parameters": {
+        "Offset": "26",
+        "Auto": "IO.AFS1A_AUTO",
+        "Hand": "IO.AFS1A_HAND",
+        "Running": "IO.AFS1A_RUNNING",
+        "Power": "IO.AFS1A_POWER_OK", 
+        "Fatal1": "IO.AFS1A_OVERLOAD_FAULT",
+        "EStop": "IO.AFS1A_EMERGENCY_STOP",
+        "UptoSpeed": "IO.AFS1A_UNDERSPEED",
+        "Pulsing": "false",
+        "HeadBlockedChute": "IO.AFS1A_BLOCKED_CHUTE",
+        "Start": "IO.AFS1A_START" 
+      }
+    },
+    {
+      "plc_block_id": 23,
+      "parameters": {
+        "Offset": "27",
+        "Auto": "IO.AFS1B_AUTO",
+        "Hand": "IO.AFS1B_HAND",
+        "Running": "IO.AFS1B_RUNNING",
+        "Power": "IO.AFS1B_POWER_OK",
+        "Fatal1": "IO.AFS1B_OVERLOAD_FAULT",
+        "EStop": "IO.AFS1B_EMERGENCY_STOP",
+        "UptoSpeed": "IO.AFS1B_UNDERSPEED",
+        "Pulsing": "false",
+        "HeadBlockedChute": "IO.AFS1B_BLOCKED_CHUTE",
+        "Start": "IO.AFS1B_START"       
+      }
+    },
+    {
+      "plc_block_id": 24,
+      "parameters": {
+        "Offset": "28",
+        "Auto": "IO.AFS2A_AUTO",
+        "Hand": "IO.AFS2A_HAND",
+        "Running": "IO.AFS2A_RUNNING",
+        "Power": "IO.AFS2A_POWER_OK",
+        "Fatal1": "IO.AFS2A_OVERLOAD_FAULT",
+        "EStop": "IO.AFS2A_EMERGENCY_STOP",
+        "UptoSpeed": "IO.AFS2A_UNDERSPEED",
+        "Pulsing": "false",
+        "HeadBlockedChute": "IO.AFS2A_BLOCKED_CHUTE",
+        "Start": "IO.AFS2A_START" 
+      }
+    },
+    {
+      "plc_block_id": 25,
+      "parameters": {
+        "Offset": "28",
+        "Auto": ["IO", "AFS2B_AUTO"],
+        "Hand": ["IO", "AFS2B_HAND"],
+        "Running": ["IO", "AFS2B_RUNNING"],
+        "Power": ["IO", "AFS2B_POWER_OK"],
+        "Fatal1": ["IO", "AFS2B_OVERLOAD_FAULT"],
+        "EStop": ["IO", "AFS2B_EMERGENCY_STOP"],
+        "UptoSpeed": ["IO", "AFS2B_UNDERSPEED"],
+        "Pulsing": "false",
+        "HeadBlockedChute": ["IO", "AFS2B_BLOCKED_CHUTE"],
+        "Start": ["IO", "AFS2B_START"]       
+      }
+    },
+    {
+      "plc_block_id": 27,
+      "parameters": {
+        "HI_Level": "IO.HL_S1" ,
+        "Lo_Level": "false",
+        "Bin_ID": "2",
+        "Des_ID": "24",
+        "Destination_Att": "2",
+        "AdjacentBin1": "3",
+        "CenterValve": "11",
+        "sideValve1": "12",
+        "sideValve2": "13",
+        "sideValve3": "14"
+      }
+    },
+    {
+      "plc_block_id": 28,
+      "parameters": {
+        "HI_Level": "IO.HL_S2" ,
+        "Lo_Level": "false",
+        "Bin_ID": "3",
+        "Des_ID": "24",
+        "Destination_Att": "3",
+        "AdjacentBin1": "3",
+        "CenterValve": "15",
+        "sideValve1": "16",
+        "sideValve2": "10",
+        "sideValve3": "18"
+      }
+    },
+    {
+      "plc_block_id": 29,
+      "parameters": {
+        "HI_Level": "false",
+        "Lo_Level": "false",
+        "Bin_ID": "1",
+        "Conv_ID": "1"
+      }
+    },
+    {
+      "plc_block_id": 29,
+      "parameters": {
+        "Bin_ID": "1",
+        "Destination_Att": "1",
+        "Dust_Fan_ID": "0",
+        "Des_ID": "24",
+        "Dust_Fan_Timer_to_Fault": "T#5M"
       }
     }
   ]
