@@ -2297,16 +2297,16 @@
   ],
   "Program blocks": [
     {
-      "DeviceID": 1,
       "id": 1,
+      "DeviceID": 1,
       "type": "SW.Blocks.OB",
       "name": "Main",
       "programming_language": "FBD",
       "number": 1
     },
     {
-      "DeviceID": 1,
       "id": 2,
+      "DeviceID": 1,
       "name": "DB_Event_Queue",
       "blockgroup_folder": "/DB",
       "structs": [
@@ -2320,8 +2320,8 @@
       }
     },
     {
-      "DeviceID": 1,
       "id": 3,
+      "DeviceID": 1,
       "name": "DB_General_Utils",
       "blockgroup_folder": "/DB",
       "structs": [
@@ -2345,8 +2345,8 @@
       }
     },
     {
-      "DeviceID": 1,
       "id": 4,
+      "DeviceID": 1,
       "name": "DB_GeneralInputs",
       "blockgroup_folder": "/DB",
       "structs": [
@@ -2392,8 +2392,8 @@
       }
     },
     {
-      "DeviceID": 1,
       "id": 5,
+      "DeviceID": 1,
       "name": "DB_Master",
       "blockgroup_folder": "/DB",
       "structs": [
@@ -2415,8 +2415,8 @@
       }
     },
     {
-      "DeviceID": 1,
       "id": 6,
+      "DeviceID": 1,
       "name": "DB_Stat",
       "blockgroup_folder": "/DB",
       "structs": [
@@ -2430,8 +2430,8 @@
       }
     },
     {
-      "DeviceID": 1,
       "id": 7,
+      "DeviceID": 1,
       "name": "IO",
       "blockgroup_folder": "/DB",
       "structs": [
@@ -3721,8 +3721,8 @@
       }
     },
     {
-      "DeviceID": 1,
       "id": 8,
+      "DeviceID": 1,
       "name": "Kg_in_Flight",
       "blockgroup_folder": "/DB",
       "structs": [
@@ -3736,8 +3736,8 @@
       }
     },
     {
-      "DeviceID": 1,
       "id": 9,
+      "DeviceID": 1,
       "network_source_id": 4,
       "type": "SW.Blocks.FB",
       "name": "Common_Control Monitor",
@@ -3745,8 +3745,8 @@
       "blockgroup_folder": "/FB"
     },
     {
-      "DeviceID": 1,
       "id": 10,
+      "DeviceID": 1,
       "network_source_id": 13,
       "type": "SW.Blocks.FB",
       "name": "TGT_LD_ControlMonitor_1",
@@ -3755,8 +3755,8 @@
       "is_instance": true
     },
     {
-      "DeviceID": 1,
       "id": 11,
+      "DeviceID": 1,
       "network_source_id": 12,
       "type": "SW.Blocks.FB",
       "name": "LastScan",
@@ -3768,24 +3768,26 @@
       }
     },
     {
-      "DeviceID": 1,
       "id": 12,
+      "DeviceID": 1,
       "network_source_id": 11,
       "type": "SW.Blocks.FC",
       "name": "outputMapping",
       "blockgroup_folder": "/FB",
       "is_instance": true,
+      "number": 6,
       "library_source": {
         "name": "TGTLibrary",
         "blockgroup_folder": "__"
       }
     },
     {
-      "DeviceID": 1,
       "id": 13,
+      "DeviceID": 1,
       "network_source_id": 3,
       "type": "SW.Blocks.FC",
       "name": "inputMapping",
+      "number": 4,
       "blockgroup_folder": "/FB",
       "is_instance": true,
       "library_source": {
@@ -3794,12 +3796,12 @@
       }
     },
     {
-      "DeviceID": 1,
       "id": 14,
+      "DeviceID": 1,
       "network_source_id": 2,
+      "number": 113,
       "type": "SW.Blocks.FB",
       "name": "Sim",
-      "blockgroup_folder": "/FB",
       "is_instance": true,
       "library_source": {
         "name": "TGTLibrary",
@@ -3807,8 +3809,8 @@
       }
     },
     {
-      "DeviceID": 1,
       "id": 15,
+      "DeviceID": 1,
       "network_source_id": 1,
       "type": "SW.Blocks.FB",
       "name": "FirstScan",
@@ -3820,97 +3822,139 @@
       }
     },
     {
-      "DeviceID": 1,
       "id": 16,
+      "DeviceID": 1,
       "network_source_id": 7,
       "type": "SW.Blocks.FB",
+      "number": 12,
       "programming_language": "FBD",
       "name": "Elevator",
       "blockgroup_folder": "/FB"
     },
     {
-      "DeviceID": 1,
       "id": 17,
+      "DeviceID": 1,
       "network_source_id": 14,
       "type": "SW.Blocks.FB",
       "name": "CN_EL_Type_0",
       "blockgroup_folder": "/TGTLibrary/Drives/Elevators",
       "is_instance": true
+    },
+    {
+      "id": 18,
+      "DeviceID": 1,
+      "network_source_id": 10,
+      "type": "SW.Blocks.FB",
+      "number": 20,
+      "name": "Sweeper_Auger",
+      "programming_language": "FBD",
+      "blockgroup_folder": "/FB",
+      "is_instance": false
+    },
+    {
+      "id": 19,
+      "DeviceID": 1,
+      "network_source_id": 15,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_ConveyorType2",
+      "programming_language": "SCL",
+      "blockgroup_folder": "/TGTLibrary/Drives/Conveyor",
+      "is_instance": true
+    },
+    {
+      "id": 20,
+      "DeviceID": 1,
+      "network_source_id": 16,
+      "type": "SW.Blocks.FB",
+      "name": "TGT_LD_ConveyorType2",
+      "programming_language": "SCL",
+      "blockgroup_folder": "/TGTLibrary/Drives/Conveyor",
+      "is_instance": true
     }
   ],
   "Network sources": [
     {
-      "plc_block_id": 1,
       "id": 1,
+      "plc_block_id": 1,
       "title": "First Scan",
       "comment": "USUALLY EMPTY"
     },
     {
-      "plc_block_id": 1,
       "id": 2,
+      "plc_block_id": 1,
       "title": "Simulation - DELETE BEFORE DEPLOYMENT"
     },
     {
-      "plc_block_id": 1,
       "id": 3,
+      "plc_block_id": 1,
       "title": "Input Mapping"
     },
     {
-      "plc_block_id": 1,
       "id": 4,
+      "plc_block_id": 1,
       "title": "Control Monitor",
       "comment": "must vbe parsted"
     },
     {
-      "plc_block_id": 1,
       "id": 5,
+      "plc_block_id": 1,
       "title": "Bins"
     },
     {
-      "plc_block_id": 1,
       "id": 6,
+      "plc_block_id": 1,
       "title": "Conveyors"
     },
     {
-      "plc_block_id": 1,
       "id": 7,
+      "plc_block_id": 1,
       "title": "Elevators"
     },
     {
-      "plc_block_id": 1,
       "id": 8,
+      "plc_block_id": 1,
       "title": "Valves"
     },
     {
-      "plc_block_id": 1,
       "id": 9,
+      "plc_block_id": 1,
       "title": "Aeration Fan"
     },
     {
-      "plc_block_id": 1,
       "id": 10,
+      "plc_block_id": 1,
       "title": "Sweeper Auger"
     },
     {
-      "plc_block_id": 1,
       "id": 11,
+      "plc_block_id": 1,
       "title": "Output Mapping"
     },
     {
-      "plc_block_id": 1,
       "id": 12,
+      "plc_block_id": 1,
       "title": "Last Scan",
       "comment": "usually empty"
     },
     {
-      "plc_block_id": 9,
       "id": 13,
+      "plc_block_id": 9,
       "title": "Slot 0"
     },
     {
-      "plc_block_id": 16,
       "id": 14,
+      "plc_block_id": 16,
       "title": "BE1"
+    },
+    {
+      "id": 15,
+      "plc_block_id": 18,
+      "title": "SA1"
+    },
+    {
+      "id": 16,
+      "plc_block_id": 18,
+      "title": "SA2"
     }
   ],
   "Variable sections": [
@@ -4093,57 +4137,97 @@
            }
          }
       ]
+    },
+    {
+      "plc_block_id": 18,
+      "name": "Static",
+      "data": [
+        {
+          "name": "SA1",
+          "datatype": "\"TGT_LD_ConveyorType2\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        },
+        {
+          "name": "SA2",
+          "datatype": "\"TGT_LD_ConveyorType2\"",
+          "attributes": {
+            "SetPoint": true
+          }
+        }
+      ]
     }
   ],
   "Instances": [
     {
-      "plc_block_id": 9,
       "id": 1,
+      "plc_block_id": 9,
       "name": "Common_Control Monitor_DB",
       "call_option": "Single",
       "blockgroup_folder": "/DB"
     },
     {
-      "plc_block_id": 10,
       "id": 2,
+      "plc_block_id": 10,
       "name": "Control_Monitor_1_Instance",
       "call_option": "Multi"
     },
     {
-      "plc_block_id": 11,
       "id": 3,
+      "plc_block_id": 11,
       "name": "",
       "call_option": "Single",
-      "number": 1,
+      "number": 19,
       "blockgroup_folder": "/DB"
     },
     {
-      "plc_block_id": 14,
       "id": 4,
+      "plc_block_id": 14,
       "name": "",
       "call_option": "Single",
-      "number": 1,
+      "number": 494,
       "blockgroup_folder": "/DB"
     },
     {
-      "plc_block_id": 15,
       "id": 5,
+      "plc_block_id": 15,
       "name": "",
       "call_option": "Single",
       "number": 1,
       "blockgroup_folder": "/DB"
     },
     {
-      "plc_block_id": 16,
       "id": 6,
+      "plc_block_id": 16,
       "name": "Elevator_DB",
       "call_option": "Single",
       "blockgroup_folder": "/DB"
     },
     {
-      "plc_block_id": 10,
-      "id": 17,
+      "id": 7,
+      "plc_block_id": 17,
       "name": "BE1",
+      "call_option": "Multi"
+    },
+    {
+      "id": 8,
+      "plc_block_id": 18,
+      "name": "Sweeper_Auger_DB",
+      "number": 4,
+      "blockgroup_folder": "/DB",
+      "call_option": "Single"
+    },
+    {
+      "id": 9,
+      "plc_block_id": 19,
+      "name": "SA1",
+      "call_option": "Multi"
+    },
+    {
+      "id": 10,
+      "plc_block_id": 20,
+      "name": "SA2",
       "call_option": "Multi"
     }
   ],
@@ -4168,7 +4252,7 @@
       }
     },
     {
-      "plc_block_id": 13,
+      "plc_block_id": 17,
       "parameters": {
         "Offset": "2",
         "Auto": "IO.BE1_AUTO",
@@ -4226,6 +4310,38 @@
         "Start": "IO.BE1_START",
         "Hooter": "",
         "Purging": ""
+      }
+    },
+    {
+      "plc_block_id": 19,
+      "parameters": {
+        "Offset": "30",
+        "Auto": "IO.SA1_AUTO",
+        "Hand": "IO.SA1_HAND",
+        "Running": "IO.SA1_RUNNING",
+        "Power": "IO.SA1_POWER_OK", 
+        "Fatal1": "IO.SA1_OVERLOAD_FAULT",
+        "EStop": "IO.SA1_EMERGENCY_STOP",
+        "UptoSpeed": "IO.SA1_UNDERSPEED",
+        "Pulsing": "false",
+        "HeadBlockedChute": "IO.SA1_BLOCKED_CHUTE",
+        "Start": "IO.SA1_START" 
+      }
+    },
+    {
+      "plc_block_id": 20,
+      "parameters": {
+        "Offset": "31",
+        "Auto": "IO.SA2_AUTO",
+        "Hand": "IO.SA2_HAND",
+        "Running": "IO.SA2_RUNNING",
+        "Power": "IO.SA2_POWER_OK", 
+        "Fatal1": "IO.SA2_OVERLOAD_FAULT",
+        "EStop": "IO.SA2_EMERGENCY_STOP",
+        "UptoSpeed": "IO.SA2_UNDERSPEED",
+        "Pulsing": "false",
+        "HeadBlockedChute": "IO.SA2_BLOCKED_CHUTE",
+        "Start": "IO.SA2_START"       
       }
     }
   ]
