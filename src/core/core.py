@@ -7,15 +7,17 @@ import base64
 from src.resources import dlls
 from src.modules.XML.ProgramBlocks import VariableSection
 from src.modules.XML.ProgramBlocks import VariableStruct
+import src.modules.BlocksData as BlocksData
+import src.modules.DeviceItems as DeviceItems
+import src.modules.Devices as Devices
+import src.modules.Libraries as Libraries
+import src.modules.Networks as Networks
+import src.modules.PlcDataTypes as PlcDataTypes
+import src.modules.PlcTags as PlcTags
 import src.modules.Portals as Portals
 import src.modules.Projects as Projects
-import src.modules.Devices as Devices
-import src.modules.Networks as Networks
-import src.modules.DeviceItems as DeviceItems
-import src.modules.PlcTags as PlcTags
-import src.modules.Libraries as Libraries
-import src.modules.PlcDataTypes as PlcDataTypes
 import src.modules.XML.Documents as Documents
+import src.modules.XML.ProgramBlocks as ProgramBlocks
 
 
 def generate_dlls() -> dict[str, Path]:
@@ -120,6 +122,18 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         for datatype in config.get('PLC data types', [])
     ]
 
+    data_blocks = [BlocksData.DataBlock(
+        DeviceID=db.get('DeviceID'),
+        Name=db.get('name'),
+        Number=db.get('number'),
+        BlockGroupPath=db.get('blockgroup_folder', '/'),
+        variable_sections=helper_clean_variable_sections(
+            config.get('Variable sections'), db.get('id')),
+        Attributes=db.get('attributes', {}))
+        for db in config.get('Program blocks', [])
+        if db.get('type') != ProgramBlocks.PlcEnum.GlobalDB.value
+    ]
+
     for library in libraries_data:
         Libraries.import_library(imports, library, TIA)
 
@@ -173,6 +187,12 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         # PLC Data Types:
         for plc_data_type in plc_data_types_data:
             PlcDataTypes.create(imports, se_plc_software, plc_data_type)
+
+        # Data Blocks
+        for data_block in data_blocks:
+            if data_block.DeviceID != device_data.ID:
+                continue
+            BlocksData.create(imports, se_plc_software, data_block)
 
     return TIA
 

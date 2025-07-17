@@ -2320,6 +2320,7 @@
       "DeviceID": 1,
       "type": "SW.Blocks.GlobalDB",
       "name": "DB_General_Utils",
+      "number": 29,
       "blockgroup_folder": "/DB",
       "attributes": {
         "MemoryLayout": "Optimized"
@@ -2330,6 +2331,7 @@
       "DeviceID": 1,
       "type": "SW.Blocks.GlobalDB",
       "name": "DB_GeneralInputs",
+      "number": 23,
       "blockgroup_folder": "/DB",
       "attributes": {
         "MemoryLayout": "Optimized"
@@ -2341,6 +2343,7 @@
       "type": "SW.Blocks.GlobalDB",
       "name": "DB_Master",
       "blockgroup_folder": "/DB",
+      "number": 20,
       "attributes": {
         "MemoryLayout": "Standard"
       }
@@ -2350,6 +2353,7 @@
       "DeviceID": 1,
       "type": "SW.Blocks.GlobalDB",
       "name": "DB_Stat",
+      "number": 36,
       "blockgroup_folder": "/DB",
       "attributes": {
         "MemoryLayout": "Standard"
@@ -2360,6 +2364,7 @@
       "type": "SW.Blocks.GlobalDB",
       "DeviceID": 1,
       "name": "IO",
+      "number": 13,
       "blockgroup_folder": "/DB",
       "attributes": {
         "MemoryLayout": "Optimized"
@@ -2370,6 +2375,7 @@
       "DeviceID": 1,
       "type": "SW.Blocks.GlobalDB",
       "name": "Kg_in_Flight",
+      "number": 16,
       "blockgroup_folder": "/DB",
       "attributes": {
         "MemoryLayout": "Optimized"

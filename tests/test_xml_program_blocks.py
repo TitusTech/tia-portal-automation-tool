@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 from src.core.core import helper_clean_variable_sections
 from src.modules.BlocksFB import FB, FunctionBlock
 from src.modules.BlocksOB import OB, OrganizationBlock, EventClassEnum
-from src.modules.BlocksData import DataBlock, GlobalDB
+from src.modules.BlocksData import DataBlock, XML
 from src.modules.XML.ProgramBlocks import VariableStruct, NetworkSource, PlcEnum
 from src.schemas import configuration
 
@@ -44,6 +44,7 @@ def test_globaldb():
         variable_sections = helper_clean_variable_sections(
             CONFIG.get('Variable sections'), db.get('id'))
         data = DataBlock(
+            DeviceID=db.get('DeviceID'),
             Name=db.get('name'),
             Number=db.get('number'),
             BlockGroupPath=db.get('blockgroup_folder', '/'),
@@ -51,7 +52,7 @@ def test_globaldb():
             Attributes=db.get('attributes', {})
         )
 
-        root = ET.fromstring(GlobalDB(data).xml())
+        root = ET.fromstring(XML(data).xml())
 
         assert root.tag == "Document"
         gdb = root.find('SW.Blocks.GlobalDB')

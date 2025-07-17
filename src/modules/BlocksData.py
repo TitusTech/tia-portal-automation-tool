@@ -1,17 +1,26 @@
+from __future__ import annotations
 from dataclasses import dataclass
+from pathlib import Path
+import logging
 import xml.etree.ElementTree as ET
 
+from src.core import logs
+from src.modules.XML.Documents import import_xml_to_block_group
 from src.modules.XML.ProgramBlocks import VariableSection, Database
 from src.modules.XML.ProgramBlocks import Base
+
+logs.setup(logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 @dataclass
 class DataBlock(Database):
+    DeviceID: int
     VariableSections: list[VariableSection]
     Attributes: dict
 
 
-class GlobalDB(Base):
+class XML(Base):
     DOCUMENT = "SW.Blocks.GlobalDB"
 
     def __init__(self, data: DataBlock):
@@ -36,3 +45,21 @@ class GlobalDB(Base):
                           attrib).text = data.Attributes[attrib]
 
         return
+
+
+def create(imports: Imports, plc_software: Siemens.Engineering.HW.Software, data: DataBlock):
+    logger.info(f"Generation of Data Block {data.Name} started")
+
+    if not data.Name:
+        return
+
+    xml = XML(data)
+    filename: Path = xml.write()
+
+    logger.info(f"Written Data Block {data.Name} XML to: {filename}")
+
+    import_xml_to_block_group(imports, plc_software, xml_location=filename,
+                              blockgroup_folder=data.BlockGroupPath,
+                              mkdir=True)
+    if filename.exists():
+        filename.unlink()
