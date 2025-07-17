@@ -89,7 +89,6 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
     )
         for module in config.get('Local modules', [])
     ]
-
     plc_tags_data = [PlcTags.PlcTagTable(
         DeviceID=table.get("DeviceID", 1),
         Name=table.get("Name", "Default tag table"),
@@ -121,17 +120,16 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
     )
         for datatype in config.get('PLC data types', [])
     ]
-
     data_blocks = [BlocksData.DataBlock(
         DeviceID=db.get('DeviceID'),
         Name=db.get('name'),
         Number=db.get('number'),
         BlockGroupPath=db.get('blockgroup_folder', '/'),
-        variable_sections=helper_clean_variable_sections(
+        VariableSections=helper_clean_variable_sections(
             config.get('Variable sections'), db.get('id')),
         Attributes=db.get('attributes', {}))
         for db in config.get('Program blocks', [])
-        if db.get('type') != ProgramBlocks.PlcEnum.GlobalDB.value
+        if db.get('type') == ProgramBlocks.PlcEnum.GlobalDB.value
     ]
 
     for library in libraries_data:
