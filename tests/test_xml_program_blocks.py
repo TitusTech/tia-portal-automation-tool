@@ -20,7 +20,8 @@ with open(smc) as file:
 
 def test_organization_block():
     for ob in CONFIG.get('Program blocks'):
-        if ob.get('type') != PlcEnum.OrganizationBlock.value:
+        print(ob.get('type'))
+        if ob.get('type') != PlcEnum.OrganizationBlock:
             continue
 
         variable_sections = helper_clean_variable_sections(
@@ -39,9 +40,10 @@ def test_organization_block():
                                  NetworkSources=network_sources,
                                  Variables=variable_sections,
                                  )
-        xml = XML(data).xml()
+        xml = OB(data).xml()
         root = ET.fromstring(xml)
         print(xml)
+        print(len(xml))
 
 
 def test_globaldb():

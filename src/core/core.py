@@ -15,7 +15,6 @@ import src.modules.PlcDataTypes as PlcDataTypes
 import src.modules.PlcTags as PlcTags
 import src.modules.Portals as Portals
 import src.modules.Projects as Projects
-import src.modules.XML.Documents as Documents
 import src.modules.XML.ProgramBlocks as ProgramBlocks
 
 
@@ -109,7 +108,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
     ]
     plc_data_types_data = [PlcDataTypes.PlcDataType(
         Name=datatype.get("Name"),
-        Types=[Documents.PlcStruct(
+        Types=[PlcDataTypes.PlcStruct(
             Name=struct.get('Name'),
             Datatype=struct.get('Datatype'),
             attributes=struct.get('attributes'),
@@ -258,10 +257,10 @@ def helper_clean_network_sources(network_sources: list[dict],
 
             # Functions
 
-        network.append(ProgramBlocks.NetworkSource(Title=title,
-                                                   Comment=comment,
-                                                   PlcBlocks=c_plcblocks,
-                                                   )
-                       )
+        networks.append(ProgramBlocks.NetworkSource(Title=title,
+                                                    Comment=comment,
+                                                    PlcBlocks=c_plcblocks,
+                                                    )
+                        )
 
     return networks

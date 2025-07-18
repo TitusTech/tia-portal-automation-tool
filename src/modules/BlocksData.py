@@ -5,9 +5,9 @@ import logging
 import xml.etree.ElementTree as ET
 
 from src.core import logs
-from src.modules.XML.Documents import import_xml_to_block_group
 from src.modules.XML.ProgramBlocks import VariableSection, Database
 from src.modules.XML.ProgramBlocks import Base, PlcEnum
+from src.modules.PlcBlocks import import_xml_to_block_group
 
 logs.setup(logging.DEBUG)
 logger = logging.getLogger(__name__)

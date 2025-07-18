@@ -1,7 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
-from pathlib import PurePosixPath
 import xml.etree.ElementTree as ET
 
 from src.modules.XML.Documents import Document
@@ -316,25 +315,3 @@ def generate_boolean_attributes(struct: VariableStruct) -> ET.Element:
         }).text = str(struct.Attributes[attrib]).lower()
 
     return AttributeList
-
-
-def locate_blockgroup(plc_software: Siemens.Engineering.HW.Software,
-                      blockgroup_folder: PurePosixPath,
-                      mkdir: bool = False) -> Siemens.Engineering.SW.Blocks.BlockGroup | None:
-    if not blockgroup_folder.is_absolute():
-        blockgroup_folder = PurePosixPath('/') / blockgroup_folder
-
-    current_blockgroup: Siemens.Engineering.SW.Blocks.PlcBlockGroup | None = plc_software.BlockGroup
-    previous_blockgroup: Siemens.Engineering.SW.Blocks.PlcBlockGroup | None = plc_software.BlockGroup
-    for part in blockgroup_folder.parts:
-        if part == '/':
-            continue
-        current_blockgroup = current_blockgroup.Groups.Find(part)
-        if not current_blockgroup:
-            if mkdir:
-                current_blockgroup = previous_blockgroup.Groups.Create(part)
-            else:
-                return
-        previous_blockgroup = current_blockgroup
-
-    return current_blockgroup
