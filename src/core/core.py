@@ -5,9 +5,8 @@ from typing import Any
 import base64
 
 from src.resources import dlls
-from src.modules.XML.ProgramBlocks import VariableSection
-from src.modules.XML.ProgramBlocks import VariableStruct
 import src.modules.BlocksData as BlocksData
+import src.modules.BlocksOB as BlocksOB
 import src.modules.DeviceItems as DeviceItems
 import src.modules.Devices as Devices
 import src.modules.Libraries as Libraries
@@ -196,22 +195,73 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
 
 
 def helper_clean_variable_sections(variable_sections: list[dict],
-                                   plc_block_id: int) -> list[VariableSection]:
-    sections: list[VariableSection] = []
+                                   plc_block_id: int) -> list[ProgramBlocks.VariableSection]:
+    sections: list[ProgramBlocks.VariableSection] = []
 
     for section in variable_sections:
         if section.get('plc_block_id') != plc_block_id:
             continue
         name = section.get('name')
-        structs: list[VariableStruct] = []
+        structs: list[ProgramBlocks.VariableStruct] = []
         for struct in section.get('data'):
-            structs.append(VariableStruct(
+            structs.append(ProgramBlocks.VariableStruct(
                 Name=struct.get('name'),
                 Datatype=struct.get('datatype'),
                 Retain=struct.get('retain'),
                 StartValue=struct.get('start_value'),
                 Attributes=struct.get('attributes'),
             ))
-        sections.append(VariableSection(Name=name, Structs=structs))
+        sections.append(ProgramBlocks.VariableSection(
+            Name=name, Structs=structs))
 
     return sections
+
+
+def helper_clean_network_sources(network_sources: list[dict],
+                                 plcblocks: list[dict],
+                                 variable_sections: list[dict],
+                                 plc_block_id: int) -> list[ProgramBlocks.NetworkSource]:
+    networks: list[ProgramBlocks.NetworkSource] = []
+
+    for network in network_sources:
+        if network.get('plc_block_id') != plc_block_id:
+            continue
+        title = network.get('title')
+        comment = network.get('comment')
+        c_plcblocks: list[ProgramBlocks.ProgramBlock] = []
+
+        for block in plcblocks:
+            if block.get('network_source_id') != network.get('id'):
+                continue
+
+            # Organization Block
+            if block.get('type') == ProgramBlocks.PlcEnum.OrganizationBlock.value:
+                plcblocks.append(
+                    BlocksOB.OB(
+                        Name=block.get('name'),
+                        Number=block.get('number'),
+                        ProgrammingLanguage=block.get(
+                            'programming_language'),
+                        Variables=helper_clean_variable_sections(
+                            variable_sections, block.get('id')),
+                        NetworkSources=helper_clean_network_sources(
+                            network_sources,
+                            plcblocks,
+                            variable_sections,
+                            block.get('id')
+                        ),
+                        EventClass=BlocksOB.EventClassEnum.ProgramCycle
+                    )
+                )
+
+            # Function Block
+
+            # Functions
+
+        network.append(ProgramBlocks.NetworkSource(Title=title,
+                                                   Comment=comment,
+                                                   PlcBlocks=c_plcblocks,
+                                                   )
+                       )
+
+    return networks

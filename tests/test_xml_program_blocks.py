@@ -2,7 +2,7 @@ from pathlib import Path
 import json
 import xml.etree.ElementTree as ET
 
-from src.core.core import helper_clean_variable_sections
+from src.core.core import helper_clean_variable_sections, helper_clean_network_sources
 from src.modules.BlocksFB import FB, FunctionBlock
 from src.modules.BlocksOB import OB, OrganizationBlock, EventClassEnum
 from src.modules.BlocksData import DataBlock, XML
@@ -19,21 +19,29 @@ with open(smc) as file:
 
 
 def test_organization_block():
-    for plc in CONFIG.get('Program blocks'):
-        pass
-    ob_data = OrganizationBlock(Name="Main",
-                                Number=1,
-                                ProgrammingLanguage="FBD",
-                                EventClass=EventClassEnum.ProgramCycle,
-                                NetworkSources=[NetworkSource(Title="First Scan",
-                                                              Comment="",
-                                                              Instances=[],
-                                                              )
-                                                ],
-                                Variables=[],
-                                )
-    ob = OB(ob_data)
-    # print(ob)
+    for ob in CONFIG.get('Program blocks'):
+        if ob.get('type') != PlcEnum.OrganizationBlock.value:
+            continue
+
+        variable_sections = helper_clean_variable_sections(
+            CONFIG.get('Variable sections'), ob.get('id'))
+        network_sources = helper_clean_network_sources(
+            CONFIG.get('Network sources'),
+            CONFIG.get('Program blocks'),
+            CONFIG.get('Variable sections'),
+            ob.get('id')
+        )
+        data = OrganizationBlock(Name=ob.get('name'),
+                                 Number=ob.get('number'),
+                                 ProgrammingLanguage=ob.get(
+                                     'programming_language'),
+                                 EventClass=EventClassEnum.ProgramCycle,
+                                 NetworkSources=network_sources,
+                                 Variables=variable_sections,
+                                 )
+        xml = XML(data).xml()
+        root = ET.fromstring(xml)
+        print(xml)
 
 
 def test_globaldb():

@@ -2,7 +2,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import PurePosixPath
-from typing import Optional
 import xml.etree.ElementTree as ET
 
 from src.modules.XML.Documents import Document
@@ -35,7 +34,7 @@ class ProgramBlock:
 class NetworkSource:
     Title: str
     Comment: str
-    Instances: list
+    PlcBlocks: list[ProgramBlock]
 
 
 @dataclass
@@ -49,9 +48,9 @@ class WireParameter:
 
 class PlcEnum(Enum):
     PlcStruct = "SW.Types.PlcStruct"
-    OB = "SW.Blocks.OB"
-    FB = "SW.Blocks.FB"
-    FC = "SW.Blocks.FC"
+    OrganizationBlock = "SW.Blocks.OB"
+    FunctionBlock = "SW.Blocks.FB"
+    Function = "SW.Blocks.FC"
     GlobalDB = "SW.Blocks.GlobalDB"
     # WatchTable = "SW.WatchAndForceTables.PlcWatchTable"
     # ForceTable = "SW.WatchAndForceTables.PlcForceTable"
@@ -227,7 +226,7 @@ class BlockCompileUnit:
         Call = ET.SubElement(self.Parts, "Call", attrib={'UId': str(uid)})
         CallInfo = ET.SubElement(Call, "CallInfo", attrib={
                                  'Name': instance.Name, 'BlockType': instance.Type.value.split('.')[-1]})
-        if instance.Type != PlcEnum.FC:
+        if instance.Type != PlcEnum.Function:
             scope = "GlobalVariable"
             if instance.Database.Type == DatabaseType.MultiInstance:
                 scope = "LocalVariable"
