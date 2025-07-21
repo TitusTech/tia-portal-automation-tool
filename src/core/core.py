@@ -145,11 +145,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
                                ]
     ]
 
-    for library in libraries_data:
-        Libraries.import_library(imports, library, TIA)
-
     SE: Siemens.Engineering = imports.DLL
-
     TIA: Siemens.Engineering.TiaPortal = Portals.connect(
         imports, config, settings)
 
@@ -157,6 +153,9 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         config['name'], config['directory'], config['overwrite'])
     se_project: Siemens.Engineering.Project = Projects.create(
         imports, project_data, TIA)
+
+    for library in libraries_data:
+        Libraries.import_library(imports, library, TIA)
     se_devices: list[Siemens.Engineering.HW.Device] = Devices.create(
         devices_data, se_project)
     se_interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
