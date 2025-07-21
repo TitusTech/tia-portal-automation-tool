@@ -42,9 +42,9 @@ class OB(Base):
             "Informative": "true",
         })
 
-        id = 3
+        block_id = 3
         for network_source in data.NetworkSources:
             CompileUnit = BlockCompileUnit(
-                data.ProgrammingLanguage, network_source, id).root
+                data.ProgrammingLanguage, network_source, block_id).root
             self.ObjectList.append(CompileUnit)
-            id += 5
+            block_id += 5

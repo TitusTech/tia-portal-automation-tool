@@ -20,7 +20,6 @@ with open(smc) as file:
 
 def test_organization_block():
     for ob in CONFIG.get('Program blocks'):
-        print(ob.get('type'))
         if ob.get('type') != PlcEnum.OrganizationBlock:
             continue
 
@@ -42,8 +41,43 @@ def test_organization_block():
                                  )
         xml = OB(data).xml()
         root = ET.fromstring(xml)
-        print(xml)
-        print(len(xml))
+
+        assert root.tag == "Document"
+        obxml = root.find('SW.Blocks.OB')
+        assert obxml is not None
+        assert obxml.attrib.get('ID') == "0"
+
+        attr_list = obxml.find('AttributeList')
+        assert attr_list is not None
+
+        name = attr_list.find('Name')
+        assert name is not None
+        assert name.text == ob.get('name')
+
+        number = attr_list.find('Number')
+        assert number is not None
+        assert number.text == str(
+            max(123, min(ob.get('number'), 32767))
+            if ob.get('number') != 1 else 1
+        )
+
+        interface = attr_list.find('Interface')
+        assert interface is not None
+
+        sections = interface.find(
+            '{http://www.siemens.com/automation/Openness/SW/Interface/v5}Sections')
+        assert sections is not None
+
+        # Variable Sections
+        section = sections.find(
+            '{http://www.siemens.com/automation/Openness/SW/Interface/v5}Section')
+        if section is None:
+            continue
+        assert section is not None
+        # assert section.attrib.get('Name') == "Static"
+
+        members = section.findall(
+            '{http://www.siemens.com/automation/Openness/SW/Interface/v5}Member')
 
 
 def test_globaldb():
