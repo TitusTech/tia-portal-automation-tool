@@ -1,8 +1,15 @@
 from dataclasses import dataclass
 from enum import Enum
+from pathlib import Path
 import xml.etree.ElementTree as ET
+import logging
 
+from src.core import logs
+from src.modules.PlcBlocks import import_xml_to_block_group
 from src.modules.XML.ProgramBlocks import Base, PlcEnum, ProgramBlock, NetworkSource, BlockCompileUnit
+
+logs.setup(logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 class EventClassEnum(Enum):
@@ -48,3 +55,21 @@ class OB(Base):
                 data.ProgrammingLanguage, network_source, block_id).root
             self.ObjectList.append(CompileUnit)
             block_id += 5
+
+
+def create(imports: Imports, plc_software: Siemens.Engineering.HW.Software, data: DataBlock):
+    logger.info(f"Generation of Organization Block {data.Name} started")
+
+    if not data.Name:
+        return
+
+    xml = OB(data)
+    filename: Path = xml.write()
+
+    logger.info(f"Written Organization Block {data.Name} XML to: {filename}")
+
+    import_xml_to_block_group(imports, plc_software, xml_location=filename,
+                              blockgroup_folder=data.BlockGroupPath,
+                              mkdir=True)
+    if filename.exists():
+        filename.unlink()

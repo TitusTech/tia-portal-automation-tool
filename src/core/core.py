@@ -129,7 +129,8 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         for db in config.get('Program blocks', [])
         if db.get('type') == ProgramBlocks.PlcEnum.GlobalDB.value
     ]
-    organization_blocks = [BlocksOB.OB(
+    data_plcblocks = [BlocksOB.OB(
+        PlcType=ob.get('type'),
         Name=ob.get('name'),
         Number=ob.get('number'),
         ProgrammingLanguage=ob.get('programming_language'),
@@ -144,7 +145,10 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
             config.get('Variable sections'), ob.get('id'))
     )
         for ob in config.get('Program blocks', [])
-        if ob.get('type') == ProgramBlocks.PlcEnum.OrganizationBlock.value
+        if ob.get('type') in [ProgramBlocks.PlcEnum.OrganizationBlock.value,
+                              ProgramBlocks.PlcEnum.FunctionBlock.value,
+                              ProgramBlocks.PlcEnum.Function.value,
+                              ]
     ]
 
     for library in libraries_data:
@@ -208,10 +212,11 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
             BlocksData.create(imports, se_plc_software, data_block)
 
         # ProgramBlocks
-        for ob in organization_blocks:
-            if ob.DeviceID != device_data.ID:
+        for plc in data_plcblocks:
+            if plc.DeviceID != device_data.ID:
                 continue
-            BlocksData.create(imports, se_plc_software, ob)
+            if plc.PlcType == ProgramBlocks.PlcEnum.OrganizationBlock.value:
+                BlocksOB.create(imports, se_plc_software, plc)
 
     return TIA
 

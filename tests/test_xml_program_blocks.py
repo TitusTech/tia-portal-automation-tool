@@ -6,7 +6,7 @@ from src.core.core import helper_clean_variable_sections, helper_clean_network_s
 from src.modules.BlocksFB import FB, FunctionBlock
 from src.modules.BlocksOB import OB, OrganizationBlock, EventClassEnum
 from src.modules.BlocksData import DataBlock, XML
-from src.modules.XML.ProgramBlocks import VariableStruct, NetworkSource, PlcEnum
+from src.modules.XML.ProgramBlocks import PlcEnum
 from src.schemas import configuration
 
 BASE_DIR = Path(__file__).parent
@@ -32,6 +32,7 @@ def test_organization_block():
             ob.get('id')
         )
         data = OrganizationBlock(Name=ob.get('name'),
+                                 PlcType=ob.get('type'),
                                  Number=ob.get('number'),
                                  ProgrammingLanguage=ob.get(
                                      'programming_language'),
