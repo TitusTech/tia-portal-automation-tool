@@ -6,6 +6,7 @@ import base64
 
 from src.resources import dlls
 import src.modules.BlocksData as BlocksData
+import src.modules.BlocksFB as BlocksFB
 import src.modules.BlocksOB as BlocksOB
 import src.modules.DeviceItems as DeviceItems
 import src.modules.Devices as Devices
@@ -217,8 +218,11 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         for plc in data_plcblocks:
             if plc.DeviceID != device_data.ID:
                 continue
-            if plc.PlcType == ProgramBlocks.PlcEnum.OrganizationBlock:
-                BlocksOB.create(imports, se_plc_software, plc)
+            match plc.PlcType:
+                case ProgramBlocks.PlcEnum.OrganizationBlock:
+                    BlocksOB.create(imports, se_plc_software, plc)
+                case ProgramBlocks.PlcEnum.FunctionBlock:
+                    BlocksFB.create(imports, se_plc_software, plc)
 
     return TIA
 

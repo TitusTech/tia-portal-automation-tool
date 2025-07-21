@@ -1,8 +1,16 @@
+from __future__ import annotations
 from dataclasses import dataclass
-from pathlib import PurePosixPath
+from pathlib import PurePosixPath, Path
 import xml.etree.ElementTree as ET
+import logging
 
-from src.modules.XML.ProgramBlocks import Base, PlcEnum, ProgramBlock, NetworkSource, BlockCompileUnit, VariableStruct, generate_boolean_attributes
+from src.core import logs
+
+from src.modules.PlcBlocks import import_xml_to_block_group
+from src.modules.XML.ProgramBlocks import Base, PlcEnum, ProgramBlock, BlockCompileUnit, VariableStruct, generate_boolean_attributes
+
+logs.setup(logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -55,3 +63,21 @@ class XML(Base):
                 Member.append(bool_attribs)
 
         return
+
+
+def create(imports: Imports, plc_software: Siemens.Engineering.HW.Software, data: DataBlock):
+    logger.info(f"Generation of Organization Block {data.Name} started")
+
+    if not data.Name:
+        return
+
+    xml = XML(data)
+    filename: Path = xml.write()
+
+    logger.info(f"Written Organization Block {data.Name} XML to: {filename}")
+
+    import_xml_to_block_group(imports, plc_software, xml_location=filename,
+                              blockgroup_folder=data.BlockGroupPath,
+                              mkdir=True)
+    if filename.exists():
+        filename.unlink()
