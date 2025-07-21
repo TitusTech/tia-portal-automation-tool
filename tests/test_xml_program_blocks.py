@@ -4,10 +4,10 @@ import xml.etree.ElementTree as ET
 
 from src.core.core import helper_clean_variable_sections, helper_clean_network_sources
 from src.modules.BlocksFB import FB, FunctionBlock
-from src.modules.BlocksOB import OB, OrganizationBlock, EventClassEnum
-from src.modules.BlocksData import DataBlock, XML
 from src.modules.XML.ProgramBlocks import PlcEnum
 from src.schemas import configuration
+import src.modules.BlocksData as BlocksData
+import src.modules.BlocksOB as BlocksOB
 
 BASE_DIR = Path(__file__).parent
 smc = BASE_DIR / "configs" / "smc.json"
@@ -31,16 +31,19 @@ def test_organization_block():
             CONFIG.get('Variable sections'),
             ob.get('id')
         )
-        data = OrganizationBlock(Name=ob.get('name'),
-                                 PlcType=ob.get('type'),
-                                 Number=ob.get('number'),
-                                 ProgrammingLanguage=ob.get(
-                                     'programming_language'),
-                                 EventClass=EventClassEnum.ProgramCycle,
-                                 NetworkSources=network_sources,
-                                 Variables=variable_sections,
-                                 )
-        xml = OB(data).xml()
+        data = BlocksOB.OrganizationBlock(Name=ob.get('name'),
+                                          DeviceID=ob.get('DeviceID'),
+                                          PlcType=ob.get('type'),
+                                          BlockGroupPath=ob.get(
+                                              'blockgroup_folder'),
+                                          Number=ob.get('number'),
+                                          ProgrammingLanguage=ob.get(
+            'programming_language'),
+            EventClass=BlocksOB.EventClassEnum.ProgramCycle,
+            NetworkSources=network_sources,
+            Variables=variable_sections,
+        )
+        xml = BlocksOB.XML(data).xml()
         root = ET.fromstring(xml)
 
         assert root.tag == "Document"
@@ -88,7 +91,7 @@ def test_globaldb():
 
         variable_sections = helper_clean_variable_sections(
             CONFIG.get('Variable sections'), db.get('id'))
-        data = DataBlock(
+        data = BlocksData.DataBlock(
             DeviceID=db.get('DeviceID'),
             Name=db.get('name'),
             Number=db.get('number'),
@@ -97,7 +100,7 @@ def test_globaldb():
             Attributes=db.get('attributes', {})
         )
 
-        root = ET.fromstring(XML(data).xml())
+        root = ET.fromstring(BlocksData.XML(data).xml())
 
         assert root.tag == "Document"
         gdb = root.find('SW.Blocks.GlobalDB')

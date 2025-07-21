@@ -4,7 +4,6 @@ from enum import Enum
 import xml.etree.ElementTree as ET
 
 from src.modules.XML.Documents import Document, XMLNS
-from src.modules.XML.ProgramBlocks import PlcEnum
 
 
 @dataclass

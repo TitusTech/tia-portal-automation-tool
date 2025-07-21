@@ -47,15 +47,6 @@ def generate_dlls() -> dict[str, Path]:
 
 
 def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, Any]) -> Siemens.Engineering.TiaPortal:
-    SE: Siemens.Engineering = imports.DLL
-
-    TIA: Siemens.Engineering.TiaPortal = Portals.connect(
-        imports, config, settings)
-
-    project_data = Projects.Project(
-        config['name'], config['directory'], config['overwrite'])
-    se_project: Siemens.Engineering.Project = Projects.create(
-        imports, project_data, TIA)
 
     devices_data = [Devices.Device(
         dev.get('p_typeIdentifier', 'PLC_1'),
@@ -129,31 +120,42 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         for db in config.get('Program blocks', [])
         if db.get('type') == ProgramBlocks.PlcEnum.GlobalDB.value
     ]
-    data_plcblocks = [BlocksOB.OB(
-        PlcType=ob.get('type'),
-        Name=ob.get('name'),
-        Number=ob.get('number'),
-        ProgrammingLanguage=ob.get('programming_language'),
+    data_plcblocks = [BlocksOB.OrganizationBlock(
+        DeviceID=plc.get('DeviceID'),
+        PlcType=plc.get('type'),
+        Name=plc.get('name'),
+        Number=plc.get('number'),
+        ProgrammingLanguage=plc.get('programming_language'),
+        BlockGroupPath=plc.get('blockgroup_folder'),
         EventClass=BlocksOB.EventClassEnum.ProgramCycle,
         NetworkSources=helper_clean_network_sources(
             config.get('Network sources'),
             config.get('Program blocks'),
             config.get('Variable sections'),
-            ob.get('id')
+            plc.get('id')
         ),
         Variables=helper_clean_variable_sections(
-            config.get('Variable sections'), ob.get('id'))
+            config.get('Variable sections'), plc.get('id'))
     )
-        for ob in config.get('Program blocks', [])
-        if ob.get('type') in [ProgramBlocks.PlcEnum.OrganizationBlock.value,
-                              ProgramBlocks.PlcEnum.FunctionBlock.value,
-                              ProgramBlocks.PlcEnum.Function.value,
-                              ]
+        for plc in config.get('Program blocks', [])
+        if plc.get('type') in [ProgramBlocks.PlcEnum.OrganizationBlock,
+                               ProgramBlocks.PlcEnum.FunctionBlock,
+                               ProgramBlocks.PlcEnum.Function,
+                               ]
     ]
 
     for library in libraries_data:
         Libraries.import_library(imports, library, TIA)
 
+    SE: Siemens.Engineering = imports.DLL
+
+    TIA: Siemens.Engineering.TiaPortal = Portals.connect(
+        imports, config, settings)
+
+    project_data = Projects.Project(
+        config['name'], config['directory'], config['overwrite'])
+    se_project: Siemens.Engineering.Project = Projects.create(
+        imports, project_data, TIA)
     se_devices: list[Siemens.Engineering.HW.Device] = Devices.create(
         devices_data, se_project)
     se_interfaces: list[Siemens.Engineering.HW.Features.NetworkInterface] = []
@@ -215,7 +217,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         for plc in data_plcblocks:
             if plc.DeviceID != device_data.ID:
                 continue
-            if plc.PlcType == ProgramBlocks.PlcEnum.OrganizationBlock.value:
+            if plc.PlcType == ProgramBlocks.PlcEnum.OrganizationBlock:
                 BlocksOB.create(imports, se_plc_software, plc)
 
     return TIA

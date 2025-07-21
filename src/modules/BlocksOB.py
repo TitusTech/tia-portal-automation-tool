@@ -1,6 +1,7 @@
+from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import xml.etree.ElementTree as ET
 import logging
 
@@ -19,11 +20,13 @@ class EventClassEnum(Enum):
 
 @dataclass
 class OrganizationBlock(ProgramBlock):
+    DeviceID: int
+    BlockGroupPath: PurePosixPath
     NetworkSources: list[NetworkSource]
     EventClass: EventClassEnum
 
 
-class OB(Base):
+class XML(Base):
     DOCUMENT = PlcEnum.OrganizationBlock.value
 
     def __init__(self, data: OrganizationBlock) -> None:
@@ -63,7 +66,7 @@ def create(imports: Imports, plc_software: Siemens.Engineering.HW.Software, data
     if not data.Name:
         return
 
-    xml = OB(data)
+    xml = XML(data)
     filename: Path = xml.write()
 
     logger.info(f"Written Organization Block {data.Name} XML to: {filename}")
