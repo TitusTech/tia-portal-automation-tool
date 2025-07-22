@@ -3,7 +3,7 @@ import json
 import xml.etree.ElementTree as ET
 
 from src.core.core import helper_clean_variable_sections, helper_clean_network_sources
-from src.modules.XML.ProgramBlocks import PlcEnum
+from src.modules.XML.ProgramBlocks import PlcEnum, LibraryData
 from src.schemas import configuration
 import src.modules.BlocksData as BlocksData
 import src.modules.BlocksFB as BlocksFB
@@ -31,17 +31,22 @@ def test_organization_block():
             CONFIG.get('Variable sections'),
             ob.get('id')
         )
-        data = BlocksOB.OrganizationBlock(Name=ob.get('name'),
-                                          DeviceID=ob.get('DeviceID'),
-                                          PlcType=ob.get('type'),
-                                          BlockGroupPath=ob.get(
-                                              'blockgroup_folder'),
-                                          Number=ob.get('number'),
-                                          ProgrammingLanguage=ob.get(
-            'programming_language'),
+        data = BlocksOB.OrganizationBlock(
+            Name=ob.get('name'),
+            DeviceID=ob.get('DeviceID'),
+            PlcType=ob.get('type'),
+            BlockGroupPath=ob.get('blockgroup_folder'),
+            Number=ob.get('number'),
+            ProgrammingLanguage=ob.get('programming_language'),
             EventClass=BlocksOB.EventClassEnum.ProgramCycle,
             NetworkSources=network_sources,
             Variables=variable_sections,
+            IsInstance=ob.get('is_instance'),
+            LibraryData=LibraryData(
+                Name=(ob.get('library_source') or {}).get('name'),
+                BlockGroupPath=(ob.get('library_source') or {}
+                                ).get('blockgroup_folder')
+            ),
         )
         xml = BlocksOB.XML(data).xml()
         root = ET.fromstring(xml)
@@ -97,20 +102,25 @@ def test_function_block():
             CONFIG.get('Variable sections'),
             fb.get('id')
         )
-        data = BlocksFB.FunctionBlock(Name=fb.get('name'),
-                                      DeviceID=fb.get('DeviceID'),
-                                      PlcType=fb.get('type'),
-                                      BlockGroupPath=fb.get(
-                                          'blockgroup_folder'),
-                                      Number=fb.get('number'),
-                                      ProgrammingLanguage=fb.get(
-                                          'programming_language'),
-                                      NetworkSources=network_sources,
-                                      Variables=variable_sections,
-                                      )
+        data = BlocksFB.FunctionBlock(
+            Name=fb.get('name'),
+            DeviceID=fb.get('DeviceID'),
+            PlcType=fb.get('type'),
+            BlockGroupPath=fb.get(
+                'blockgroup_folder'),
+            Number=fb.get('number'),
+            ProgrammingLanguage=fb.get('programming_language'),
+            NetworkSources=network_sources,
+            Variables=variable_sections,
+            IsInstance=fb.get('is_instance'),
+            LibraryData=LibraryData(
+                Name=(fb.get('library_source') or {}).get('name'),
+                BlockGroupPath=(fb.get('library_source') or {}
+                                ).get('blockgroup_folder')
+            ),
+        )
         xml = BlocksFB.XML(data).xml()
         root = ET.fromstring(xml)
-        print(xml)
 
         assert root.tag == "Document"
         fbxml = root.find('SW.Blocks.FB')

@@ -136,13 +136,42 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
             plc.get('id')
         ),
         Variables=helper_clean_variable_sections(
-            config.get('Variable sections'), plc.get('id'))
+            config.get('Variable sections'), plc.get('id')),
+        IsInstance=plc.get('is_instance'),
+        LibraryData=ProgramBlocks.LibraryData(
+            Name=(plc.get('library_source') or {}).get('name'),
+            BlockGroupPath=(plc.get('library_source') or {}
+                            ).get('blockgroup_folder')
+        ),
     )
         for plc in config.get('Program blocks', [])
-        if plc.get('type') in [ProgramBlocks.PlcEnum.OrganizationBlock,
-                               ProgramBlocks.PlcEnum.FunctionBlock,
-                               ProgramBlocks.PlcEnum.Function,
-                               ]
+        if plc.get('type') == ProgramBlocks.PlcEnum.OrganizationBlock
+    ]
+
+    data_plcblocks += [BlocksFB.FunctionBlock(
+        DeviceID=plc.get('DeviceID'),
+        PlcType=plc.get('type'),
+        Name=plc.get('name'),
+        Number=plc.get('number'),
+        ProgrammingLanguage=plc.get('programming_language'),
+        BlockGroupPath=plc.get('blockgroup_folder'),
+        NetworkSources=helper_clean_network_sources(
+            config.get('Network sources'),
+            config.get('Program blocks'),
+            config.get('Variable sections'),
+            plc.get('id')
+        ),
+        Variables=helper_clean_variable_sections(
+            config.get('Variable sections'), plc.get('id')),
+        IsInstance=plc.get('is_instance'),
+        LibraryData=ProgramBlocks.LibraryData(
+            Name=(plc.get('library_source') or {}).get('name'),
+            BlockGroupPath=(plc.get('library_source') or {}
+                            ).get('blockgroup_folder')
+        ),
+    )
+        for plc in config.get('Program blocks', [])
+        if plc.get('type') == ProgramBlocks.PlcEnum.FunctionBlock
     ]
 
     SE: Siemens.Engineering = imports.DLL

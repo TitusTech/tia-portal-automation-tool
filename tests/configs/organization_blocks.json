@@ -18,6 +18,7 @@
   ],
 
   "Program blocks": [
+
     {
       "id": 1,
       "DeviceID": 1,
@@ -128,6 +129,7 @@
       "network_source_id": 12,
       "type": "SW.Blocks.FB",
       "name": "LastScan",
+      "programming_language": "SCL",
       "blockgroup_folder": "/FB",
       "is_instance": true,
       "library_source": {
@@ -141,6 +143,7 @@
       "network_source_id": 11,
       "type": "SW.Blocks.FC",
       "name": "outputMapping",
+      "programming_language": "SCL",
       "blockgroup_folder": "/FB",
       "is_instance": true,
       "number": 6,
@@ -155,6 +158,7 @@
       "network_source_id": 3,
       "type": "SW.Blocks.FC",
       "name": "inputMapping",
+      "programming_language": "SCL",
       "number": 4,
       "blockgroup_folder": "/FB",
       "is_instance": true,
@@ -182,6 +186,7 @@
       "network_source_id": 1,
       "type": "SW.Blocks.FB",
       "name": "FirstScan",
+      "programming_language": "SCL",
       "number": 10,
       "blockgroup_folder": "/FB",
       "is_instance": true,
@@ -441,7 +446,7 @@
       "network_source_id": 8,
       "is_instance": false,
       "type": "SW.Blocks.FB",
-      "name": "Vavles",
+      "name": "Valves",
       "programming_language": "FBD",
       "number": 23,
       "blockgroup_folder": "/FB"

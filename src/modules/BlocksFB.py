@@ -1,13 +1,13 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from pathlib import PurePosixPath, Path
+from pathlib import PurePosixPath
 import xml.etree.ElementTree as ET
 import logging
 
 from src.core import logs
 
-from src.modules.PlcBlocks import import_xml_to_block_group
-from src.modules.XML.ProgramBlocks import Base, PlcEnum, ProgramBlock, BlockCompileUnit, VariableStruct, generate_boolean_attributes
+from src.modules.PlcBlocks import generate_plcblock
+from src.modules.XML.ProgramBlocks import Base, PlcEnum, LibraryData, ProgramBlock, BlockCompileUnit, VariableStruct, generate_boolean_attributes
 
 logs.setup(logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -18,6 +18,8 @@ class FunctionBlock(ProgramBlock):
     DeviceID: int
     BlockGroupPath: PurePosixPath
     NetworkSources: list[NetworkSource]
+    IsInstance: bool
+    LibraryData: LibraryData
 
 
 class XML(Base):
@@ -66,18 +68,13 @@ class XML(Base):
 
 
 def create(imports: Imports, plc_software: Siemens.Engineering.HW.Software, data: DataBlock):
-    logger.info(f"Generation of Organization Block {data.Name} started")
+    logger.info(f"Generation of Function Block {data.Name} started")
 
     if not data.Name:
         return
 
     xml = XML(data)
-    filename: Path = xml.write()
-
-    logger.info(f"Written Organization Block {data.Name} XML to: {filename}")
-
-    import_xml_to_block_group(imports, plc_software, xml_location=filename,
-                              blockgroup_folder=data.BlockGroupPath,
-                              mkdir=True)
-    if filename.exists():
-        filename.unlink()
+    generate_plcblock(imports=imports,
+                      plc_software=plc_software,
+                      data=data,
+                      xml=xml)
