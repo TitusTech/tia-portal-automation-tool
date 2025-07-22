@@ -25,7 +25,7 @@ class VariableSection:
 @dataclass
 class LibraryData:
     Name: str
-    BlockGroupPath: PurePosixPath
+    MasterCopyFolderPath: PurePosixPath
 
 
 @dataclass

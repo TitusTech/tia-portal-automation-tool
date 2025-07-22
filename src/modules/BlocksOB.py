@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ET
 import logging
 
 from src.core import logs
-from src.modules.PlcBlocks import generate_plcblock
+from src.modules.PlcBlocks import generate
 from src.modules.XML.ProgramBlocks import Base, PlcEnum, LibraryData, ProgramBlock, NetworkSource, BlockCompileUnit
 
 logs.setup(logging.DEBUG)
@@ -69,7 +69,7 @@ def create(imports: Imports, plc_software: Siemens.Engineering.HW.Software, data
         return
 
     xml = XML(data)
-    generate_plcblock(imports=imports,
-                      plc_software=plc_software,
-                      data=data,
-                      xml=xml)
+    generate(imports=imports,
+             plc_software=plc_software,
+             data=data,
+             xml=xml)

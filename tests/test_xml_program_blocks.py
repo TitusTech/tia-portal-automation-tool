@@ -44,8 +44,8 @@ def test_organization_block():
             IsInstance=ob.get('is_instance'),
             LibraryData=LibraryData(
                 Name=(ob.get('library_source') or {}).get('name'),
-                BlockGroupPath=(ob.get('library_source') or {}
-                                ).get('blockgroup_folder')
+                MasterCopyFolderPath=(ob.get('library_source') or {}
+                                      ).get('blockgroup_folder')
             ),
         )
         xml = BlocksOB.XML(data).xml()
@@ -115,8 +115,8 @@ def test_function_block():
             IsInstance=fb.get('is_instance'),
             LibraryData=LibraryData(
                 Name=(fb.get('library_source') or {}).get('name'),
-                BlockGroupPath=(fb.get('library_source') or {}
-                                ).get('blockgroup_folder')
+                MasterCopyFolderPath=(fb.get('library_source') or {}
+                                      ).get('blockgroup_folder')
             ),
         )
         xml = BlocksFB.XML(data).xml()

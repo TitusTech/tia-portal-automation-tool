@@ -140,8 +140,8 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         IsInstance=plc.get('is_instance'),
         LibraryData=ProgramBlocks.LibraryData(
             Name=(plc.get('library_source') or {}).get('name'),
-            BlockGroupPath=(plc.get('library_source') or {}
-                            ).get('blockgroup_folder')
+            MasterCopyFolderPath=(plc.get('library_source') or {}
+                                  ).get('blockgroup_folder')
         ),
     )
         for plc in config.get('Program blocks', [])
@@ -166,8 +166,8 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         IsInstance=plc.get('is_instance'),
         LibraryData=ProgramBlocks.LibraryData(
             Name=(plc.get('library_source') or {}).get('name'),
-            BlockGroupPath=(plc.get('library_source') or {}
-                            ).get('blockgroup_folder')
+            MasterCopyFolderPath=(plc.get('library_source') or {}
+                                  ).get('blockgroup_folder')
         ),
     )
         for plc in config.get('Program blocks', [])

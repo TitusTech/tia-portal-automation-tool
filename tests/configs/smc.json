@@ -2411,7 +2411,7 @@
       "is_instance": true,
       "library_source": {
         "name": "TGTLibrary",
-        "blockgroup_folder": "__"
+        "mastercopyfolder_path": "__"
       }
     },
     {
@@ -2426,7 +2426,7 @@
       "number": 6,
       "library_source": {
         "name": "TGTLibrary",
-        "blockgroup_folder": "__"
+        "mastercopyfolder_path": "__"
       }
     },
     {
@@ -2441,7 +2441,7 @@
       "is_instance": true,
       "library_source": {
         "name": "TGTLibrary",
-        "blockgroup_folder": "__"
+        "mastercopyfolder_path": "__"
       }
     },
     {
@@ -2454,7 +2454,7 @@
       "is_instance": true,
       "library_source": {
         "name": "TGTLibrary",
-        "blockgroup_folder": "__"
+        "mastercopyfolder_path": "__"
       }
     },
     {
@@ -2469,7 +2469,7 @@
       "is_instance": true,
       "library_source": {
         "name": "TGTLibrary",
-        "blockgroup_folder": "__"
+        "mastercopyfolder_path": "__"
       }
     },
     {
