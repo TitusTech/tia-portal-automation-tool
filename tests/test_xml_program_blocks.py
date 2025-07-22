@@ -45,7 +45,7 @@ def test_organization_block():
             LibraryData=LibraryData(
                 Name=(ob.get('library_source') or {}).get('name'),
                 MasterCopyFolderPath=(ob.get('library_source') or {}
-                                      ).get('blockgroup_folder')
+                                      ).get('mastercopyfolder_path')
             ),
         )
         xml = BlocksOB.XML(data).xml()
@@ -116,7 +116,7 @@ def test_function_block():
             LibraryData=LibraryData(
                 Name=(fb.get('library_source') or {}).get('name'),
                 MasterCopyFolderPath=(fb.get('library_source') or {}
-                                      ).get('blockgroup_folder')
+                                      ).get('mastercopyfolder_path')
             ),
         )
         xml = BlocksFB.XML(data).xml()

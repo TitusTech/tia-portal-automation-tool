@@ -141,7 +141,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         LibraryData=ProgramBlocks.LibraryData(
             Name=(plc.get('library_source') or {}).get('name'),
             MasterCopyFolderPath=(plc.get('library_source') or {}
-                                  ).get('blockgroup_folder')
+                                  ).get('mastercopyfolder_path')
         ),
     )
         for plc in config.get('Program blocks', [])
@@ -167,7 +167,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         LibraryData=ProgramBlocks.LibraryData(
             Name=(plc.get('library_source') or {}).get('name'),
             MasterCopyFolderPath=(plc.get('library_source') or {}
-                                  ).get('blockgroup_folder')
+                                  ).get('mastercopyfolder_path')
         ),
     )
         for plc in config.get('Program blocks', [])
