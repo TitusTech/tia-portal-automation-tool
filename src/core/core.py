@@ -248,9 +248,17 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
                 continue
             match plc.PlcType:
                 case ProgramBlocks.PlcEnum.OrganizationBlock:
-                    BlocksOB.create(imports, se_plc_software, plc)
+                    BlocksOB.create(
+                        imports=imports,
+                        TIA=TIA,
+                        plc_software=se_plc_software,
+                        data=plc)
                 case ProgramBlocks.PlcEnum.FunctionBlock:
-                    BlocksFB.create(imports, se_plc_software, plc)
+                    BlocksFB.create(
+                        imports=imports,
+                        TIA=TIA,
+                        plc_software=se_plc_software,
+                        data=plc)
 
     return TIA
 

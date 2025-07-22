@@ -62,7 +62,11 @@ class XML(Base):
             block_id += 5
 
 
-def create(imports: Imports, plc_software: Siemens.Engineering.HW.Software, data: DataBlock):
+def create(imports: Imports,
+           TIA: Siemens.Engineering.TiaPortal,
+           plc_software: Siemens.Engineering.HW.Software,
+           data: DataBlock
+           ):
     logger.info(f"Generation of Organization Block {data.Name} started")
 
     if not data.Name:
@@ -70,6 +74,7 @@ def create(imports: Imports, plc_software: Siemens.Engineering.HW.Software, data
 
     xml = XML(data)
     generate(imports=imports,
+             TIA=TIA,
              plc_software=plc_software,
              data=data,
              xml=xml)

@@ -57,7 +57,8 @@ def locate_blockgroup(plc_software: Siemens.Engineering.HW.Software,
 
 def find(plc_software: Siemens.Engineering.HW.Software,
          blockgroup_folder: PurePosixPath,
-         name: str) -> Siemens.Engineering.SW.Blocks.PlcBlock:
+         name: str
+         ) -> Siemens.Engineering.SW.Blocks.PlcBlock:
     if not name:
         return
 
@@ -73,54 +74,54 @@ def find(plc_software: Siemens.Engineering.HW.Software,
     return plcblock
 
 
-def copy_from_library(TIA: Siemens.Engineering.TiaPortal,
-                      plc_software: Siemens.Engineering.HW.Software,
-                      name: str,
-                      blockgroup_folder: PurePosixPath
-                      ) -> Siemens.Engineering.SW.Blocks.PlcBlock:
-    library: Siemens.Engineering.GlobalLibraries.GlobalLibrary = Libraries.find(
-        TIA, name)
-
-    if not library:
-        logging.info(f"Failed to copy PlcSoftware {
-                     plc_software.Name}. GlobalLibrary {name} not found.")
-        return
-
-    mastercopy: Siemens.Engineering.Library.MasterCopies.MasterCopy = get_mastercopy_from_folder(
-        library.MasterCopyFolder, data.FromFolder, data.Name)
-    if not mastercopy:
-        logging.info(f"Instance {data.Name} not added to PlcSoftware {
-                     plc_software.Name}. MasterCopy {data.Name} not found.")
-        return
-
-    plcblock: Siemens.Engineering.SW.Blocks.PlcBlock | None = import_mastercopy_to_software(
-        plc_software.BlockGroup, data.ToFolder, mastercopy)
-
-    return plcblock
-
-
 def generate(imports: Imports,
              TIA: Siemens.Engineering.TiaPortal,
              plc_software: Siemens.Engineering.HW.Software,
              data: DataBlock,
-             xml: Base):
+             xml: Base
+             ):
 
     if data.IsInstance:
         # if we want to copy from GLOBAL LIBRARY
         if not isinstance(data.LibraryData, dict):
             library_name = data.LibraryData.Name
-            mastercopy_path = data.LibraryData.MasterCopyFolderPath
+            mastercopyfolder_path = data.LibraryData.MasterCopyFolderPath
+
             library = Libraries.find(TIA=TIA, name=library_name)
 
-            # Libraries.locate_mastercopyfolder(library=library, mastercopyfolder_path=)
+            logging.debug(f"Library: {library_name}")
+            logging.debug(f"MasterCopyFolder Path: {mastercopyfolder_path}")
+
+            mastercopy = Libraries.find_mastercopy(
+                library=library,
+                mastercopyfolder_path=mastercopyfolder_path,
+                name=data.Name)
+
+            if not mastercopy:
+                logging.debug("MasterCopy is (null)")
+                return
+
+            blockgroup = locate_blockgroup(
+                plc_software=plc_software,
+                blockgroup_folder=data.BlockGroupPath,
+                mkdir=True)
+
+            if not blockgroup:
+                return
+
+            blockgroup.Blocks.CreateFrom(mastercopy)
 
     else:
         filename: Path = xml.write()
 
-        logger.info(f"Written Program Block {
-                    data.Name} XML data to: {filename}")
-        import_xml_to_block_group(imports, plc_software, xml_location=filename,
-                                  blockgroup_folder=data.BlockGroupPath,
-                                  mkdir=True)
+        logger.info(f"Written Program Block ({
+                    data.Name}) XML data to: {filename}")
+        import_xml_to_block_group(
+            imports=imports,
+            plc_software=plc_software,
+            xml_location=filename,
+            blockgroup_folder=data.BlockGroupPath,
+            mkdir=True)
+
         if filename.exists():
             filename.unlink()

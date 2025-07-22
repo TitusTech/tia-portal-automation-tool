@@ -88,18 +88,37 @@ def find(TIA: Siemens.Engineering.TiaPortal, name: str) -> Siemens.Engineering.L
             return global_library
 
 
+def find_mastercopy(library: Siemens.Engineering.Library.GlobalLibrary,
+                    mastercopyfolder_path: PurePosixPath,
+                    name: str) -> Siemens.Engineering.Library.MasterCopies.MasterCopy:
+    if not name:
+        return
+    if not library:
+        return
+
+    mastercopyfolder = locate_mastercopyfolder(
+        library=library, mastercopyfolder_path=mastercopyfolder_path)
+
+    if not mastercopyfolder:
+        return
+
+    mastercopy = mastercopyfolder.MasterCopies.Find(name)
+
+    return mastercopy
+
+
 def locate_mastercopyfolder(library: Siemens.Engineering.Library.GlobalLibrary,
                             mastercopyfolder_path: PurePosixPath) -> Siemens.Engineering.Library.MasterCopies.MasterCopyUserFolder:
 
     if not mastercopyfolder_path.is_absolute():
         mastercopyfolder_path = PurePosixPath('/') / mastercopyfolder_path
 
-    mastercopy_folder: Siemens.Engineering.Library.MasterCopies.MasterCopyUserFolder = library.MasterCopyFolder
+    mastercopyfolder: Siemens.Engineering.Library.MasterCopies.MasterCopyUserFolder = library.MasterCopyFolder
     for part in mastercopyfolder_path.parts:
         if part == '/':
             continue
-        mastercopy_folder = mastercopy_folder.Find(part)
-        if not mastercopy_folder:
+        mastercopyfolder = mastercopyfolder.Folders.Find(part)
+        if not mastercopyfolder:
             return
 
-    return mastercopy_folder
+    return mastercopyfolder

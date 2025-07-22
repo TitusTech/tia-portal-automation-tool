@@ -67,7 +67,11 @@ class XML(Base):
         return
 
 
-def create(imports: Imports, plc_software: Siemens.Engineering.HW.Software, data: DataBlock):
+def create(TIA: Siemens.Engineering.TiaPortal,
+           imports: Imports,
+           plc_software: Siemens.Engineering.HW.Software,
+           data: DataBlock
+           ):
     logger.info(f"Generation of Function Block {data.Name} started")
 
     if not data.Name:
@@ -75,6 +79,7 @@ def create(imports: Imports, plc_software: Siemens.Engineering.HW.Software, data
 
     xml = XML(data)
     generate(imports=imports,
+             TIA=TIA,
              plc_software=plc_software,
              data=data,
              xml=xml)
