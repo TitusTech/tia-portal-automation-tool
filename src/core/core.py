@@ -304,26 +304,61 @@ def helper_clean_network_sources(network_sources: list[dict],
                 continue
 
             # Organization Block
-            if block.get('type') == ProgramBlocks.PlcEnum.OrganizationBlock.value:
-                plcblocks.append(
-                    BlocksOB.OB(
+            if block.get('type') == ProgramBlocks.PlcEnum.OrganizationBlock:
+                c_plcblocks.append(
+                    BlocksOB.OrganizationBlock(
+                        DeviceID=block.get('DeviceID'),
+                        PlcType=block.get('type'),
                         Name=block.get('name'),
                         Number=block.get('number'),
                         ProgrammingLanguage=block.get(
                             'programming_language'),
+                        BlockGroupPath=block.get('blockgroup_folder'),
                         Variables=helper_clean_variable_sections(
                             variable_sections, block.get('id')),
                         NetworkSources=helper_clean_network_sources(
                             network_sources,
                             plcblocks,
                             variable_sections,
-                            block.get('id')
-                        ),
-                        EventClass=BlocksOB.EventClassEnum.ProgramCycle
+                            block.get('id')),
+                        EventClass=BlocksOB.EventClassEnum.ProgramCycle,
+                        IsInstance=block.get('is_instance'),
+                        LibraryData=ProgramBlocks.LibraryData(
+                            Name=(block.get('library_source')
+                                  or {}).get('name'),
+                            MasterCopyFolderPath=(block.get('library_source') or {}
+                                                  ).get('mastercopyfolder_path'))
                     )
                 )
 
-            # Function Block
+        # Function Block
+        if block.get('type') == ProgramBlocks.PlcEnum.FunctionBlock:
+            c_plcblocks.append(
+                BlocksFB.FunctionBlock(
+                    DeviceID=block.get('DeviceID'),
+                    PlcType=block.get('type'),
+                    Name=block.get('name'),
+                    Number=block.get('number'),
+                    ProgrammingLanguage=block.get(
+                        'programming_language'),
+                    BlockGroupPath=block.get('blockgroup_folder'),
+                    Variables=helper_clean_variable_sections(
+                        variable_sections, block.get('id')),
+                    NetworkSources=helper_clean_network_sources(
+                        network_sources,
+                        plcblocks,
+                        variable_sections,
+                        block.get('id')),
+                    IsInstance=block.get('is_instance'),
+                    LibraryData=ProgramBlocks.LibraryData(
+                        Name=(block.get('library_source')
+                              or {}).get('name'),
+                        MasterCopyFolderPath=(block.get('library_source')
+                                              or {}).get(
+                            'mastercopyfolder_path'))
+                )
+
+            )
 
             # Functions
 
