@@ -70,7 +70,7 @@ class XML(Base):
 def create(TIA: Siemens.Engineering.TiaPortal,
            imports: Imports,
            plc_software: Siemens.Engineering.HW.Software,
-           data: DataBlock
+           data: FunctionBlock
            ):
     logger.info(f"Generation of Function Block {data.Name} started")
 

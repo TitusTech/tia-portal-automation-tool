@@ -77,7 +77,7 @@ def find(plc_software: Siemens.Engineering.HW.Software,
 def generate(imports: Imports,
              TIA: Siemens.Engineering.TiaPortal,
              plc_software: Siemens.Engineering.HW.Software,
-             data: DataBlock,
+             data: ProgramBlock,
              xml: Base
              ):
 
