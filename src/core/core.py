@@ -289,7 +289,9 @@ def helper_clean_variable_sections(variable_sections: list[dict],
 def helper_clean_network_sources(network_sources: list[dict],
                                  plcblocks: list[dict],
                                  variable_sections: list[dict],
-                                 plc_block_id: int) -> list[ProgramBlocks.NetworkSource]:
+                                 plc_block_id: int,
+                                 wire_template: list[dict],
+                                 wire_parameters: list[dict]) -> list[ProgramBlocks.NetworkSource]:
     networks: list[ProgramBlocks.NetworkSource] = []
 
     for network in network_sources:
@@ -331,36 +333,43 @@ def helper_clean_network_sources(network_sources: list[dict],
                     )
                 )
 
-        # Function Block
-        if block.get('type') == ProgramBlocks.PlcEnum.FunctionBlock:
-            c_plcblocks.append(
-                BlocksFB.FunctionBlock(
-                    DeviceID=block.get('DeviceID'),
-                    PlcType=block.get('type'),
-                    Name=block.get('name'),
-                    Number=block.get('number'),
-                    ProgrammingLanguage=block.get(
-                        'programming_language'),
-                    BlockGroupPath=block.get('blockgroup_folder'),
-                    Variables=helper_clean_variable_sections(
-                        variable_sections, block.get('id')),
-                    NetworkSources=helper_clean_network_sources(
-                        network_sources,
-                        plcblocks,
-                        variable_sections,
-                        block.get('id')),
-                    IsInstance=block.get('is_instance'),
-                    LibraryData=ProgramBlocks.LibraryData(
-                        Name=(block.get('library_source')
-                              or {}).get('name'),
-                        MasterCopyFolderPath=(block.get('library_source')
-                                              or {}).get(
-                            'mastercopyfolder_path'))
+            # Function Block
+            if block.get('type') == ProgramBlocks.PlcEnum.FunctionBlock:
+                c_plcblocks.append(
+                    BlocksFB.FunctionBlock(
+                        DeviceID=block.get('DeviceID'),
+                        PlcType=block.get('type'),
+                        Name=block.get('name'),
+                        Number=block.get('number'),
+                        ProgrammingLanguage=block.get(
+                            'programming_language'),
+                        BlockGroupPath=block.get('blockgroup_folder'),
+                        Variables=helper_clean_variable_sections(
+                            variable_sections, block.get('id')),
+                        NetworkSources=helper_clean_network_sources(
+                            network_sources,
+                            plcblocks,
+                            variable_sections,
+                            block.get('id'),
+                            wire_template,
+                            wire_parameters),
+                        Parameters=helper_clean_wires(
+                            block.get('name'),
+                            block.get('id'),
+                            wire_template,
+                            wire_parameters),
+                        IsInstance=block.get('is_instance'),
+                        LibraryData=ProgramBlocks.LibraryData(
+                            Name=(block.get('library_source')
+                                  or {}).get('name'),
+                            MasterCopyFolderPath=(block.get('library_source')
+                                                  or {}).get(
+                                'mastercopyfolder_path'))
+                    )
+
                 )
 
-            )
-
-            # Functions
+                # Functions
 
         networks.append(ProgramBlocks.NetworkSource(Title=title,
                                                     Comment=comment,
@@ -369,3 +378,44 @@ def helper_clean_network_sources(network_sources: list[dict],
                         )
 
     return networks
+
+
+def helper_clean_wires(block_name: str,
+                       plc_block_id: int,
+                       wire_parameters: dict,
+                       template: dict
+                       ) -> list[ProgramBlocks.WireParameter]:
+    wires: list[ProgramBlocks.WireParameter] = []
+
+    wire_parameters_template: list[dict[str, str]] = []
+    wire_values: dict[str, str] = {}
+    for wire_block in template:
+        if wire_block.get('block_name') == block_name:
+            wire_parameters_template = wire_block.get('parameters')
+            break
+
+    for block in wire_parameters:
+        if block.get('plc_block_id') == plc_block_id:
+            wire_values = block.get('parameters')
+
+    if 'en' in wire_values:
+        en = ProgramBlocks.WireParameter(
+            Name="en",
+            Section="",
+            Datatype="Bool",
+            Value=block.get("en", ''),
+            Negated=False
+        )
+        wires.append(en)
+
+    for param in wire_parameters_template:
+        wire = ProgramBlocks.WireParameter(
+            Name=param.get('name'),
+            Section=param.get('section'),
+            Datatype=param.get('datatype'),
+            Value=wire_values.get(param.get('name')),
+            Negated=param.get('negated')
+        )
+        wires.append(wire)
+
+    return wires
