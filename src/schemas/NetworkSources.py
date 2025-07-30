@@ -13,13 +13,15 @@ WireParameter = Schema({
     "parameters": {str: str},
 })
 
+Parameter = Schema({
+    "name": str,
+    "section": str,
+    "datatype": str,
+    Optional("value", default=""): str,
+    Optional("negated", default=False): bool,
+})
+
 WireTemplate = Schema({
     "block_name": str,
-    "parameters": And(list, [Schema({
-        "name": str,
-        "section": str,
-        "datatype": str,
-        "value": str,
-        Optional("negated", default=False): bool,
-    })]),
+    "parameters": And(list, [Parameter]),
 })
