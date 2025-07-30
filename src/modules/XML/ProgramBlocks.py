@@ -35,6 +35,7 @@ class ProgramBlock:
     Number: int
     ProgrammingLanguage: str
     Variables: list[VariableSection]
+    Parameters: list[WireParameter]
 
 
 @dataclass
@@ -49,7 +50,7 @@ class WireParameter:
     Name: str
     Section: str
     Datatype: str
-    Value: str | list[str]
+    Value: str
     Negated: bool
 
 
@@ -223,7 +224,7 @@ class BlockCompileUnit:
 
         return
 
-    def _insert_parts(self, plcblock: InstanceContainer, uid: int) -> int:
+    def _insert_parts(self, plcblock: ProgramBlock, uid: int) -> int:
         for parameter in plcblock.Parameters:
             if not parameter.Value:
                 continue
