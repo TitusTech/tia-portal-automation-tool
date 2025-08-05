@@ -130,11 +130,20 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         ProgrammingLanguage=plc.get('programming_language'),
         BlockGroupPath=plc.get('blockgroup_folder'),
         EventClass=BlocksOB.EventClassEnum.ProgramCycle,
+        Parameters=helper_clean_wires(
+            plc.get('name'),
+            plc.get('id'),
+            config.get('Wire parameters'),
+            config.get('Wire template')
+        ),
         NetworkSources=helper_clean_network_sources(
             config.get('Network sources'),
             config.get('Program blocks'),
             config.get('Variable sections'),
-            plc.get('id')
+            plc.get('id'),
+            config.get('Wire template'),
+            config.get('Wire parameters'),
+            config.get('Instances'),
         ),
         Variables=helper_clean_variable_sections(
             config.get('Variable sections'), plc.get('id')),
@@ -156,11 +165,20 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         Number=plc.get('number'),
         ProgrammingLanguage=plc.get('programming_language'),
         BlockGroupPath=plc.get('blockgroup_folder'),
+        Parameters=helper_clean_wires(
+            plc.get('name'),
+            plc.get('id'),
+            config.get('Wire parameters'),
+            config.get('Wire template')
+        ),
         NetworkSources=helper_clean_network_sources(
             config.get('Network sources'),
             config.get('Program blocks'),
             config.get('Variable sections'),
-            plc.get('id')
+            plc.get('id'),
+            config.get('Wire template'),
+            config.get('Wire parameters'),
+            config.get('Instances'),
         ),
         Variables=helper_clean_variable_sections(
             config.get('Variable sections'), plc.get('id')),

@@ -5,7 +5,7 @@ from pathlib import PurePosixPath
 import xml.etree.ElementTree as ET
 
 from src.modules.XML.Documents import Document, XMLNS
-from src.modules.BlocksDBInstances import CallOptionEnum
+import src.modules.BlocksDBInstances as BlocksDBInstances
 
 
 @dataclass
@@ -65,21 +65,6 @@ class PlcEnum(Enum):
     # ForceTable = "SW.WatchAndForceTables.PlcForceTable"
     # WatchTableEntry = "SW.WatchAndForceTables.PlcWatchTableEntry"
     # ForceTableEntry = "SW.WatchAndForceTables.PlcForceTableEntry"
-
-
-@dataclass
-class Database:
-    Name: str
-    Number: int
-    BlockGroupPath: str
-
-
-# @dataclass
-# class InstanceContainer:
-#     Name: str
-#     Type: PlcEnum
-#     Database: Database
-#     Parameters: list[WireParameter]
 
 
 class Base(Document):
@@ -249,7 +234,7 @@ class BlockCompileUnit:
 
         if plcblock.PlcType != PlcEnum.Function:
             scope = "GlobalVariable"
-            if plcblock.Database.CallOption == CallOptionEnum.Multi:
+            if plcblock.Database.CallOption == BlocksDBInstances.CallOptionEnum.Multi:
                 scope = "LocalVariable"
             InstanceTag = ET.SubElement(CallInfo, "Instance", attrib={
                                         'Scope': scope, 'UId': str(uid+1)})
