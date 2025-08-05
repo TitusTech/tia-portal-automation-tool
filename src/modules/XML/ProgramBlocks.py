@@ -5,6 +5,7 @@ from pathlib import PurePosixPath
 import xml.etree.ElementTree as ET
 
 from src.modules.XML.Documents import Document, XMLNS
+from src.modules.BlocksDBInstances import CallOptionEnum
 
 
 @dataclass
@@ -242,12 +243,13 @@ class BlockCompileUnit:
             "CallInfo",
             attrib={
                 'Name': plcblock.Name,
-                'BlockType': plcblock.Type.value.split('.')[-1]
+                'BlockType': plcblock.PlcType.value.split('.')[-1]
             }
         )
-        if plcblock.Type != PlcEnum.Function:
+
+        if plcblock.PlcType != PlcEnum.Function:
             scope = "GlobalVariable"
-            if plcblock.Database.Type == DatabaseType.MultiInstance:
+            if plcblock.Database.CallOption == CallOptionEnum.Multi:
                 scope = "LocalVariable"
             InstanceTag = ET.SubElement(CallInfo, "Instance", attrib={
                                         'Scope': scope, 'UId': str(uid+1)})

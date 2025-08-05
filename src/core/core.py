@@ -6,6 +6,7 @@ import base64
 
 from src.resources import dlls
 import src.modules.BlocksData as BlocksData
+import src.modules.BlocksDBInstances as BlocksDBInstances
 import src.modules.BlocksFB as BlocksFB
 import src.modules.BlocksOB as BlocksOB
 import src.modules.DeviceItems as DeviceItems
@@ -163,6 +164,8 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         ),
         Variables=helper_clean_variable_sections(
             config.get('Variable sections'), plc.get('id')),
+        Database=helper_clean_database_instance(
+            plc.get('id'), config.get('Instances')),
         IsInstance=plc.get('is_instance'),
         LibraryData=ProgramBlocks.LibraryData(
             Name=(plc.get('library_source') or {}).get('name'),
@@ -291,7 +294,8 @@ def helper_clean_network_sources(network_sources: list[dict],
                                  variable_sections: list[dict],
                                  plc_block_id: int,
                                  wire_template: list[dict],
-                                 wire_parameters: list[dict]) -> list[ProgramBlocks.NetworkSource]:
+                                 wire_parameters: list[dict],
+                                 instances: list[dict]) -> list[ProgramBlocks.NetworkSource]:
     networks: list[ProgramBlocks.NetworkSource] = []
 
     for network in network_sources:
@@ -352,12 +356,15 @@ def helper_clean_network_sources(network_sources: list[dict],
                             variable_sections,
                             block.get('id'),
                             wire_template,
-                            wire_parameters),
+                            wire_parameters,
+                            instances),
                         Parameters=helper_clean_wires(
                             block.get('name'),
                             block.get('id'),
                             wire_template,
                             wire_parameters),
+                        Database=helper_clean_database_instance(
+                            block.get('id'), instances),
                         IsInstance=block.get('is_instance'),
                         LibraryData=ProgramBlocks.LibraryData(
                             Name=(block.get('library_source')
@@ -382,7 +389,7 @@ def helper_clean_network_sources(network_sources: list[dict],
 
 def helper_clean_wires(block_name: str,
                        plc_block_id: int,
-                       wire_parameters: dict,
+                       wire_parameters: list[dict],
                        template: dict
                        ) -> list[ProgramBlocks.WireParameter]:
     wires: list[ProgramBlocks.WireParameter] = []
@@ -419,3 +426,17 @@ def helper_clean_wires(block_name: str,
         wires.append(wire)
 
     return wires
+
+
+def helper_clean_database_instance(plc_block_id: int,
+                                   instances: list[dict]
+                                   ) -> list[BlocksDBInstances.Instance]:
+
+    for instancedb in instances:
+        if instancedb.get('plc_block_id') == plc_block_id:
+            return BlocksDBInstances.Instance(
+                CallOption=instancedb.get('call_option'),
+                Name=instancedb.get('name'),
+                Number=instancedb.get('number'),
+                BlockGroupPath=instancedb.get('blockgroup_folder')
+            )
