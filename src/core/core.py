@@ -428,27 +428,27 @@ def helper_clean_network_sources(network_sources: list[dict],
 def helper_clean_wires(block_name: str,
                        plc_block_id: int,
                        wire_parameters: list[dict],
-                       template: dict
+                       template: list[dict]
                        ) -> list[ProgramBlocks.WireParameter]:
     wires: list[ProgramBlocks.WireParameter] = []
 
     wire_parameters_template: list[dict[str, str]] = []
-    wire_values: dict[str, str] = {}
+    parameters: dict[str, str] = {}
     for wire_block in template:
         if wire_block.get('block_name') == block_name:
             wire_parameters_template = wire_block.get('parameters')
             break
 
-    for block in wire_parameters:
-        if block.get('plc_block_id') == plc_block_id:
-            wire_values = block.get('parameters')
+    for wire in wire_parameters:
+        if wire.get('plc_block_id') == plc_block_id:
+            parameters = wire.get('parameters')
 
-    if 'en' in wire_values:
+    if 'en' in parameters:
         en = ProgramBlocks.WireParameter(
             Name="en",
             Section="",
             Datatype="Bool",
-            Value=block.get("en", ''),
+            Value=wire.get("en", ''),
             Negated=False
         )
         wires.append(en)
@@ -458,7 +458,7 @@ def helper_clean_wires(block_name: str,
             Name=param.get('name'),
             Section=param.get('section'),
             Datatype=param.get('datatype'),
-            Value=wire_values.get(param.get('name')),
+            Value=parameters.get(param.get('name')),
             Negated=param.get('negated')
         )
         wires.append(wire)
