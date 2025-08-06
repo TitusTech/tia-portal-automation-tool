@@ -255,7 +255,7 @@ class BlockCompileUnit:
 
         return uid
 
-    def _insert_wires(self, instance: InstanceContainer, last_uid: int):
+    def _insert_wires(self, instance: ProgramBlock, last_uid: int):
         wire_values: list[tuple[ET.Element, ET.Element]] = []
         for param in instance.Parameters:
             p_call_uid = param.__dict__.get('call', 23)

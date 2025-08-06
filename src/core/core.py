@@ -20,29 +20,49 @@ import src.modules.Projects as Projects
 import src.modules.XML.ProgramBlocks as ProgramBlocks
 
 
-def generate_dlls() -> dict[str, Path]:
+def generate_dlls(use_contract: bool = False) -> dict[str, Path]:
     dll_paths: dict[str, Path] = {}
     for key in dlls.b64_dlls:
         if key == "Siemens.Engineering.Contract":
+            if not use_contract:
+                continue
+            # This key has no .Hmi pair
+            data = base64.b64decode(dlls.b64_dlls[key])
+            dlls_dir = Path("./DLLs")
+            dlls_dir.mkdir(exist_ok=True)
+
+            save_path = dlls_dir / key
+            save_path.mkdir(exist_ok=True)
+            version_dll_path = save_path / "Siemens.Engineering.dll"
+            with version_dll_path.open('wb') as version_dll_file:
+                version_dll_file.write(data)
+
+            dll_paths[key] = version_dll_path.absolute()
             continue
+
         if "Hmi" in key:
             continue
+
         data = base64.b64decode(dlls.b64_dlls[key])
-        hmi_data = base64.b64decode(dlls.b64_dlls[f"{key}.Hmi"])
+        hmi_key = f"{key}.Hmi"
+        if hmi_key not in dlls.b64_dlls:
+            continue  # Skip if the HMI pair is missing
+
+        hmi_data = base64.b64decode(dlls.b64_dlls[hmi_key])
         dlls_dir = Path("./DLLs")
         dlls_dir.mkdir(exist_ok=True)
 
-        save_path = Path(dlls_dir) / key
+        save_path = dlls_dir / key
         save_path.mkdir(exist_ok=True)
+
         version_dll_path = save_path / "Siemens.Engineering.dll"
         with version_dll_path.open('wb') as version_dll_file:
             version_dll_file.write(data)
-            # logger.logging.debug(f"Written data of {key}")
 
         version_hmi_dll_path = save_path / "Siemens.Engineering.Hmi.dll"
         with version_hmi_dll_path.open('wb') as version_hmi_dll_file:
             version_hmi_dll_file.write(hmi_data)
-            # logger.logging.debug(f"Written data of {key}")
+
         dll_paths[key] = version_dll_path.absolute()
 
     return dll_paths
