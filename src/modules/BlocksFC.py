@@ -1,16 +1,23 @@
+from __future__ import annotations
 from dataclasses import dataclass
-from enum import Enum
-from pathlib import Path
-from typing import Optional
-import xml.etree.ElementTree as ET
+from pathlib import PurePosixPath
 
-from src.modules.XML.Documents import Document
-from src.modules.XML.ProgramBlocks import ProgramBlock
+from src.modules.XML.ProgramBlocks import Base, ProgramBlock
 
-class FC(Base):
+
+@dataclass
+class Function(ProgramBlock):
+    DeviceID: int
+    BlockGroupPath: PurePosixPath
+    IsInstance: bool
+    LibraryData: LibraryData
+
+
+class XML(Base):
     DOCUMENT = "SW.Blocks.FC"
+
     def __init__(self, data: ProgramBlock) -> None:
-        super().__init__(data.Name, data.Number, data.ProgrammingLanguage)
+        super().__init__(data.Name, data.Number, data.ProgrammingLanguage, data.Variables)
 
         self._create_input_section()
         self._create_output_section()
