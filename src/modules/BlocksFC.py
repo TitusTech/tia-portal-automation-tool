@@ -1,8 +1,15 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import PurePosixPath
+import logging
 
+from src.core import logs
+
+from src.modules.PlcBlocks import generate
 from src.modules.XML.ProgramBlocks import Base, ProgramBlock
+
+logs.setup(logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -25,3 +32,21 @@ class XML(Base):
         self._create_temp_section()
         self._create_constant_section()
         self._create_return_section()
+
+
+def create(TIA: Siemens.Engineering.TiaPortal,
+           imports: Imports,
+           plc_software: Siemens.Engineering.HW.Software,
+           data: Function
+           ):
+    logger.info(f"Generation of Function {data.Name} started")
+
+    if not data.Name:
+        return
+
+    xml = XML(data)
+    generate(imports=imports,
+             TIA=TIA,
+             plc_software=plc_software,
+             data=data,
+             xml=xml)
