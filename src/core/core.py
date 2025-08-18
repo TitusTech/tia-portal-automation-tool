@@ -17,8 +17,8 @@ import src.modules.Networks as Networks
 import src.modules.PlcDataTypes as PlcDataTypes
 import src.modules.PlcTags as PlcTags
 import src.modules.Portals as Portals
+import src.modules.ProgramBlocks as ProgramBlocks
 import src.modules.Projects as Projects
-import src.modules.XML.ProgramBlocks as ProgramBlocks
 
 
 def generate_dlls(use_contract: bool = False) -> dict[str, Path]:
