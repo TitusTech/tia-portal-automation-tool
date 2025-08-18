@@ -507,7 +507,7 @@ def helper_clean_wires(block_name: str,
         Name="en",
         Section="",
         Datatype="Bool",
-        Value=wire.get("en", ''),
+        Value=parameters.get('en', ''),
         Negated=False
     )
     wires.append(en)
