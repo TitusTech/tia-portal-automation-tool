@@ -508,7 +508,7 @@ def helper_clean_wires(block_name: str,
         Name="en",
         Section="",
         Datatype="Bool",
-        Value=parameters.get('en', ''),
+        Value=ProgramBlocks.AccessValue(parameters.get('en', '')),
         Negated=False
     )
     wires.append(en)
@@ -518,7 +518,7 @@ def helper_clean_wires(block_name: str,
             Name=param.get('name'),
             Section=param.get('section'),
             Datatype=param.get('datatype'),
-            Value=parameters.get(param.get('name')),
+            Value=ProgramBlocks.AccessValue(parameters.get(param.get('name'))),
             Negated=param.get('negated')
         )
         wires.append(wire)

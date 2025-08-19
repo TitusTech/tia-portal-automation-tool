@@ -2,6 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path, PurePosixPath
+from typing import Optional
 import logging
 import tempfile
 import xml.etree.ElementTree as ET
@@ -57,8 +58,31 @@ class WireParameter:
     Name: str
     Section: str
     Datatype: str
-    Value: str
+    Value: AccessValue
     Negated: bool
+
+
+@dataclass
+class AccessValue:
+    Root: str
+    Variable: Optional[str]
+    Index: Optional[int]
+
+    def __init__(self, raw: str):
+        parts = raw.split('.')
+
+        self.Root = parts[0]
+        self.Variable = None
+        self.Index = None
+
+        if len(parts) == 2:
+            var_part = parts[1]
+            self.Variable = var_part
+
+            if '[' in var_part and var_part.endswith(']'):
+                bracket_start = var_part.find('[')
+                self.Variable = var_part[:bracket_start]
+                self.Index = var_part[bracket_start + 1: -1]
 
 
 class PlcEnum(Enum):
@@ -314,24 +338,14 @@ class AccessGlobalVariable(Access):
         super().__init__(uid, "GlobalVariable")
 
         self._create_symbol_constant("Symbol")
-        is_array: bool = any(isinstance(item, list) for item in value)
-        if is_array:
-            for v in value:
-                if isinstance(v, str):
-                    ET.SubElement(self.Value, "Component", attrib={'Name': v})
-                if isinstance(v, list):
-                    name = v[0]
-                    index = v[1]
-                    Component = ET.SubElement(
-                        self.Value,
-                        "Component",
-                        attrib={
-                            'Name': name, 'AccessModifier': "Array"})
-                    Component.append(
-                        AccessLiteralConstant(index, "DInt", -1).Access)
-        else:
-            for v in value:
-                ET.SubElement(self.Value, "Component", attrib={'Name': v})
+        ET.SubElement(self.Value, "Component", attrib={'Name': value.Root})
+        ET.SubElement(self.Value, "Component", attrib={'Name': value.Variable})
+
+        if value.Index:
+            Component = ET.SubElement(self.Value, "Component", attrib={
+                'Name': value.Variable, 'AccessModifier': "Array"})
+            Component.append(AccessLiteralConstant(
+                value.Index, "DInt", -1).Access)
 
         return
 
@@ -401,16 +415,16 @@ def generate_boolean_attributes(struct: VariableStruct) -> ET.Element:
 
 
 def generate_access(parameter: WireParameter, uid: int) -> ET.Element:
-    if isinstance(parameter.Value, list):
+    if parameter.Value.Variable:
         Access = AccessGlobalVariable(parameter.Value, uid)
         return Access.Access
 
     if parameter.Datatype in ["Int", "Bool", "UInt", "DInt"]:
         Access = AccessLiteralConstant(
-            parameter.Value, parameter.Datatype, uid)
+            parameter.Value.Root, parameter.Datatype, uid)
         return Access.Access
 
-    Access = AccessTypedConstant(parameter.Value, uid)
+    Access = AccessTypedConstant(parameter.Value.Root, uid)
     return Access.Access
 
 
