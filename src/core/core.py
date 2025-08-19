@@ -432,8 +432,9 @@ def helper_clean_network_sources(network_sources: list[dict],
                         Parameters=helper_clean_wires(
                             block.get('name'),
                             block.get('id'),
+                            wire_parameters,
                             wire_template,
-                            wire_parameters),
+                        ),
                         Database=helper_clean_database_instance(
                             block.get('id'), instances),
                         IsInstance=block.get('is_instance'),
