@@ -344,14 +344,16 @@ class AccessGlobalVariable(Access):
 
         self._create_symbol_constant("Symbol")
         ET.SubElement(self.Value, "Component", attrib={'Name': value.Root})
-        ET.SubElement(self.Value, "Component", attrib={'Name': value.Variable})
+        
 
         if value.Index:
             Component = ET.SubElement(self.Value, "Component", attrib={
                 'Name': value.Variable, 'AccessModifier': "Array"})
             Component.append(AccessLiteralConstant(
                 value.Index, "DInt", -1).Access)
-
+        else:
+            ET.SubElement(self.Value, "Component", attrib={'Name': value.Variable})
+            
         return
 
 

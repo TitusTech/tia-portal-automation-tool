@@ -6396,7 +6396,7 @@
     {
       "plc_block_id": 34,
       "parameters": {
-        "Conveyor_1":  "DB_Master.All_Drives.[4]"  ,
+        "Conveyor_1":  "DB_Master.All_Drives[4]"  ,
         "Valve_1":  "DB_Master.All_Drives[6]"  ,
         "Conveyor_2":  "DB_Master.All_Drives[5]"  ,
         "Valve_2":  "DB_Master.All_Drives[7]"  ,
