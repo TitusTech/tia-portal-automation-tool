@@ -69,6 +69,11 @@ class AccessValue:
     Index: Optional[int]
 
     def __init__(self, raw: str):
+        if not raw:
+            self.Root = ''
+            self.Variable = None
+            self.Index = None
+            return
         parts = raw.split('.')
 
         self.Root = parts[0]
