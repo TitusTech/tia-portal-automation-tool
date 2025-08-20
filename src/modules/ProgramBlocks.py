@@ -242,7 +242,7 @@ class BlockCompileUnit:
 
     def _insert_parts(self, plcblock: ProgramBlock, uid: int) -> int:
         for parameter in plcblock.Parameters:
-            if not parameter.Value:
+            if not parameter.Value.Root:
                 continue
 
             parameter.__dict__['UId'] = uid
@@ -291,7 +291,7 @@ class BlockCompileUnit:
             p_call_uid = param.__dict__.get('call', 23)
             NameCon = ET.Element("NameCon", attrib={
                                  'UId': str(p_call_uid), 'Name': param.Name})
-            if param.Value:
+            if param.Value.Root:
                 ident_uid = param.__dict__.get('UId', 23)
                 IdentCon = ET.Element("IdentCon", attrib={
                                       'UId': str(ident_uid)})
