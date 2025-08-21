@@ -308,7 +308,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         for data_block in data_blocks:
             if data_block.DeviceID != device_data.ID:
                 continue
-            BlocksData.create(imports, se_plc_software, data_block)
+            BlocksData.create(TIA, imports, se_plc_software, data_block)
 
         # ProgramBlocks
         for plc in data_plcblocks:
