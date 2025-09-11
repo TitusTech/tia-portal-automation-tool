@@ -5873,7 +5873,7 @@
     {
       "id": 3,
       "plc_block_id": 11,
-      "name": "",
+      "name": "LastScan_DB",
       "call_option": "Single",
       "number": 19,
       "blockgroup_folder": "/DB"
@@ -5881,7 +5881,7 @@
     {
       "id": 4,
       "plc_block_id": 14,
-      "name": "",
+      "name": "Sim_DB",
       "call_option": "Single",
       "number": 494,
       "blockgroup_folder": "/DB"
@@ -5889,7 +5889,7 @@
     {
       "id": 5,
       "plc_block_id": 15,
-      "name": "",
+      "name": "FirstScan_DB",
       "call_option": "Single",
       "number": 15,
       "blockgroup_folder": "/DB"
