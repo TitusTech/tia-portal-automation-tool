@@ -244,7 +244,8 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         Variables=helper_clean_variable_sections(
             config.get('Variable sections'), plc.get('id')),
         Database=helper_clean_database_instance(
-            plc.get('id'), config.get('Instances')),
+            plc.get('id'), config.get(
+                'Instances'), config.get('Program blocks')),
         IsInstance=plc.get('is_instance'),
         LibraryData=ProgramBlocks.LibraryData(
             Name=(plc.get('library_source') or {}).get('name'),
@@ -456,7 +457,7 @@ def helper_clean_network_sources(network_sources: list[dict],
                             wire_template,
                         ),
                         Database=helper_clean_database_instance(
-                            block.get('id'), instances),
+                            block.get('id'), instances, plcblocks),
                         IsInstance=block.get('is_instance'),
                         LibraryData=ProgramBlocks.LibraryData(
                             Name=(block.get('library_source')
@@ -547,14 +548,18 @@ def helper_clean_wires(block_name: str,
 
 
 def helper_clean_database_instance(plc_block_id: int,
-                                   instances: list[dict]
+                                   instances: list[dict],
+                                   plcblocks: list[dict]
                                    ) -> list[BlocksDBInstances.Instance]:
 
     for instancedb in instances:
         if instancedb.get('plc_block_id') == plc_block_id:
             return BlocksDBInstances.InstanceDB(
                 Id=instancedb.get('id'),
-                PlcBlockId=instancedb.get('plc_block_id'),
+                InstanceOfName=helper_get_plcblock_name(
+                    instancedb.get('plc_block_id'),
+                    plcblocks
+                ),
                 CallOption=instancedb.get('call_option'),
                 Name=instancedb.get('name'),
                 Number=instancedb.get('number'),

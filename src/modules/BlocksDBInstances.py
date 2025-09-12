@@ -1,3 +1,4 @@
+from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import PurePosixPath
@@ -6,7 +7,6 @@ import logging
 from src.core import logs
 
 from src.modules.BlocksDatabase import Database
-from src.modules.ProgramBlocks import locate_blockgroup
 
 logs.setup(logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -34,6 +34,7 @@ def create(plc_software: Siemens.Engineering.HW.Software,
     if not data.InstanceOfName:
         return
 
+    from src.modules.ProgramBlocks import locate_blockgroup
     logger.info(f"Generation of InstanceDB {data.Name} of Instance {
                 data.InstanceOfName} started")
 
