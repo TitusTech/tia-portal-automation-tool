@@ -143,6 +143,20 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         for db in config.get('Program blocks', [])
         if db.get('type') == ProgramBlocks.PlcEnum.GlobalDB
     ]
+
+    instance_dbs = [BlocksDBInstances.InstanceDB(
+        Id=db.get('id'),
+        InstanceOfName=helper_get_plcblock_name(
+            db.get('plc_block_id'),
+            config.get('Program blocks')
+        ),
+        Name=db.get('name'),
+        CallOption=db.get('call_option'),
+        Number=db.get('number'),
+        BlockGroupPath=db.get('blockgroup_folder', '/'))
+        for db in config.get('Instances', [])
+    ]
+
     data_plcblocks = [BlocksOB.OrganizationBlock(
         DeviceID=plc.get('DeviceID'),
         PlcType=plc.get('type'),
@@ -333,6 +347,12 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
                         TIA=TIA,
                         plc_software=se_plc_software,
                         data=plc)
+
+        # DB Instances
+        # TODO:
+        for instancedb in instance_dbs:
+            BlocksDBInstances.create(plc_software=se_plc_software,
+                                     data=instancedb)
 
     return TIA
 
@@ -532,9 +552,18 @@ def helper_clean_database_instance(plc_block_id: int,
 
     for instancedb in instances:
         if instancedb.get('plc_block_id') == plc_block_id:
-            return BlocksDBInstances.Instance(
+            return BlocksDBInstances.InstanceDB(
+                Id=instancedb.get('id'),
+                PlcBlockId=instancedb.get('plc_block_id'),
                 CallOption=instancedb.get('call_option'),
                 Name=instancedb.get('name'),
                 Number=instancedb.get('number'),
                 BlockGroupPath=instancedb.get('blockgroup_folder')
             )
+
+
+def helper_get_plcblock_name(plc_block_id: int, program_blocks: list[dict]) -> str:
+    for block in program_blocks:
+        if block.get('id') == plc_block_id:
+            return block.get('name')
+    return ""
