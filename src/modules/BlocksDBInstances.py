@@ -33,10 +33,13 @@ def create(plc_software: Siemens.Engineering.HW.Software,
            ):
     if not data.InstanceOfName:
         return
+    if data.CallOption != CallOptionEnum.Single:
+        return
 
-    from src.modules.ProgramBlocks import locate_blockgroup
-    logger.info(f"Generation of InstanceDB {data.Name} of Instance {
-                data.InstanceOfName} started")
+    from src.modules.ProgramBlocks import locate_blockgroup  # circular dependency lol
+
+    logger.info(f"Generation of InstanceDB '{data.Name}' of Plc '{
+                data.InstanceOfName}' started")
 
     db_name = data.Name if data.Name != "" else f"{data.InstanceOfName}_DB"
 

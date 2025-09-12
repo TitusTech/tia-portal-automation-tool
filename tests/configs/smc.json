@@ -5858,13 +5858,6 @@
   ],
   "Instances": [
     {
-      "id": 1,
-      "plc_block_id": 9,
-      "name": "Common_Control Monitor_DB",
-      "call_option": "Single",
-      "blockgroup_folder": "/DB"
-    },
-    {
       "id": 2,
       "plc_block_id": 10,
       "name": "Control_Monitor_1_Instance",
@@ -5931,13 +5924,7 @@
       "id": 11,
       "plc_block_id": 21,
       "name": "Aeration_Fan_DB",
-      "number": 3,
-      "call_option": "Single"
-    },
-    {
-      "id": 12,
-      "plc_block_id": 21,
-      "name": "Aeration_Fan_DB",
+      "blockgroup_folder": "/DB",
       "number": 3,
       "call_option": "Single"
     },
@@ -5999,7 +5986,7 @@
     },
     {
       "id": 22,
-      "plc_block_id": 31,
+      "plc_block_id": 9,
       "call_option": "Single",
       "name": "Common_Control Monitor_DB",
       "number": 535,
