@@ -146,6 +146,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
 
     instance_dbs = [BlocksDBInstances.InstanceDB(
         Id=db.get('id'),
+        DeviceID=db.get('DeviceID'),
         InstanceOfName=helper_get_plcblock_name(
             db.get('plc_block_id'),
             config.get('Program blocks')
@@ -350,8 +351,9 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
                         data=plc)
 
         # DB Instances
-        # TODO:
         for instancedb in instance_dbs:
+            if instancedb.DeviceID != device_data.ID:
+                continue
             BlocksDBInstances.create(plc_software=se_plc_software,
                                      data=instancedb)
 
@@ -556,6 +558,7 @@ def helper_clean_database_instance(plc_block_id: int,
         if instancedb.get('plc_block_id') == plc_block_id:
             return BlocksDBInstances.InstanceDB(
                 Id=instancedb.get('id'),
+                DeviceID=instancedb.get('DeviceID'),
                 InstanceOfName=helper_get_plcblock_name(
                     instancedb.get('plc_block_id'),
                     plcblocks

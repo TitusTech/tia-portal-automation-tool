@@ -21,6 +21,7 @@ class CallOptionEnum(Enum):
 @dataclass
 class InstanceDB(Database):
     Id: int
+    DeviceID: int
     InstanceOfName: str
     Name: str
     CallOption: CallOptionEnum
@@ -29,8 +30,7 @@ class InstanceDB(Database):
 
 
 def create(plc_software: Siemens.Engineering.HW.Software,
-           data: InstanceDB
-           ):
+           data: InstanceDB):
     if not data.InstanceOfName:
         return
     if data.CallOption != CallOptionEnum.Single:
