@@ -1,5 +1,24 @@
 # TIA Portal Automation Tool
 
+## Features
+
+- import a Global Library
+- choose an API version
+- insert PLC device
+- insert PLC local modules
+- insert PLC tags
+- insert PLC data types
+- import program blocks to a device
+- supports function blocks, organization blocks, functions, and different types of databases
+- create networking system
+- can define all these in a simple JSON file
+
+### Next update will include these features
+
+- auto compiling of program blocks
+- auto saving
+- attaching the automation tool to an existing project
+
 ## Building
 
 ### Clone repository:
