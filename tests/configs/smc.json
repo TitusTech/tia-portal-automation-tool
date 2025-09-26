@@ -3364,7 +3364,7 @@
       "network_source_id": 24,
       "is_instance": true,
       "type": "SW.Blocks.FB",
-      "name": "Bin_Obj_Type_6",
+      "name": "Des_Obj_Type_1",
       "blockgroup_folder": "/TGTLibrary/Drives/Bins"
     },
     
