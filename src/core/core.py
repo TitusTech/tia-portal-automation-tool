@@ -314,7 +314,7 @@ def execute(imports: api.Imports, config: dict[str, Any], settings: dict[str, An
         for plc_tag_table in plc_tags_data:
             if plc_tag_table.DeviceID != device_data.ID:
                 continue
-            PlcTags.new(plc_tag_table, se_plc_software)
+            PlcTags.new(imports, se_plc_software, plc_tag_table)
 
         # PLC Data Types:
         for plc_data_type in plc_data_types_data:
